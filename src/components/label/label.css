@@ -1,0 +1,15 @@
+label {
+  color: var(--color-action-secondary);
+  font-size: var(--size-font-small);
+  font-weight: var(--font-weight-light);
+  display: block;
+  padding-left: var(--size-spacing-1);
+}
+
+[part="required"] {
+  display: none;
+}
+
+:host([required]) [part="required"] {
+  display: inline;
+}

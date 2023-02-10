@@ -1,0 +1,7 @@
+:host {
+  --vertical-padding: calc(var(--size-spacing-0-25) + var(--size-spacing-0-5));
+
+  background-color: var(--color-background-quaternary);
+  border-radius: calc((var(--size-line-height-medium) + (2 * var(--vertical-padding))) / 2);
+  padding: var(--vertical-padding) var(--size-spacing-2);
+}

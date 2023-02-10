@@ -1,0 +1,32 @@
+@import '@easepick/core/dist/index.css';
+
+:host {
+  --color-fg-primary: var(--color-font-primary);
+  --color-fg-muted: var(--color-action-disabled);
+  --color-fg-selected: var(--color-font-primary);
+  --color-bg-secondary: var(--color-action-secondary-25);
+  --color-btn-secondary-fg: var(--color-action-secondary);
+  --color-fg-accent: var(--color-action-primary);
+}
+
+.container {
+  margin-top: var(--size-spacing-0-5);
+}
+
+.container.show {
+  box-shadow: var(--shadow-far);
+}
+
+.calendar .days-grid .day:is(.selected,.selected:hover) {
+  border-color: var(--color-action-secondary);
+  background-color: var(--color-action-secondary-10);
+}
+
+.calendar .days-grid .day:hover {
+  border-color: transparent;
+  background-color: var(--color-action-secondary-10);
+}
+
+.calendar .header button:active {
+  background-color: var(--color-action-secondary-50);
+}

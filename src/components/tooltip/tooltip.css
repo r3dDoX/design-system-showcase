@@ -1,0 +1,7 @@
+dss-floating::part(container) {
+  --color-background: var(--color-background-quinary);
+}
+
+dss-floating[active]::part(container) {
+  transition: opacity 200ms ease-in 200ms;
+}

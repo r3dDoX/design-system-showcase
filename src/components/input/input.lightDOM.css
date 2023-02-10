@@ -1,0 +1,69 @@
+/**
+ * ::slotted styles do not get any benefit in specificity so they get overridden by normalize/reset css styles setting
+ * plain `input` styles. Therefore these styles are imported in the global.css using the lightDOM styling which has a
+ * higher specificity than ::slotted.
+ */
+
+dss-input input::placeholder {
+  color: var(--color-font-placeholder);
+}
+
+dss-input input {
+  margin: 0;
+  outline: none;
+  border: var(--size-border-width-small) solid var(--color-action-secondary-50);
+  border-radius: var(--size-border-radius-regular);
+  padding: calc(var(--size-spacing-0-5) + var(--size-border-width-small)) var(--size-spacing-1);
+  font-size: var(--size-font-medium);
+  line-height: var(--size-line-height-medium);
+}
+
+dss-input:has(input:required)::part(required) {
+  display: inline;
+}
+
+dss-input:has(dss-button) input:not(:disabled):hover,
+dss-input:has(dss-button:hover) input:not(:disabled) {
+  border-color: var(--color-action-secondary-75);
+}
+
+dss-input:has(dss-button) input {
+  padding-right: calc(var(--size-spacing-3) + var(--size-spacing-1));
+}
+
+dss-input[size="compact"] input {
+  font-size: var(--size-font-small);
+  line-height: var(--size-line-height-small);
+}
+
+dss-input input:not([readonly]):focus-visible {
+  outline: var(--color-action-focus) solid 0.1rem;
+  box-shadow: var(--shadow-glow-focus);
+}
+
+dss-input input:disabled {
+  border-color: var(--color-background-disabled-10);
+  color: var(--color-font-primary);
+  background: transparent;
+  cursor: not-allowed;
+}
+
+dss-input[errorstate="error"] input {
+  border-color: var(--color-action-error);
+}
+
+dss-input[errorstate="warning"] input {
+  border-color: var(--color-action-warning);
+}
+
+dss-input input[type="date"]::-webkit-inner-spin-button,
+dss-input input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+dss-input input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}

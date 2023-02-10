@@ -1,0 +1,96 @@
+{
+  "color": {
+    "base": {
+      "vanilla": {
+        "value": "#F6EECC"
+      },
+      "vanilla-75": {
+        "value": "#F8F2D9"
+      },
+      "vanilla-50": {
+        "value": "#FBF7E5"
+      },
+      "vanilla-25": {
+        "value": "#FDFBF2"
+      },
+      "grey": {
+        "value": "#7C7C7C"
+      },
+      "grey-75": {
+        "value": "#9C9C9C"
+      },
+      "grey-50": {
+        "value": "#BEBEBE"
+      },
+      "grey-25": {
+        "value": "#DDDDDD"
+      },
+      "grey-10": {
+        "value": "#F2F2F2"
+      },
+      "dark-blue": {
+        "value": "#546779"
+      },
+      "dark-blue-75": {
+        "value": "#808E9A"
+      },
+      "dark-blue-50": {
+        "value": "#AAB3BC"
+      },
+      "dark-blue-25": {
+        "value": "#D4D9DD"
+      },
+      "dark-blue-10": {
+        "value": "#EEF0F2"
+      },
+      "dark-orange": {
+        "value": "#94492B"
+      },
+      "dark-orange-75": {
+        "value": "#AF755F"
+      },
+      "dark-orange-10": {
+        "value": "#F4EDEA"
+      },
+      "dark-yellow-10": {
+        "value": "#EAEAE4"
+      },
+      "oak": {
+        "value": "#AD8863"
+      },
+      "oak-75": {
+        "value": "#C1A68A"
+      },
+      "oak-50": {
+        "value": "#D6C3B1"
+      },
+      "white": {
+        "value": "#FFF"
+      },
+      "brown-grey": {
+        "value": "#484649"
+      },
+      "green": {
+        "value": "#52A722"
+      },
+      "red": {
+        "value": "#CF1541"
+      },
+      "red-75": {
+        "value": "#DB5070"
+      },
+      "red-50": {
+        "value": "#E78AA0"
+      },
+      "yellow": {
+        "value": "#F9C510"
+      },
+      "yellow-75": {
+        "value": "#FAD44B"
+      },
+      "yellow-50": {
+        "value": "#FCE287"
+      }
+    }
+  }
+}

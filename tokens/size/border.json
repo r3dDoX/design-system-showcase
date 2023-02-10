@@ -1,0 +1,23 @@
+{
+  "size": {
+    "border-width": {
+      "small": {
+        "value": ".1rem"
+      },
+      "medium": {
+        "value": ".2rem"
+      }
+    },
+    "border-radius": {
+      "none": {
+        "value": "0"
+      },
+      "regular": {
+        "value": ".4rem"
+      },
+      "round": {
+        "value": "50%"
+      }
+    }
+  }
+}

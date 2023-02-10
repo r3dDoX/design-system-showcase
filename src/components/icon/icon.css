@@ -1,0 +1,29 @@
+:host {
+  display: flex; /* prevent small spacing after svg element */
+}
+
+:host([size="xsmall"]) {
+  height: var(--size-font-small);
+  width: var(--size-font-small);
+}
+
+:host([size="small"]) {
+  height: var(--size-font-medium);
+  width: var(--size-font-medium);
+}
+
+:host([size="medium"]), :host {
+  width: var(--size-font-large);
+  height: var(--size-font-large);
+}
+
+:host([size="large"]) {
+  height: var(--size-font-xlarge);
+  width: var(--size-font-xlarge);
+}
+
+svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

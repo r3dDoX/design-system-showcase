@@ -1,0 +1,257 @@
+import {Canvas, ColorItem, ColorPalette, Meta} from '@storybook/addon-docs';
+import tokens from './design-tokens.json';
+import './style.component';
+
+<Meta title="Design Tokens"/>
+
+# Basic Styles
+
+To get the basic styles, your code must be wrapped in a `dss-style` tag. This will load all design tokens and base styles
+and apply them to the document. Check the component out [here](/docs/komponenten-style--default).
+
+<dss-style></dss-style>
+
+# Base Colors
+
+These colors show the base colors of the theme. In components, don't use these colors directly but prefer using the
+abstract colors below. This allows for later color changes/theming/dark mode without having to rename a lot of
+properties.
+
+<ColorPalette>
+  {Object.entries(tokens.color.base).map(([name, token], index) => (
+    <ColorItem
+      key={index}
+      title={token.name}
+      subtitle={''}
+      colors={{[name]: token.value}}
+    />
+  ))}
+</ColorPalette>
+
+# Background Colors
+
+<ColorPalette>
+  {Object.entries(tokens.color.background).map(([name, token], index) => (
+    <ColorItem
+      key={index}
+      title={token.name}
+      subtitle={`var(--${token.name})`}
+      colors={{[token.original.value]: token.value}}
+    />
+  ))}
+</ColorPalette>
+
+# Action Colors
+
+<ColorPalette>
+  {Object.entries(tokens.color.action).map(([name, token], index) => (
+    <ColorItem
+      key={index}
+      title={token.name}
+      subtitle={`var(--${token.name})`}
+      colors={{[token.original.value]: token.value}}
+    />
+  ))}
+</ColorPalette>
+
+# Font Colors
+
+<ColorPalette>
+  {Object.entries(tokens.color.font).map(([name, token], index) => (
+    <ColorItem
+      key={index}
+      title={token.name}
+      subtitle={`var(--${token.name})`}
+      colors={{[token.original.value]: token.value}}
+    />
+  ))}
+</ColorPalette>
+
+# Typography
+
+<Container>
+  <strong>Font:</strong> {tokens.font.family.base.value}<br/>
+  <strong>Weights:</strong>&nbsp;
+  {Object.entries(tokens.font.weight)
+    .map(([name, token], index) => (
+      <React.Fragment key={index}>
+        {index > 0 && ', '}
+        <span style={{fontWeight: token.value}}>
+                    {token.value} ({name})
+                </span>
+      </React.Fragment>
+    ))
+  }
+</Container>
+
+<Canvas isColumn>
+  <small>Small</small>
+  <p>Text</p>
+  <h4>h4. Title</h4>
+  <h3>h3. Title</h3>
+  <h2>h2. Title</h2>
+  <h1>h1. Title</h1>
+</Canvas>
+
+# Font size
+
+<Container
+  style={{
+    display: "grid",
+    gridTemplateColumns: "7rem auto",
+    alignItems: "center",
+    gap: "var(--size-spacing-2)"
+  }}
+>
+  {Object.entries(tokens.size.font).map(([name, token], index) => (
+    <React.Fragment key={index}>
+      <p>
+        <strong>{name}</strong><br/>
+        {token.value}
+      </p>
+      <p style={{fontSize: token.value}}>
+        Lorem ipsum dolor sit amet
+      </p>
+    </React.Fragment>
+  ))}
+</Container>
+
+# Line height
+
+<Container
+  style={{
+    display: "grid",
+    gridTemplateColumns: "7rem auto",
+    alignItems: "center",
+    gap: "var(--size-spacing-2)"
+  }}
+>
+  {Object.entries(tokens.size["line-height"]).map(([name, token], index) => (
+    <React.Fragment key={index}>
+      <p>
+        <strong>{name}</strong><br/>
+        {token.value}
+      </p>
+      <p style={{lineHeight: token.value}}>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+        ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+        fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+        deserunt mollit anim id est laborum.
+      </p>
+    </React.Fragment>
+  ))}
+</Container>
+
+# Spacing
+
+<Container
+  style={{
+    display: "grid",
+    gridTemplateColumns: "min-content 5rem auto",
+    gap: "var(--size-spacing-2)",
+    alignItems: "center"
+  }}
+>
+  {Object.entries(tokens.size.spacing)
+    .sort(([, tokenA], [, tokenB]) => {
+      if (tokenA.value.includes('px')) {
+        return -1;
+      }
+      if (tokenB.value.includes('px')) {
+        return 1;
+      }
+      const numberA = parseFloat(tokenA.value);
+      const numberB = parseFloat(tokenB.value);
+      return numberA - numberB;
+    })
+    .map(([, token], index) => (
+      <React.Fragment key={index}>
+        <div
+          style={{
+            width: token.value,
+            height: token.value,
+            backgroundColor: "var(--color-background-tertiary)"
+          }}
+        />
+        <span>{token.value}</span>
+        <strong>{token.name}</strong>
+      </React.Fragment>
+    ))}
+</Container>
+
+# Box shadow
+
+<Container
+  style={{
+    display: "grid",
+    gridTemplateColumns: "min-content auto",
+    gap: "var(--size-spacing-4)",
+    alignItems: "center"
+  }}
+>
+  {Object.entries(tokens.shadow).map(([name, token], index) => (
+    <React.Fragment key={index}>
+      <div
+        style={{
+          boxShadow: token.value,
+          height: tokens.size["line-height"].huge.value,
+          width: tokens.size["line-height"].huge.value,
+          borderRadius: tokens.size["border-radius"].regular.value,
+        }}
+      />
+      <strong>{token.name}</strong>
+    </React.Fragment>
+  ))}
+</Container>
+
+# Border width
+
+<Container
+  style={{
+    display: "grid",
+    gridTemplateColumns: "min-content min-content auto",
+    gap: "var(--size-spacing-4)",
+    alignItems: "center"
+  }}
+>
+  {Object.entries(tokens.size["border-width"]).map(([, token], index) => (
+    <React.Fragment key={index}>
+      <div
+        style={{
+          border: `${token.value} solid var(--color-background-tertiary)`,
+          height: tokens.size["line-height"].huge.value,
+          width: tokens.size["line-height"].huge.value,
+        }}
+      />
+      <span>{token.value}</span>
+      <strong>{token.name}</strong>
+    </React.Fragment>
+  ))}
+</Container>
+
+# Border radius
+
+<Container
+  style={{
+    display: "grid",
+    gridTemplateColumns: "min-content min-content auto",
+    gap: "var(--size-spacing-4)",
+    alignItems: "center"
+  }}
+>
+  {Object.entries(tokens.size["border-radius"]).map(([, token], index) => (
+    <React.Fragment key={index}>
+      <div
+        style={{
+          border: `var(--size-border-width-medium) solid var(--color-background-tertiary)`,
+          height: tokens.size["line-height"].huge.value,
+          width: tokens.size["line-height"].huge.value,
+          borderRadius: token.value,
+        }}
+      />
+      <span>{token.value}</span>
+      <strong>{token.name}</strong>
+    </React.Fragment>
+  ))}
+</Container>

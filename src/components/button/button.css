@@ -1,0 +1,131 @@
+:host {
+  display: inline-block;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  gap: var(--size-spacing-0-5);
+  cursor: pointer;
+  border: var(--size-border-width-medium) solid;
+  border-radius: var(--size-border-radius-regular);
+  line-height: var(--size-line-height-medium);
+}
+
+button:disabled {
+  background: var(--color-action-disabled);
+  border-color: var(--color-action-disabled);
+  cursor: not-allowed;
+}
+
+button:disabled:focus-visible {
+  outline: none;
+}
+
+button:not(:disabled):focus-visible {
+  outline: var(--color-action-focus) solid .1rem;
+  box-shadow: var(--shadow-glow-focus);
+}
+
+.type-primary {
+  border-color: var(--color-action-primary);
+  background: var(--color-action-primary);
+  color: var(--color-font-secondary);
+}
+
+.type-primary:not(:disabled,:active):hover {
+  border-color: transparent;
+  background: var(--color-action-primary-75);
+}
+
+.type-secondary {
+  border-color: var(--color-action-secondary);
+  background: var(--color-action-secondary);
+  color: var(--color-font-secondary);
+}
+
+.type-secondary:not(:disabled,:active):hover {
+  border-color: transparent;
+  background: var(--color-action-secondary-75);
+}
+
+.type-ghost {
+  border-color: var(--color-action-secondary);
+}
+
+.type-icon-only {
+  border: none;
+}
+
+.type-icon-only,
+.type-ghost {
+  background: transparent;
+  color: var(--color-action-secondary);
+}
+
+.type-ghost:disabled {
+  border-color: var(--color-background-disabled-10);
+}
+
+.type-icon-only:disabled {
+  border-color: transparent;
+}
+
+:is(.type-ghost,.type-icon-only):disabled {
+  background: transparent;
+  color: var(--color-font-disabled);
+}
+
+/* This style is split into two, since host-context is not being implemented outside Chromium browsers.
+   In other browsers this would break the whole hover effect. We need host-context here since there is no other way to
+   have the button trigger the hover state when inside an input that is being hovered */
+:host-context(dss-input:hover) .type-icon-only:not(:disabled) {
+  background: var(--color-action-secondary-25);
+}
+
+.type-icon-only:not(:disabled,:active):hover,
+.type-ghost:not(:disabled,:active):hover {
+  background: var(--color-action-secondary-25);
+}
+
+.spacing-text {
+  padding: var(--size-spacing-0-5) var(--size-spacing-3);
+}
+
+.spacing-icon {
+  padding: calc(var(--size-spacing-0-5) - var(--size-border-width-medium));
+}
+
+.spacing-icon-only {
+  padding: var(--size-spacing-0-25);
+}
+
+.remove-border-left,
+.remove-radius-left {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.remove-border-right,
+.remove-radius-right {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.remove-border-all,
+.remove-radius-all {
+  border-radius: 0;
+}
+
+.remove-border-left {
+  border-left-width: 0;
+}
+
+.remove-border-right {
+  border-right-width: 0;
+}
+
+.remove-border-all {
+  border-width: 0;
+}

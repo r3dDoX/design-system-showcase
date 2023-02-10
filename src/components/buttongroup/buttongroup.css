@@ -1,0 +1,17 @@
+:host {
+  display: inline-block;
+}
+
+.button-wrapper {
+  display: flex;
+}
+
+label {
+  color: var(--color-action-secondary);
+  font-size: var(--size-font-small);
+  line-height: var(--size-line-height-small);
+  font-weight: var(--font-weight-light);
+  display: block;
+  padding-left: var(--size-spacing-1);
+  margin-bottom: var(--size-spacing-0-5);
+}

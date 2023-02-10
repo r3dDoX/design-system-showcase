@@ -1,0 +1,46 @@
+@import "modern-css-reset";
+@import "../../components/input/input.lightDOM.css";
+
+h1 {
+  font-size: var(--size-font-huge);
+  line-height: var(--size-line-height-huge);
+  font-weight: var(--font-weight-regular);
+}
+
+h2 {
+  font-size: var(--size-font-xlarge);
+  line-height: var(--size-line-height-xlarge);
+  font-weight: var(--font-weight-regular);
+}
+
+h3 {
+  font-size: var(--size-font-large);
+  line-height: var(--size-line-height-large);
+  font-weight: var(--font-weight-regular);
+}
+
+h4 {
+  font-size: var(--size-font-medium);
+  line-height: var(--size-line-height-medium);
+  font-weight: var(--font-weight-semi-bold);
+}
+
+small {
+  font-size: var(--size-font-small);
+  line-height: var(--size-line-height-small);
+  font-weight: var(--font-weight-light);
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-action-secondary);
+  font-weight: var(--font-weight-semi-bold);
+  font-size: var(--size-font-medium);
+  display: inline-flex;
+  gap: var(--size-spacing-1);
+}
+
+a:hover {
+  background-color: var(--color-action-secondary-25);
+  border-radius: var(--size-border-radius-regular);
+}

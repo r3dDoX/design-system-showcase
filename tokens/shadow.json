@@ -1,0 +1,21 @@
+{
+  "shadow": {
+    "close": {
+      "value": "0px 1px 8px 0px #0000001f"
+    },
+    "far": {
+      "value": "0px 3px 30px 3px #00000040"
+    },
+    "glow-focus": {
+      "value": "0px 1px 6px 0px {color.action.focus.value}"
+    }
+  },
+  "dropShadow": {
+    "close": {
+      "value": "0px 1px 4px #0000001c"
+    },
+    "far": {
+      "value": "0px 3px 20px #00000049"
+    }
+  }
+}

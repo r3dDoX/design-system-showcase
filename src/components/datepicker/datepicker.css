@@ -1,0 +1,7 @@
+.show :is(input,dss-button) {
+  z-index: 2;
+}
+
+.show input {
+  position: relative;
+}

@@ -1,0 +1,15 @@
+.message-wrapper {
+  display: flex;
+  margin-top: var(--size-spacing-0-5);
+  gap: var(--size-spacing-0-5);
+  font-size: var(--size-font-small);
+  line-height: var(--size-line-height-small);
+}
+
+:host([state="error"]) dss-icon {
+  color: var(--color-action-error);
+}
+
+:host([state="warning"]) dss-icon {
+  color: var(--color-action-warning);
+}

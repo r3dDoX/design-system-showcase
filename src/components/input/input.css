@@ -1,0 +1,16 @@
+:host {
+  display: inline-block;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: max-content;
+}
+
+::slotted(dss-button) {
+  position: absolute;
+  right: var(--size-spacing-0-5);
+}
+

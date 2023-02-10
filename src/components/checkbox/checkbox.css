@@ -1,0 +1,101 @@
+:host {
+  display: inline-block;
+}
+
+input {
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  height: var(--size-spacing-3);
+  width: var(--size-spacing-3);
+  border-radius: var(--size-border-radius-regular);
+  border: var(--size-border-width-medium) solid var(--color-action-secondary);
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--color-action-focus);
+  box-shadow: var(--shadow-glow-focus);
+}
+
+.filled input {
+  background-color: var(--color-action-secondary);
+}
+
+.filled dss-icon {
+  color: var(--color-background-primary);
+}
+
+input:disabled {
+  border-color: var(--color-background-disabled-50);
+}
+
+.filled input:disabled {
+  background-color: var(--color-background-disabled-50);
+}
+
+.input-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+dss-icon {
+  position: absolute;
+  pointer-events: none;
+}
+
+label {
+  display: flex;
+  align-items: center;
+  gap: var(--size-spacing-2);
+  position: relative;
+}
+
+label, input {
+  cursor: pointer;
+}
+
+label:has(input:disabled),
+input:disabled {
+  cursor: not-allowed;
+}
+
+/* default */
+label:not(:active):hover input:not(:active,:disabled) {
+  background-color: var(--color-action-secondary-25);
+}
+
+.filled:not(:active):hover input:not(:active,:disabled) {
+  background-color: var(--color-action-secondary-75);
+  border-color: var(--color-action-secondary-75);
+}
+
+/* error */
+.error input {
+  border-color: var(--color-action-error);
+}
+
+.error.filled input {
+  background-color: var(--color-action-error);
+}
+
+.error.filled:not(:active):hover input:not(:active,:disabled) {
+  border-color: transparent;
+  background-color: var(--color-action-error-75);
+}
+
+/* warning */
+.warning input {
+  border-color: var(--color-action-warning);
+}
+
+.warning.filled input {
+  background-color: var(--color-action-warning);
+}
+
+.warning.filled:not(:active):hover input:not(:active,:disabled) {
+  border-color: transparent;
+  background-color: var(--color-action-warning-75);
+}

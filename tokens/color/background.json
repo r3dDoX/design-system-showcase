@@ -1,0 +1,36 @@
+{
+  "color": {
+    "background": {
+      "primary": {
+        "value": "{color.base.white.value}"
+      },
+      "primary-10": {
+        "value": "{color.base.grey-10.value}"
+      },
+      "primary-25": {
+        "value": "{color.base.grey-25.value}"
+      },
+      "secondary": {
+        "value": "{color.base.dark-yellow-10.value}"
+      },
+      "tertiary": {
+        "value": "{color.base.grey-50.value}"
+      },
+      "quaternary": {
+        "value": "{color.base.dark-orange-10.value}"
+      },
+      "quinary": {
+        "value": "{color.base.vanilla-25.value}"
+      },
+      "shade": {
+        "value": "{color.base.dark-blue-10.value}"
+      },
+      "disabled-10": {
+        "value": "{color.base.grey-10.value}"
+      },
+      "disabled-50": {
+        "value": "{color.base.grey-50.value}"
+      }
+    }
+  }
+}

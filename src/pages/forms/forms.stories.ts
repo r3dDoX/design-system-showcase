@@ -1,0 +1,223 @@
+import { Story } from '@storybook/web-components';
+import { html } from 'lit-html';
+import docs from './forms.md?raw';
+import browserValidationDocs from './browserValidation.md?raw';
+import libraryValidationDocs from './libraryValidation.md?raw';
+import '../../components/input/input.component';
+import '../../components/buttongroup/buttongroup.component';
+import '../../components/toggleButton/toggleButton.component';
+import '../../components/checkbox/checkbox.component';
+import '../../components/datepicker/datepicker.component';
+import '../../components/dropdown/dropdown.component';
+import '../../components/menu/menu.component';
+import '../../components/menuItem/menuItem.component';
+import { useState } from '@storybook/addons';
+import * as yup from 'yup';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { when } from 'lit-html/directives/when.js';
+
+export default {
+  title: 'Pages/Forms',
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/file/vN8eRqwHQLrnGFkcxL7Z4W/UI-Design-System-2.1?node-id=1793%3A10899&t=1nGYeu3l214iXSEh-0',
+    },
+    docs: {
+      description: {
+        component: docs,
+      },
+    },
+  },
+};
+
+function formDataToJson(data: FormData): Record<string, FormDataEntryValue | FormDataEntryValue[] | null> {
+  return Object.fromEntries(Array.from(data.keys()).map((key) => [
+    key,
+    data.getAll(key).length > 1
+      ? data.getAll(key)
+      : data.get(key),
+  ]));
+}
+
+const BrowserFormValidationTemplate: Story = () => {
+  const [formData, setFormData] = useState<any>(undefined);
+
+  return html`
+    <form
+      name="simpleForm"
+      @submit=${(event: SubmitEvent) => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const form = document.querySelector('form')!;
+        if (form.reportValidity()) {
+          setFormData(formDataToJson(new FormData(form)));
+        }
+      }}
+    >
+      <div style="margin-bottom: var(--size-spacing-1)">
+        <dss-dropdown label="Currency" name="currency" required="true">
+          <dss-menu>
+            <dss-menu-item value="chf">
+              CHF
+            </dss-menu-item>
+            <dss-menu-item value="euro">
+              €
+            </dss-menu-item>
+          </dss-menu>
+        </dss-dropdown>
+        <br>
+        <dss-input label="First Name">
+          <input name="firstName" required>
+        </dss-input>
+        <dss-input label="Last Name">
+          <input name="lastName" required>
+        </dss-input>
+        <br>
+        <dss-input label="Age">
+          <input name="age" type="number" min="16">
+        </dss-input>
+        <br><br>
+        <dss-button-group name="length" label="Length" required="true">
+          <dss-toggle-button value="<15">&lt; 15min</dss-toggle-button>
+          <dss-toggle-button value="15">15min</dss-toggle-button>
+          <dss-toggle-button value="30">30min</dss-toggle-button>
+          <dss-toggle-button value="45">45min</dss-toggle-button>
+          <dss-toggle-button value=">45">&gt; 45min</dss-toggle-button>
+        </dss-button-group>
+        <br><br>
+        <dss-checkbox label="Check this box" .required="${true}" name="accepted"></dss-checkbox>
+      </div>
+
+      <dss-button
+        type="secondary"
+        .submit=${true}
+      >
+        Submit
+      </dss-button>
+    </form>
+    <div style="margin-top: var(--size-spacing-1)">
+      <pre>${JSON.stringify(formData, null, 2)}</pre>
+    </div>
+  `;
+};
+
+export const BrowserFormValidation = BrowserFormValidationTemplate.bind({});
+BrowserFormValidation.parameters = {
+  docs: {
+    description: {
+      component: browserValidationDocs,
+    },
+  },
+};
+
+const schema = yup.object().shape({
+  currency: yup.string()
+    .oneOf(['chf', 'eur'], 'Please select one of the given options.')
+    .required('Please select currency.'),
+  name: yup.string().required('Please add a name.'),
+  age: yup.number()
+    .typeError('Please enter the age as a number.')
+    .required('Please enter the age as a number.')
+    .min(16, 'Age must be at least 16.')
+    .max(118, 'Age must be below 118.'),
+  createdAt: yup.date()
+    .transform((value) => {
+      if (isNaN(value)) {
+        return undefined;
+      }
+      return value;
+    })
+    .default(() => new Date()),
+  addEmail: yup.string(),
+  email: yup.string().when('addEmail', {
+    is: 'on',
+    then: yup.string().required('Please enter an email address'),
+    otherwise: yup.string(),
+  }),
+});
+
+const LibraryFormValidationTemplate: Story = () => {
+  const [formData, setFormData] = useState<any>(undefined);
+  const [errors, setErrors] = useState<any>({});
+  const [addEmail, setAddEmail] = useState<boolean>(false);
+
+  return html`
+    <form
+      name="complex"
+      novalidate
+      @submit=${(event: SubmitEvent) => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const data = formDataToJson(new FormData(document.getElementsByName('complex')[0] as HTMLFormElement));
+        schema
+          .validate(data)
+          .then((validatedData) => {
+            setErrors({});
+            setFormData(validatedData);
+          })
+          .catch(({ path, errors }) => {
+            console.log('errored', errors);
+            setErrors({ [path]: errors });
+          });
+      }}
+    >
+      <div>
+        <dss-dropdown
+          label="Currency"
+          name="currency"
+          .errorState="${errors['currency'] && 'error'}"
+          .message="${ifDefined(errors['currency'])}"
+          required="true"
+        >
+          <dss-menu>
+            <dss-menu-item value="chf">
+              CHF
+            </dss-menu-item>
+            <dss-menu-item value="eur">
+              €
+            </dss-menu-item>
+          </dss-menu>
+        </dss-dropdown>
+        <br>
+        <dss-input label="Name" .errorState="${errors['name'] && 'error'}" .message="${ifDefined(errors['name'])}">
+          <input name="name" required>
+        </dss-input>
+        <br>
+        <dss-input label="Age" .errorState="${errors['age'] && 'error'}" .message="${ifDefined(errors['age'])}">
+          <input name="age" type="number" required>
+        </dss-input>
+        <br>
+        <dss-datepicker label="Created At" name="createdAt" value=""></dss-datepicker>
+        <br><br>
+        <dss-checkbox label="Email" name="addEmail" @change="${() => setAddEmail(!addEmail)}"></dss-checkbox>
+        <br>
+        ${when(addEmail, () => html`
+          <dss-input
+            label="Email"
+            name="email"
+            .errorState="${errors['email'] && 'error'}"
+            .message="${ifDefined(errors['email'])}"
+          >
+            <input type="email" required>
+          </dss-input>
+        `)}
+      </div>
+      <dss-button style="margin-top: var(--size-spacing-2)" type="secondary" submit="true">
+        Submit
+      </dss-button>
+    </form>
+    <div style="margin-top: var(--size-spacing-1)">
+      <pre>${JSON.stringify(formData, null, 2)}</pre>
+    </div>
+  `;
+};
+
+export const LibraryFormValidation = LibraryFormValidationTemplate.bind({});
+LibraryFormValidation.parameters = {
+  docs: {
+    description: {
+      component: libraryValidationDocs,
+    },
+  },
+};

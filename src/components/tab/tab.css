@@ -1,0 +1,58 @@
+.basic-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  max-width: var(--size-spacing-6);
+}
+
+.visible {
+  background: var(--color-background-primary);
+  width: var(--size-spacing-6);
+  padding: var(--size-spacing-1) var(--size-spacing-1-5);
+  margin-right: calc(var(--size-spacing-px) * -1);
+  border-width: var(--size-border-width-small);
+  border-style: solid;
+  border-image-source: linear-gradient(
+    to bottom,
+    transparent 0 var(--size-spacing-1),
+    var(--color-background-tertiary) var(--size-spacing-1) 100%
+  );
+  border-image-slice: 0 1 1 1;
+}
+
+.visible:focus {
+  position: relative;
+  z-index: 2;
+}
+
+.folded {
+  min-width: var(--size-spacing-5);
+}
+
+:host(:first-of-type) .basic-tab:not(.active, .folded, :hover) {
+  border-left: none;
+  padding-left: calc(var(--size-spacing-1-5) + var(--size-spacing-px));
+}
+
+:host(:last-child) .basic-tab:not(.active, .folded, :hover) {
+  border-right: none;
+  padding-right: calc(var(--size-spacing-1-5) + var(--size-spacing-px));
+}
+
+.basic-tab:hover:not(.active,.folded) {
+  background: var(--color-background-secondary);
+  border-radius: var(--size-border-radius-regular) var(--size-border-radius-regular) 0 0;
+  border: var(--size-spacing-px) solid var(--color-background-tertiary);
+  z-index: 1;
+}
+
+.active {
+  background: var(--color-background-secondary);
+  border-radius: var(--size-border-radius-regular) var(--size-border-radius-regular) 0 0;
+  border: var(--size-spacing-px) solid var(--color-background-tertiary);
+  z-index: 1;
+
+  border-bottom-color: var(--color-background-secondary);
+}
