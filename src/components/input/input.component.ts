@@ -1,10 +1,14 @@
-import { html, PropertyValues, unsafeCSS } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
+import { html, unsafeCSS } from 'lit';
+import { customElement, eventOptions, property, queryAssignedElements, state } from 'lit/decorators.js';
 import styles from './input.css?inline';
 import BaseElement from '../../internals/baseElement/baseElement';
-import '../../internals/errorMessage/errorMessage';
+import '../../internals/hint/hint';
 import '../label/label.component';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { when } from 'lit-html/directives/when.js';
+import { classMap } from 'lit-html/directives/class-map.js';
+
+const textEncoder = new TextEncoder();
 
 export const DEFAULT_DEBOUNCE = 500;
 
@@ -26,6 +30,14 @@ export interface InputEventsPayloadMap {
   'dss-input-debounced': string;
 }
 
+export interface InputTranslations {
+  characters?: string;
+}
+
+const DEFAULT_INPUT_TRANSLATIONS: InputTranslations = {
+  characters: 'characters',
+};
+
 /**
  * @slot slot - Pass the actual input element that should be wrapped
  * @slot input-button - Pass a button to be displayed on the right side of the button
@@ -34,33 +46,66 @@ export interface InputEventsPayloadMap {
  * @property debounce - Specify number of ms for the debounce timer to run
  * @property errorState - Specify error state
  * @property {string} message - Pass message to be displayed with error state
+ * @property hideMessage - Hide the empty line that is left for hints/errors/warnings
+ * @property countToMax - Specifiy maximum number of characters that will be counted and displayed to the user
+ * @property translations - Overwrite input specific translations
+ * @property block - Let input grow full width
  * @event {DssInputDebouncedEvent} dss-input-debounced - Fires when a change happened and the debounce timer ran out
  * @csspart required - Exported part of dss-label
  */
 @customElement('dss-input')
 export default class Input extends BaseElement<InputEventsPayloadMap> {
+  // noinspection JSUnusedGlobalSymbols
+  static formAssociated = true;
   static override styles = [
     BaseElement.globalStyles,
     unsafeCSS(styles),
   ];
 
-  @property({ type: String, reflect: true })
+  @property({ reflect: true })
   public size: InputSize = 'comfortable';
 
-  @property({ type: String })
+  @property()
   public label = '';
 
   @property({ attribute: false })
   public debounce = DEFAULT_DEBOUNCE;
 
-  @property({ type: String, reflect: true })
+  @property({ reflect: true })
   public errorState?: InputErrorState;
 
-  @property({ type: String })
+  @property()
   public message?: string;
 
-  @query('slot')
-  defaultSlot!: HTMLSlotElement;
+  @property({ type: Boolean })
+  public hideMessage = false;
+
+  @property({ type: Number })
+  public countToMax?: number;
+
+  @property({ type: Boolean, reflect: true })
+  public block = false;
+
+  @property({ attribute: false })
+  set translations(overwrittenTranslations: InputTranslations) {
+    this._translations = {
+      ...DEFAULT_INPUT_TRANSLATIONS,
+      ...overwrittenTranslations,
+    };
+  }
+
+  get translations() {
+    return this._translations;
+  }
+
+  private _translations: InputTranslations = DEFAULT_INPUT_TRANSLATIONS;
+
+  @state()
+  private count = 0;
+
+  @queryAssignedElements({ selector: ':is(input,textarea)' })
+  private slottedInput!: Array<HTMLInputElement | HTMLTextAreaElement>;
+
 
   private timeout?: NodeJS.Timeout;
 
@@ -78,19 +123,23 @@ export default class Input extends BaseElement<InputEventsPayloadMap> {
         ></slot>
         <slot name="input-button"></slot>
       </div>
-      <dss-error-message .state="${this.errorState}" .message="${this.message}"></dss-error-message>
+      ${when(this.countToMax !== undefined, () => html`
+        <span class="count" data-testid="count">
+          <span class="${classMap({ 'count--invalid': this.count > this.countToMax! })}">${this.count}</span>/${this.countToMax}
+          ${this.translations.characters}
+        </span>
+      `)}
+      ${when(!this.hideMessage, () => html`
+        <dss-hint .state="${this.errorState}" .message="${this.message}"></dss-hint>
+      `)}
     `;
   }
 
-  protected firstUpdated(_changedProperties: PropertyValues): void {
-    super.firstUpdated(_changedProperties);
-
-    const assignedElements = this.defaultSlot.assignedElements();
-    if (!assignedElements.some(element => element.tagName === 'INPUT')) {
-      this.innerHTML = '<p>Input element required</p>';
-    }
+  public formResetCallback(): void {
+    this.updateCount();
   }
 
+  @eventOptions({ passive: true })
   private onInput(event: InputEvent): void {
     clearTimeout(this.timeout);
     const inputElement = event.composedPath()[0] as HTMLInputElement;
@@ -98,18 +147,28 @@ export default class Input extends BaseElement<InputEventsPayloadMap> {
       () => this.dispatchCustomEvent('dss-input-debounced', inputElement.value),
       this.debounce,
     );
+    this.updateCount();
   }
 
-  // implemented our own click handler because label is in shadow DOM and input element in light DOM, so the 'for' attribute does not work
+  private updateCount(): void {
+    if (this.countToMax !== undefined) {
+      const firstInput = this.slottedInput[0];
+      if (firstInput) {
+        // Get length in utf-8 bytes
+        this.count = textEncoder.encode(firstInput.value).length;
+      }
+    }
+  }
+
+// implemented our own click handler because label is in shadow DOM and input element in light DOM, so the 'for' attribute does not work
   // see also: https://github.com/whatwg/html/issues/3219
   private handleLabelClick(): void {
-    const inputElement = this.defaultSlot.assignedElements()[0] as HTMLInputElement;
-    inputElement?.focus();
+    this.slottedInput[0]?.focus();
   }
 
   private handleSlotChange(): void {
     if (this.label) {
-      this.defaultSlot.assignedElements()[0]?.setAttribute('aria-label', this.label);
+      this.slottedInput[0]?.setAttribute('aria-label', this.label);
     }
   }
 }

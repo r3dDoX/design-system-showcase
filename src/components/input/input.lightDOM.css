@@ -4,11 +4,11 @@
  * higher specificity than ::slotted.
  */
 
-dss-input input::placeholder {
+dss-input :is(input, textarea)::placeholder {
   color: var(--color-font-placeholder);
 }
 
-dss-input input {
+dss-input :is(input, textarea) {
   margin: 0;
   outline: none;
   border: var(--size-border-width-small) solid var(--color-action-secondary-50);
@@ -18,12 +18,12 @@ dss-input input {
   line-height: var(--size-line-height-medium);
 }
 
-dss-input:has(input:required)::part(required) {
+dss-input:has(:is(input,textarea):required)::part(required) {
   display: inline;
 }
 
-dss-input:has(dss-button) input:not(:disabled):hover,
-dss-input:has(dss-button:hover) input:not(:disabled) {
+dss-input:has(dss-button) :is(input,textarea):not(:disabled):hover,
+dss-input:has(dss-button:hover) :is(input,textarea):not(:disabled) {
   border-color: var(--color-action-secondary-75);
 }
 
@@ -36,23 +36,23 @@ dss-input[size="compact"] input {
   line-height: var(--size-line-height-small);
 }
 
-dss-input input:not([readonly]):focus-visible {
+dss-input :is(input,textarea):focus-visible {
   outline: var(--color-action-focus) solid 0.1rem;
   box-shadow: var(--shadow-glow-focus);
 }
 
-dss-input input:disabled {
+dss-input :is(input,textarea):disabled {
   border-color: var(--color-background-disabled-10);
   color: var(--color-font-primary);
   background: transparent;
   cursor: not-allowed;
 }
 
-dss-input[errorstate="error"] input {
+dss-input[errorstate="error"] :is(input,textarea) {
   border-color: var(--color-action-error);
 }
 
-dss-input[errorstate="warning"] input {
+dss-input[errorstate="warning"] :is(input,textarea) {
   border-color: var(--color-action-warning);
 }
 

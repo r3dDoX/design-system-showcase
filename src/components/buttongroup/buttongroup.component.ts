@@ -1,10 +1,10 @@
 import { html, unsafeCSS } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
+import { customElement, eventOptions, property, query } from 'lit/decorators.js';
 import styles from './buttongroup.css?inline';
 import '../icon/icon.component';
 import '../button/button.component';
 import '../label/label.component';
-import '../../internals/errorMessage/errorMessage';
+import '../../internals/hint/hint';
 import BaseElement from '../../internals/baseElement/baseElement';
 import ToggleButton from '../toggleButton/toggleButton.component';
 import { InputErrorState } from '../input/input.component';
@@ -16,12 +16,14 @@ export interface ButtonGroupTranslations {
 }
 
 /**
- * @property selectedIndex - Specify by index which button should be selected. This attribute gets updated from the component when the selection changes
+ * @property name - Specify name property for form handling
+ * @property value - Value of the pressed button
  * @property label - Pass label to be shown
  * @property required - Specify if this element is required
  * @property errorState - Specify the error state of the element
  * @property {string} message - Pass message to be shown with the error state
  * @property translations - Pass translations to use
+ * @event {Event} change - Fires when form state changed
  * @slot {ToggleButton[]} slot - Pass one or more dss-toggle-button
  */
 @customElement('dss-button-group')
@@ -34,22 +36,25 @@ export default class ButtonGroup extends BaseElement {
     unsafeCSS(styles),
   ];
 
-  @property({ type: Number, reflect: true })
-  public selectedIndex?: number;
+  @property()
+  public name?: string;
 
-  @property({ type: String })
+  @property()
+  public value?: string;
+
+  @property()
   public label = '';
 
   @property({ type: Boolean })
   public required = false;
 
-  @property({ type: String })
+  @property()
   public errorState?: InputErrorState;
 
-  @property({ type: String })
+  @property()
   public message?: string;
 
-  @property()
+  @property({ type: Object })
   public translations: ButtonGroupTranslations = {
     valueMissing: 'You have to select an option',
   };
@@ -59,6 +64,8 @@ export default class ButtonGroup extends BaseElement {
 
   private buttonWrapper: Ref<HTMLDivElement> = createRef();
   private internals: ElementInternals;
+  private isFocussed = false;
+  private debounceBlur?: NodeJS.Timeout;
 
   constructor() {
     super();
@@ -72,10 +79,11 @@ export default class ButtonGroup extends BaseElement {
         <slot
           @slotchange=${this.handleSlotChange}
           @click="${this.handleClick}"
-        >
-        </slot>
+          @focusin="${this.handleSlotFocusIn}"
+          @focusout="${this.handleSlotFocusOut}"
+        ></slot>
       </div>
-      <dss-error-message .state="${this.errorState}" .message="${this.message}"></dss-error-message>
+      <dss-hint .state="${this.errorState}" .message="${this.message}"></dss-hint>
     `;
   }
 
@@ -83,12 +91,12 @@ export default class ButtonGroup extends BaseElement {
     const buttons = this.getButtons();
 
     if (buttons.length > 1) {
-      buttons.forEach((button, index) => {
+      buttons.forEach((button) => {
         button.overlapBorder = 'left';
         button.removeRadius = 'all';
 
-        if (index === this.selectedIndex) {
-          this.selectButton(button);
+        if (this.value && button.value === this.value) {
+          this.pressButton(button);
         }
       });
 
@@ -99,34 +107,38 @@ export default class ButtonGroup extends BaseElement {
       buttons[0].removeRadius = 'none';
       buttons[0].overlapBorder = 'none';
     }
-
     this.updateValidity();
   }
 
-  private handleClick(event: Event) {
-    const buttons = this.getButtons();
-
-    const previouslySelectedButton = buttons[this.selectedIndex!];
-    if (previouslySelectedButton) {
-      previouslySelectedButton.selected = false;
+  requestUpdate(name?: PropertyKey, oldValue?: unknown) {
+    if (this.defaultSlot && name === 'value') {
+      const buttons = this.getButtons();
+      const buttonsHaveValues = buttons.findIndex(button => button.value) >= 0;
+      if (buttonsHaveValues) {
+        buttons.forEach(button => button.pressed = this.value === button.value);
+        this.internals.setFormValue(this.value ?? null);
+        this.updateValidity();
+      }
     }
-
-    this.selectedIndex = buttons.findIndex(button => button.contains(event.target as Node));
-    if (this.selectedIndex > -1) {
-      const selectedButton = buttons[this.selectedIndex];
-      this.selectButton(selectedButton);
-    }
+    return super.requestUpdate(name, oldValue);
   }
 
-  private selectButton(selectedButton: ToggleButton): void {
-    selectedButton.selected = true;
-    this.internals.setFormValue(selectedButton.value ?? null);
-    this.updateValidity();
+  private handleClick({ target }: Event) {
+    this.pressButton(this.getButtons().find(button => button.contains(target as Node)));
+  }
+
+  private pressButton(pressedButton?: ToggleButton): void {
+    if (!pressedButton) {
+      return;
+    }
+
+    this.value = pressedButton.value;
+    this.dispatchChangeEvent();
   }
 
   private updateValidity(): void {
     this.internals.setValidity(
-      { valueMissing: this.required && this.selectedIndex === undefined },
+      { valueMissing: this.required && this.value === undefined },
       this.translations.valueMissing,
       this.buttonWrapper.value,
     );
@@ -135,6 +147,25 @@ export default class ButtonGroup extends BaseElement {
   private getButtons(): ToggleButton[] {
     return this.defaultSlot.assignedElements()
       .filter((element): element is ToggleButton => element instanceof ToggleButton);
+  }
+
+  @eventOptions({ passive: true })
+  private handleSlotFocusIn(): void {
+    clearTimeout(this.debounceBlur);
+    if (!this.isFocussed) {
+      this.dispatchEvent(new Event('focus', { composed: false, bubbles: false }));
+      this.isFocussed = true;
+    }
+  }
+
+  @eventOptions({ passive: true })
+  private handleSlotFocusOut(): void {
+    if (this.isFocussed) {
+      this.debounceBlur = setTimeout(() => {
+        this.dispatchEvent(new Event('blur', { composed: false, bubbles: false }));
+        this.isFocussed = false;
+      }, 0);
+    }
   }
 }
 

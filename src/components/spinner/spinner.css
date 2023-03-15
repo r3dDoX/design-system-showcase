@@ -1,0 +1,44 @@
+div {
+  padding-left: var(--size-spacing-0-5);
+  padding-right: var(--size-spacing-0-5);
+
+  display: inline-block;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(-45deg);
+  }
+  to {
+    transform: rotate(315deg);
+  }
+}
+
+svg {
+  vertical-align: text-bottom;
+  animation: spin 2s cubic-bezier(0.17, 0.73, 0.39, 1.25) infinite;
+}
+
+circle.primary {
+  stroke: var(--color-action-primary-50);
+}
+
+path.primary {
+  stroke: var(--color-action-primary);
+}
+
+circle.secondary {
+  stroke: var(--color-action-secondary-25);
+}
+
+path.secondary {
+  stroke: var(--color-action-secondary);
+}
+
+circle.ghost {
+  stroke: var(--color-background-primary);
+}
+
+path.ghost {
+  stroke: var(--color-font-disabled);
+}

@@ -1,5 +1,5 @@
 :host {
-  display: inline-block;
+  display: block;
 
   --disabled-dropdown-button-padding: calc(var(--size-spacing-0-5) - var(--size-border-width-small));
 }
@@ -14,7 +14,7 @@ dss-floating::part(container) {
   position: relative;
 }
 
-:host([open]) .trigger-area {
+.trigger-area[aria-expanded="true"] {
   z-index: 2;
 }
 

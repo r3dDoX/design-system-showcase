@@ -15,10 +15,6 @@ export default {
     size: { control: 'select', options: ICON_SIZE },
   },
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/file/vN8eRqwHQLrnGFkcxL7Z4W/dss-Connect-Design?node-id=382%3A8337&t=WCwTxaC6Q6vSMO9k-0',
-    },
     docs: {
       description: {
         component: docs,

@@ -11,6 +11,5 @@ describe('MenuItem', () => {
 
     expect(element).toHaveAttribute('role', 'menuitem');
     expect(element).toHaveAttribute('tabindex', '0');
-    expect(element).not.toHaveAttribute('selected');
   });
 });

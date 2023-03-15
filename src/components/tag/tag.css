@@ -4,4 +4,11 @@
   background-color: var(--color-background-quaternary);
   border-radius: calc((var(--size-line-height-medium) + (2 * var(--vertical-padding))) / 2);
   padding: var(--vertical-padding) var(--size-spacing-2);
+
+  display: block;
+  min-width: 0;
+  max-width: fit-content;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

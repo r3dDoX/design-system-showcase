@@ -17,10 +17,6 @@ export default {
     removeBorder: { control: 'select', options: buttonSides },
   },
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/file/vN8eRqwHQLrnGFkcxL7Z4W/dss-Connect-Design?node-id=531%3A2883',
-    },
     docs: {
       description: {
         component: docs,
@@ -59,7 +55,7 @@ Primary.args = {
 export const Secondary = Template.bind({});
 Secondary.args = {
   type: 'secondary',
-  slot: '<dss-icon icon="pen-tool" size="small"></dss-icon> Secondary Button',
+  slot: '<dss-icon icon="edit" size="small"></dss-icon> Secondary Button',
 };
 
 export const Ghost = Template.bind({});
@@ -82,6 +78,13 @@ DisabledPrimary.args = {
   slot: 'Disabled Button',
 };
 
+export const DisabledPrimaryWithIcon = Template.bind({});
+DisabledPrimaryWithIcon.args = {
+  disabled: true,
+  type: 'primary',
+  slot: `<dss-icon icon="settings" size="large"></dss-icon> Disabled`,
+};
+
 export const DisabledSecondary = Template.bind({});
 DisabledSecondary.args = {
   disabled: true,
@@ -94,13 +97,6 @@ DisabledGhost.args = {
   disabled: true,
   type: 'ghost',
   slot: 'Disabled Ghost',
-};
-
-export const DisabledIcon = Template.bind({});
-DisabledIcon.args = {
-  disabled: true,
-  type: 'secondary',
-  slot: `<dss-icon icon="settings" size="large"></dss-icon> Disabled`,
 };
 
 export const IconOnlyButton = Template.bind({});

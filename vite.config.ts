@@ -32,7 +32,7 @@ export default defineConfig({
     rollupOptions: {
       external: [
         /^lit/,
-        /^@popper/,
+        /^@floating-ui/,
         /^@tanstack/,
       ],
     },
@@ -60,14 +60,16 @@ export default defineConfig({
       files: [...getComponentFiles()],
       lit: true,
     }),
-    dts(),
+    dts({
+      outputDir: 'dist/src',
+    }),
   ],
   test: {
     environment: 'jsdom',
     setupFiles: './test.setup.ts',
     outputFile: './test-results/TEST-vitest.xml',
     coverage: {
-      reporter: 'cobertura',
+      provider: 'c8',
     },
   },
 });

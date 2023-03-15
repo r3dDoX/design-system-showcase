@@ -12,26 +12,26 @@ describe('ToggleButton', () => {
     const element = await fixture(
       html`
         <dss-toggle-button>
-          <dss-icon icon="navigate_plus"></dss-icon>
+          <dss-icon icon="plus"></dss-icon>
         </dss-toggle-button>`,
     ) as HTMLElementTagNameMap['dss-toggle-button'];
 
-    const dscButton = element.shadowRoot!.querySelector('dss-button')! as HTMLElementTagNameMap['dss-button'];
-    const button = within(dscButton).getByShadowRole('button');
+    const dssButton = element.shadowRoot!.querySelector('dss-button')! as HTMLElementTagNameMap['dss-button'];
+    const button = within(dssButton).getByShadowRole('button');
 
-    expect(element.selected).toBe(false);
-    expect(dscButton.type).toBe('ghost');
-
-    await user.click(button);
-    await elementUpdated(element);
-
-    expect(element.selected).toBe(true);
-    expect(dscButton.type).toBe('secondary');
+    expect(element.pressed).toBe(false);
+    expect(dssButton.type).toBe('ghost');
 
     await user.click(button);
     await elementUpdated(element);
 
-    expect(element.selected).toBe(false);
-    expect(dscButton.type).toBe('ghost');
+    expect(element.pressed).toBe(true);
+    expect(dssButton.type).toBe('secondary');
+
+    await user.click(button);
+    await elementUpdated(element);
+
+    expect(element.pressed).toBe(false);
+    expect(dssButton.type).toBe('ghost');
   });
 });

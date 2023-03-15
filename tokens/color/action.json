@@ -37,6 +37,9 @@
       "error-50": {
         "value": "{color.base.red-50.value}"
       },
+      "error-10": {
+        "value": "{color.base.red-10.value}"
+      },
       "warning": {
         "value": "{color.base.yellow.value}"
       },
@@ -46,8 +49,11 @@
       "warning-50": {
         "value": "{color.base.yellow-50.value}"
       },
+      "warning-10": {
+        "value": "{color.base.yellow-10.value}"
+      },
       "disabled": {
-        "value": "{color.base.grey-50.value}"
+        "value": "{color.base.grey-10.value}"
       },
       "focus": {
         "value": "{color.base.dark-blue.value}"

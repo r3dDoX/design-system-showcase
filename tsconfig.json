@@ -30,8 +30,7 @@
     ]
   },
   "include": [
-    "src/**/*.ts",
-    "./vite.d.ts"
+    "src/**/*.ts"
   ],
   "references": [
     {

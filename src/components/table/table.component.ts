@@ -124,7 +124,7 @@ export default class Table extends BaseElement<TableEventsPayloadMap> {
                 <th class="expand-header">
                   <dss-button type="icon-only" @click=${this.table?.getToggleAllRowsExpandedHandler()}>
                     <dss-icon
-                      icon="${this.table?.getIsAllRowsExpanded() ? 'navigate_minus' : 'navigate_plus'}"
+                      icon="${this.table?.getIsAllRowsExpanded() ? 'minus' : 'plus'}"
                       size="xsmall"
                     ></dss-icon>
                   </dss-button>
@@ -146,7 +146,7 @@ export default class Table extends BaseElement<TableEventsPayloadMap> {
                         <span>${this.renderHeaderCell(header)}</span>
                         ${when(header.column.getIsSorted(), () => html`
                           <dss-icon
-                            icon="navigate_up"
+                            icon="chevron-up"
                             class="sort-icon icon-${header.column.getIsSorted()}"
                             size="xsmall"
                           ></dss-icon>
@@ -182,7 +182,7 @@ export default class Table extends BaseElement<TableEventsPayloadMap> {
                       @click=${row.getToggleExpandedHandler()}
                     >
                       <dss-icon
-                        icon="${row.getIsExpanded() ? 'navigate_minus' : 'navigate_plus'}"
+                        icon="${row.getIsExpanded() ? 'minus' : 'plus'}"
                         size="xsmall"
                       ></dss-icon>
                     </dss-button>

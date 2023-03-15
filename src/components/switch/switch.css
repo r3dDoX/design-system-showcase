@@ -1,0 +1,80 @@
+:host {
+  --toggle-button-size: calc(var(--size-spacing-3) - var(--size-spacing-0-25));
+  --border-radius: 10rem;
+  --transition-duration: .15s;
+  --animation-width: var(--size-spacing-1);
+  --transition-timing-function: ease-in;
+
+  display: inline-flex;
+}
+
+input {
+  appearance: none;
+  border: var(--size-spacing-px) solid transparent;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  height: var(--size-spacing-3);
+  width: calc(var(--size-spacing-5) + var(--size-spacing-0-5));
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color var(--transition-duration) var(--transition-timing-function);
+}
+
+input:not(:disabled):focus-visible {
+  outline: none;
+  border: var(--size-spacing-px) solid var(--color-action-focus);
+  box-shadow: var(--shadow-glow-focus);
+}
+
+input:disabled {
+  cursor: not-allowed;
+}
+
+input:checked {
+  background-color: var(--color-background-on);
+}
+
+input:checked:disabled {
+  background-color: var(--color-background-on-disabled);
+}
+
+input:checked::before {
+  left: calc(100% - var(--toggle-button-size));
+}
+
+input:not(:checked) {
+  background-color: var(--color-background-off);
+}
+
+input:not(:checked):disabled {
+  background-color: var(--color-background-disabled-10);
+}
+
+input:not(:checked)::before {
+  left: 0;
+}
+
+input::before {
+  position: absolute;
+  content: '';
+  top: 0;
+  bottom: 0;
+  background-color: var(--color-background-primary);
+  border-radius: var(--border-radius);
+  height: var(--toggle-button-size);
+  width: var(--toggle-button-size);
+  box-shadow: var(--shadow-close);
+  transition-property: left, width;
+  transition-duration: var(--transition-duration);
+  transition-timing-function: var(--transition-timing-function);
+}
+
+input:checked:active::before {
+  left: calc(100% - var(--toggle-button-size) - var(--animation-width));
+  width: calc(var(--toggle-button-size) + var(--animation-width));
+}
+
+input:not(:checked):active::before {
+  width: calc(var(--toggle-button-size) + var(--animation-width));
+}

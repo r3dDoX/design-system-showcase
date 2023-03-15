@@ -3,7 +3,6 @@ import { customElement, query } from 'lit/decorators.js';
 import styles from './menu.css?inline';
 import MenuItem from '../menuItem/menuItem.component';
 import BaseElement, { ActionKeystrokes } from '../../internals/baseElement/baseElement';
-import { PropertyValues } from 'lit/development';
 
 
 export interface MenuEventsPayloadMap {
@@ -16,7 +15,7 @@ export interface MenuEventsPayloadMap {
 export type DssMenuSelectionEvent = CustomEvent<MenuEventsPayloadMap['dss-menu-selection']>;
 
 /**
- * @event {DssMenuSelectionEvent} dss-menu-selection - Fires when user selects a menu item or when the menu contains a selected menu item
+ * @event {DssMenuSelectionEvent} dss-menu-selection - Fires when user selects a menu item
  * @slot slot - List of MenuItem each containing an option the user can select from
  */
 @customElement('dss-menu')
@@ -47,16 +46,6 @@ export default class Menu extends BaseElement<MenuEventsPayloadMap> {
   override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.removeEventListener('keydown', this.handleKeyDown);
-  }
-
-  protected firstUpdated(_changedProperties: PropertyValues): void {
-    super.firstUpdated(_changedProperties);
-
-    const items = this.getAllItems();
-    const selectedItem = items.find(item => item.getAttribute('selected') !== null);
-    if (selectedItem) {
-      this.setActiveAndDispatchSelectionEvent(selectedItem);
-    }
   }
 
   private handleSlotChange() {
@@ -120,17 +109,13 @@ export default class Menu extends BaseElement<MenuEventsPayloadMap> {
     const target = event.target as Element;
     const menuItem = target.closest('dss-menu-item') ?? event.composedPath()[0];
     if (menuItem instanceof MenuItem) {
-      this.setActiveAndDispatchSelectionEvent(menuItem);
+      this.setActiveItem(menuItem);
+      this.dispatchCustomEvent('dss-menu-selection', {
+        value: menuItem.value,
+        text: menuItem.textContent?.trim() ?? '',
+      });
     }
   };
-
-  private setActiveAndDispatchSelectionEvent(menuItem: MenuItem): void {
-    this.setActiveItem(menuItem);
-    this.dispatchCustomEvent('dss-menu-selection', {
-      value: menuItem.value,
-      text: menuItem.textContent?.trim() ?? '',
-    });
-  }
 }
 
 declare global {

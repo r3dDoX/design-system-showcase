@@ -1,16 +1,20 @@
 import BaseElement, { ActionKeystrokes } from '../../internals/baseElement/baseElement';
 import styles from './tabGroup.css?inline';
 import { customElement, property, state } from 'lit/decorators.js';
-import { html, PropertyValues, unsafeCSS } from 'lit';
 import { TabDataInterface } from '../tab/tab.component';
+import { html, PropertyValues, unsafeCSS } from 'lit';
 import { when } from 'lit-html/directives/when.js';
-import './../dropdown/dropdown.component';
-import './../menu/menu.component';
-import './../menuItem/menuItem.component';
+import '../tab/tab.component';
+import '../dropdown/dropdown.component';
+import '../menu/menu.component';
+import '../menuItem/menuItem.component';
+
+export type DssTabGroupTabCloseEvent = CustomEvent<TabDataInterface>;
+export type DssTabGroupTabSelectEvent = CustomEvent<TabDataInterface>;
 
 export interface TabGroupEventsPayloadMap {
-  'dss-group-tab-close': number;
-  'dss-tab-set-active': number;
+  'dss-tab-group-tab-close': TabDataInterface;
+  'dss-tab-group-tab-select': TabDataInterface;
 }
 
 export interface TabGroupTranslations {
@@ -27,27 +31,13 @@ export const TABS_PROPERTY_NAME: keyof TabGroup = 'tabs';
 const MIN_TAB_WIDTH = 185;
 const SHOW_MORE_TAB_WIDTH = 100;
 
-export type DssGroupTabCloseEvent = CustomEvent<string>;
-export type DssTabSetActiveEvent = CustomEvent<number>;
-export type SetTabActiveHandler = (title: string) => unknown;
-
-export const onRelevantKeyDownEvent = (event: KeyboardEvent, callback: () => any) => {
-  if (ActionKeystrokes.includes(event.key)) {
-    event.stopImmediatePropagation();
-    event.preventDefault();
-    return callback();
-  }
-};
-
 /**
- * @event {DssGroupTabCloseEvent} dss-tab-close - Fires when the user presses the close button
+ * @event {DssTabGroupTabCloseEvent} dss-tab-group-tab-close - Fires when a tab has been closed
+ * @event {DssTabGroupTabSelectEvent} dss-tab-group-tab-select - Fires when a tab has been activated
  * @property tabs - Specify the tabs contained in this group
  * @property activeTabTitle - Specify the title of the active tab, if any
- * @property onTabActivated - Specify which action to run on tab click
- * @property onTabClose - Specify which action to run on press close button
  * @property translations - Pass translated texts
  */
-
 @customElement('dss-tab-group')
 export default class TabGroup extends BaseElement<TabGroupEventsPayloadMap> {
   static override styles = [
@@ -60,12 +50,6 @@ export default class TabGroup extends BaseElement<TabGroupEventsPayloadMap> {
 
   @property({ attribute: false })
   public activeTabTitle?: string;
-
-  @property({ attribute: false })
-  public onTabActivated!: SetTabActiveHandler;
-
-  @property({ attribute: false })
-  public onTabClose!: (event: DssGroupTabCloseEvent) => unknown;
 
   @state()
   private numberOfTabsToShow = this.tabs.length;
@@ -91,14 +75,14 @@ export default class TabGroup extends BaseElement<TabGroupEventsPayloadMap> {
 
   override render() {
     return html`
-      <div class="tab-group" role="tabpanel">
+      <div class="tab-group" role="tablist">
         ${this.getVisibleTabs().map((tab) => html`
           <dss-tab
             .title=${tab.title}
             .isActive=${tab.title === this.activeTabTitle}
-            @dss-tab-close=${this.onTabClose}
-            @click=${() => this.onTabActivated(tab.title)}
-            @keydown=${(event: KeyboardEvent) => this.onKeydown(event, tab.title, this.onTabActivated)}
+            @dss-tab-close=${() => this.dispatchCustomEvent('dss-tab-group-tab-close', tab)}
+            @click=${() => this.dispatchCustomEvent('dss-tab-group-tab-select', tab)}
+            @keydown=${(event: KeyboardEvent) => this.onKeydown(event, tab)}
           ></dss-tab>
         `)}
         ${when(this.getInvisibleTabs().length > 0, () => html`
@@ -107,7 +91,7 @@ export default class TabGroup extends BaseElement<TabGroupEventsPayloadMap> {
               <dss-dropdown placement="bottom" arrow>
                 <dss-button type="icon-only" slot="trigger">
                   ${this.translations.more}
-                  <dss-icon icon="navigate_down" size="medium"></dss-icon>
+                  <dss-icon icon="chevron-down" size="medium"></dss-icon>
                 </dss-button>
 
                 <dss-menu @dss-menu-selection=${(event: CustomEvent) => this.onFoldedTabClick(event.detail.value)}>
@@ -118,7 +102,7 @@ export default class TabGroup extends BaseElement<TabGroupEventsPayloadMap> {
                         .title=${tab.title}
                         .isActive=${tab.title === this.activeTabTitle}
                         .isVisible=${false}
-                        @dss-tab-close=${this.onTabClose}
+                        @dss-tab-close=${() => this.dispatchCustomEvent('dss-tab-group-tab-close', tab)}
                       ></dss-tab>
                     </dss-menu-item>
                   `)}
@@ -188,13 +172,13 @@ export default class TabGroup extends BaseElement<TabGroupEventsPayloadMap> {
     return this.localTabs.slice(this.numberOfTabsToShow);
   }
 
-  private onKeydown(event: KeyboardEvent, title: string, action: (title: string) => void) {
-    onRelevantKeyDownEvent(event, () => action(title));
+  private onKeydown(event: KeyboardEvent, tab: TabDataInterface) {
+    onRelevantKeyDownEvent(event, () => this.dispatchCustomEvent('dss-tab-group-tab-select', tab));
   }
 
   private onFoldedTabClick(title: string) {
     this.moveFoldedTabToVisible(title);
-    this.onTabActivated(title);
+    this.dispatchCustomEvent('dss-tab-group-tab-select', this.tabs.find(tab => tab.title === title));
   }
 
   private moveFoldedTabToVisible(title: string) {
@@ -207,13 +191,21 @@ export default class TabGroup extends BaseElement<TabGroupEventsPayloadMap> {
   }
 }
 
+export function onRelevantKeyDownEvent(event: KeyboardEvent, callback: () => any) {
+  if (ActionKeystrokes.includes(event.key)) {
+    event.stopImmediatePropagation();
+    event.preventDefault();
+    return callback();
+  }
+}
+
 declare global {
   interface HTMLElementTagNameMap {
     'dss-tab-group': TabGroup;
   }
 
   interface WindowEventMap {
-    'dss-group-tab-close': DssGroupTabCloseEvent;
-    'dss-tab-set-active': DssTabSetActiveEvent;
+    'dss-tab-group-tab-close': DssTabGroupTabCloseEvent;
+    'dss-tab-group-tab-select': DssTabGroupTabSelectEvent;
   }
 }

@@ -15,6 +15,12 @@
       },
       "placeholder": {
         "value": "{color.base.oak.value}"
+      },
+      "missing": {
+        "value": "{color.base.dark-red.value}"
+      },
+      "hint": {
+        "value": "{color.base.brown-grey-75.value}"
       }
     }
   }

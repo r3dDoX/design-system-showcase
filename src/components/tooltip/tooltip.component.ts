@@ -3,7 +3,8 @@ import { customElement, property, query, state } from 'lit/decorators.js';
 import styles from './tooltip.css?inline';
 import BaseElement from '../../internals/baseElement/baseElement';
 import '../../internals/floatingElement/floatingElement';
-import { Placement } from '../../internals/floatingElement/floatingElement';
+import { Placement } from '@floating-ui/dom';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 
 const showEvents: Array<keyof WindowEventMap> = ['mouseenter', 'focus'];
 const hideEvents: Array<keyof WindowEventMap> = ['mouseleave', 'blur'];
@@ -12,7 +13,8 @@ const hideEvents: Array<keyof WindowEventMap> = ['mouseleave', 'blur'];
 /**
  * @slot slot - HTML structure that will be taken as reference for showing the tooltip
  * @property content - HTML structure that will be shown in the tooltip
- * @property placement - Specify where the tooltip will be shown if there is enough space
+ * @property placement - Specify where the tooltip will be shown if there is enough space. No placement defaults to auto placement.
+ * @property updateOnAnimate - Update positioning on animation frames. Use only when necessary due to performance concerns.
  * @csspart tooltip - Styles the tooltip container
  */
 @customElement('dss-tooltip')
@@ -23,7 +25,10 @@ export default class Tooltip extends BaseElement {
   ];
 
   @property()
-  public placement: Placement = 'auto';
+  public placement?: Placement;
+
+  @property({ type: Boolean })
+  public updateOnAnimate?: boolean;
 
   @query('slot[name="trigger"]')
   public triggerSlot!: HTMLSlotElement;
@@ -38,7 +43,12 @@ export default class Tooltip extends BaseElement {
 
   protected render() {
     return html`
-      <dss-floating arrow ?active="${this.active}" placement="${this.placement}">
+      <dss-floating
+        arrow
+        ?active="${this.active}"
+        placement="${ifDefined(this.placement)}"
+        .updateOnAnimate="${ifDefined(this.updateOnAnimate)}"
+      >
         <slot name="trigger" slot="anchor" @slotchange=${this.handleSlotChange}></slot>
         <div role="tooltip">
           <slot></slot>

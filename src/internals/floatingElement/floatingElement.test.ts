@@ -40,43 +40,19 @@ describe('FloatingElement', () => {
     expect(element.querySelector('h1')).toHaveTextContent('Tooltip Title');
   });
 
-  test('should pass given placement property to library', async () => {
-    const element = await fixtureWithDivAnchor();
-
-    element.active = true;
-    await elementUpdated(element);
-
-    const content = element.shadowRoot!.querySelector('.floating')!;
-    expect(content).toHaveAttribute('data-popper-placement', 'right');
-  });
-
-  test('should update given placement property', async () => {
-    const element = await fixtureWithDivAnchor();
-
-    expect(element.placement).not.toBe('bottom');
-    element.placement = 'bottom';
-    await elementUpdated(element);
-
-    element.active = true;
-    await elementUpdated(element);
-
-    const content = element.shadowRoot!.querySelector('.floating')!;
-    expect(content).toHaveAttribute('data-popper-placement', 'bottom');
-  });
-
   test('when using arrow attribute, attribute is reactive', async () => {
     const element = await fixtureWithDivAnchor();
 
     element.arrow = false;
     await elementUpdated(element);
-    expect(element.shadowRoot!.querySelector('[data-popper-arrow]')).toBeNull();
+    expect(element.shadowRoot!.querySelector('.arrow')).toBeNull();
 
     element.arrow = true;
     await elementUpdated(element);
-    expect(element.shadowRoot!.querySelector('[data-popper-arrow]')).not.toBeNull();
+    expect(element.shadowRoot!.querySelector('.arrow')).not.toBeNull();
 
     element.arrow = false;
     await elementUpdated(element);
-    expect(element.shadowRoot!.querySelector('[data-popper-arrow]')).toBeNull();
+    expect(element.shadowRoot!.querySelector('.arrow')).toBeNull();
   });
 });

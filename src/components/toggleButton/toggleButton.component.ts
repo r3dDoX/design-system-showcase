@@ -4,7 +4,7 @@ import BaseElement from '../../internals/baseElement/baseElement';
 import '../button/button.component';
 import { ButtonSide, ButtonSpacing, ButtonType } from '../button/button.component';
 import { html } from 'lit-html';
-import { unsafeCSS } from 'lit';
+import { LitElement, PropertyValues, unsafeCSS } from 'lit';
 
 export const toggleButtonTypes = [
   'default',
@@ -18,7 +18,7 @@ export type ToggleButtonType = typeof toggleButtonTypes[number];
  * @property type - Set the type of the button
  * @property removeRadius - Specify if there should be no rounded borders
  * @property overlapBorder - Specify if the borders of this button should overlap and on which side
- * @property selected - Specify if the button is selected in which case the `selectedType` is used
+ * @property pressed - Specify if the button is pressed in which case the `selectedType` is used
  * @property disabled - Specify if the button is disabled
  * @property tooltip - Specify the label to be shown in a tooltip around the button. Mandatory for `icon-only` buttons
  * @property value - Specify value that is being picked up by the dss-button-group component
@@ -31,6 +31,8 @@ export default class ToggleButton extends BaseElement {
     BaseElement.globalStyles,
     unsafeCSS(styles),
   ];
+  // delegatesFocus ensures clicks on slotted element passed to dss-button will trigger the right focus events on this component
+  static shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
 
   @property()
   public spacing: ButtonSpacing = 'text';
@@ -44,8 +46,8 @@ export default class ToggleButton extends BaseElement {
   @property()
   public type: ToggleButtonType = 'default';
 
-  @property({ type: Boolean, reflect: true })
-  public selected = false;
+  @property({ type: Boolean })
+  public pressed = false;
 
   @property({ type: Boolean, reflect: true })
   public disabled = false;
@@ -56,9 +58,26 @@ export default class ToggleButton extends BaseElement {
   @property()
   public tooltip = '';
 
+  protected updated(_changedProperties: PropertyValues): void {
+    super.updated(_changedProperties);
+
+    if (_changedProperties.has('pressed')) {
+      this.setHTMLButtonAriaPressed(this, this.pressed);
+    }
+  }
+
+  setHTMLButtonAriaPressed(rootElement: HTMLElement, value: boolean) {
+    const slottedHTMLButton = rootElement.shadowRoot?.querySelector('dss-button')?.nativeButton;
+
+    if (slottedHTMLButton) {
+      slottedHTMLButton.setAttribute('aria-pressed', `${value}`);
+    }
+  }
+
   protected render(): unknown {
     return html`
       <dss-button
+        role="menuitemradio"
         spacing="${this.spacing}"
         type="${this.buttonType}"
         removeRadius="${this.removeRadius}"
@@ -73,7 +92,7 @@ export default class ToggleButton extends BaseElement {
   }
 
   private toggle() {
-    this.selected = !this.selected;
+    this.pressed = !this.pressed;
   }
 
   private get buttonType(): ButtonType {
@@ -81,7 +100,7 @@ export default class ToggleButton extends BaseElement {
       return this.type;
     }
 
-    return this.selected ? 'secondary' : 'ghost';
+    return this.pressed ? 'secondary' : 'ghost';
   }
 }
 

@@ -1,17 +1,18 @@
-import {Canvas, ColorItem, ColorPalette, Meta} from '@storybook/addon-docs';
+import React from 'react';
+import {Canvas, ColorItem, ColorPalette, Meta} from '@storybook/blocks';
 import tokens from './design-tokens.json';
 import './style.component';
 
 <Meta title="Design Tokens"/>
 
-# Basic Styles
+## Basic Styles
 
 To get the basic styles, your code must be wrapped in a `dss-style` tag. This will load all design tokens and base styles
-and apply them to the document. Check the component out [here](/docs/komponenten-style--default).
+and apply them to the document. Check the component out [here](/docs/components-style--default).
 
 <dss-style></dss-style>
 
-# Base Colors
+## Base Colors
 
 These colors show the base colors of the theme. In components, don't use these colors directly but prefer using the
 abstract colors below. This allows for later color changes/theming/dark mode without having to rename a lot of
@@ -28,7 +29,7 @@ properties.
   ))}
 </ColorPalette>
 
-# Background Colors
+## Background Colors
 
 <ColorPalette>
   {Object.entries(tokens.color.background).map(([name, token], index) => (
@@ -41,7 +42,7 @@ properties.
   ))}
 </ColorPalette>
 
-# Action Colors
+## Action Colors
 
 <ColorPalette>
   {Object.entries(tokens.color.action).map(([name, token], index) => (
@@ -54,7 +55,7 @@ properties.
   ))}
 </ColorPalette>
 
-# Font Colors
+## Font Colors
 
 <ColorPalette>
   {Object.entries(tokens.color.font).map(([name, token], index) => (
@@ -67,35 +68,37 @@ properties.
   ))}
 </ColorPalette>
 
-# Typography
+## Typography
 
-<Container>
+<p>
   <strong>Font:</strong> {tokens.font.family.base.value}<br/>
-  <strong>Weights:</strong>&nbsp;
+  <strong>Weights:</strong>
   {Object.entries(tokens.font.weight)
     .map(([name, token], index) => (
       <React.Fragment key={index}>
-        {index > 0 && ', '}
+        {index > 0 ? ', ' : ' '}
         <span style={{fontWeight: token.value}}>
-                    {token.value} ({name})
-                </span>
+          {token.value} ({name})
+        </span>
       </React.Fragment>
     ))
   }
-</Container>
+</p>
 
-<Canvas isColumn>
-  <small>Small</small>
-  <p>Text</p>
-  <h4>h4. Title</h4>
-  <h3>h3. Title</h3>
-  <h2>h2. Title</h2>
-  <h1>h1. Title</h1>
+<Canvas>
+  <div>
+    <small>Small</small>
+    <p>Text</p>
+    <h4>h4. Title</h4>
+    <h3>h3. Title</h3>
+    <h2>h2. Title</h2>
+    <h1>h1. Title</h1>
+  </div>
 </Canvas>
 
-# Font size
+## Font size
 
-<Container
+<div
   style={{
     display: "grid",
     gridTemplateColumns: "7rem auto",
@@ -114,11 +117,11 @@ properties.
       </p>
     </React.Fragment>
   ))}
-</Container>
+</div>
 
-# Line height
+## Line height
 
-<Container
+<div
   style={{
     display: "grid",
     gridTemplateColumns: "7rem auto",
@@ -141,11 +144,11 @@ properties.
       </p>
     </React.Fragment>
   ))}
-</Container>
+</div>
 
-# Spacing
+## Spacing
 
-<Container
+<div
   style={{
     display: "grid",
     gridTemplateColumns: "min-content 5rem auto",
@@ -178,11 +181,11 @@ properties.
         <strong>{token.name}</strong>
       </React.Fragment>
     ))}
-</Container>
+</div>
 
-# Box shadow
+## Box shadow
 
-<Container
+<div
   style={{
     display: "grid",
     gridTemplateColumns: "min-content auto",
@@ -203,11 +206,11 @@ properties.
       <strong>{token.name}</strong>
     </React.Fragment>
   ))}
-</Container>
+</div>
 
-# Border width
+## Border width
 
-<Container
+<div
   style={{
     display: "grid",
     gridTemplateColumns: "min-content min-content auto",
@@ -228,11 +231,11 @@ properties.
       <strong>{token.name}</strong>
     </React.Fragment>
   ))}
-</Container>
+</div>
 
-# Border radius
+## Border radius
 
-<Container
+<div
   style={{
     display: "grid",
     gridTemplateColumns: "min-content min-content auto",
@@ -254,4 +257,4 @@ properties.
       <strong>{token.name}</strong>
     </React.Fragment>
   ))}
-</Container>
+</div>

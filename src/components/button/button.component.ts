@@ -1,5 +1,5 @@
 import { html, unsafeCSS } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, query } from 'lit/decorators.js';
 import styles from './button.css?inline';
 import BaseElement from '../../internals/baseElement/baseElement';
 import { TemplateResult } from 'lit-html';
@@ -37,6 +37,7 @@ export type ButtonSide = typeof buttonSides[number];
  * @property disabled - Specify if the button is disabled
  * @property tooltip - Show given text as tooltip
  * @property submit - When true, clicks on the button will submit the form it is attached to
+ * @property {string} form - Set id of form this button should be attached to when outside of form tag
  */
 @customElement('dss-button')
 export default class Button extends BaseElement {
@@ -67,6 +68,12 @@ export default class Button extends BaseElement {
 
   @property()
   submit = false;
+
+  @property({ reflect: true })
+  form?: string;
+
+  @query('button')
+  public nativeButton?: HTMLButtonElement;
 
   private internals: ElementInternals;
 

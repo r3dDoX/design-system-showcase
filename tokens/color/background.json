@@ -30,6 +30,15 @@
       },
       "disabled-50": {
         "value": "{color.base.grey-50.value}"
+      },
+      "on": {
+        "value": "{color.base.dark-green.value}"
+      },
+      "on-disabled": {
+        "value": "{color.base.green-50.value}"
+      },
+      "off": {
+        "value": "{color.base.dark-yellow-10.value}"
       }
     }
   }

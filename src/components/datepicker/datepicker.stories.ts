@@ -10,10 +10,11 @@ export default {
   component: 'dss-datepicker',
   argTypes: {
     value: { control: 'text' },
+    locale: { control: 'select', options: ['de-CH', 'en-US', 'fr-CH', 'it-CH'] },
   },
   parameters: {
     actions: {
-      handles: ['dss-datepicker-selection-change'],
+      handles: ['change'],
     },
     docs: {
       description: {
@@ -23,10 +24,11 @@ export default {
   },
 } as Meta;
 
-const DatePickerTemplate: Story<Datepicker> = ({ required, label, value, errorState, message }) => html`
+const DatePickerTemplate: Story<Datepicker> = ({ required, label, value, errorState, message, locale }) => html`
   <dss-datepicker
     value="${value}"
     label="${ifDefined(label)}"
+    locale="${ifDefined(locale)}"
     required="${ifDefined(required)}"
     errorState="${ifDefined(errorState)}"
     message="${ifDefined(message)}"
@@ -38,7 +40,7 @@ export const Default = DatePickerTemplate.bind({});
 
 export const WithDefaultValue = DatePickerTemplate.bind({});
 WithDefaultValue.args = {
-  value: '2022.07.06',
+  value: '2022-07-06',
 };
 
 export const WithLabel = DatePickerTemplate.bind({});

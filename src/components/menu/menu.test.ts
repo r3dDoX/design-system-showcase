@@ -146,24 +146,4 @@ describe('Menu', () => {
       expect(items[2]).toHaveFocus();
     });
   });
-
-  test('when menu has a selected menu item, emits menu selection event', async () => {
-    const value = 'selected value';
-    const text = 'Selected';
-    const listenerSpy = vi.fn();
-    const menu = await fixture(html`
-      <dss-menu @dss-menu-selection=${(event: Event) => listenerSpy(event)}>
-        <dss-menu-item>Not selected</dss-menu-item>
-        <dss-menu-item selected="true" value="${value}">${text}</dss-menu-item>
-      </dss-menu>
-    `);
-
-    await elementUpdated(menu);
-    expect(listenerSpy).toHaveBeenCalledWith(expect.objectContaining({
-      detail: {
-        value,
-        text,
-      },
-    }));
-  });
 });

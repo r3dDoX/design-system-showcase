@@ -7,9 +7,12 @@ import { when } from 'lit-html/directives/when.js';
 import { createRef, Ref, ref } from 'lit/directives/ref.js';
 import { InputErrorState, InputSize } from '../input/input.component';
 import '../icon/icon.component';
-import '../../internals/errorMessage/errorMessage';
+import '../../internals/hint/hint';
 
 /**
+ * @property name - Specify name property for form handling
+ * @property value - Represents the form value state
+ * @property type - Statically set to "checkbox" for form libraries to understand its purpose
  * @property size - Specify size of checkbox
  * @property label - Pass label that should be displayed next to the checkbox
  * @property errorState - Define the error state of the component
@@ -19,6 +22,7 @@ import '../../internals/errorMessage/errorMessage';
  * @property disabled - Map the disabled state of the underlying checkbox
  * @property required - Map the required state of the underlying checkbox
  * @property {string} name - Specify the name of the form control as it will show up in FormData
+ * @event {Event} change - Fires when form state changed
  */
 @customElement('dss-checkbox')
 export default class Checkbox extends BaseElement {
@@ -29,6 +33,15 @@ export default class Checkbox extends BaseElement {
     BaseElement.globalStyles,
     unsafeCSS(styles),
   ];
+
+  @property()
+  public name?: string;
+
+  @property()
+  public value?: string;
+
+  @property()
+  public readonly type = 'checkbox';
 
   @property({ type: String })
   public size: InputSize = 'comfortable';
@@ -95,21 +108,23 @@ export default class Checkbox extends BaseElement {
           ${this.label}
         </span>
       </label>
-      <dss-error-message .state="${this.errorState}" .message="${this.message}"></dss-error-message>
+      <dss-hint .state="${this.errorState}" .message="${this.message}"></dss-hint>
     `;
   }
 
   private handleCheckboxChange(event: Event) {
-    this.checked = (event.target as HTMLInputElement).checked;
+    const checkboxElement = event.target as HTMLInputElement;
+    this.checked = checkboxElement.checked;
+    this.value = checkboxElement.value;
     this.indeterminate = false;
-    /** @ignore **/
-    this.dispatchEvent(new Event(event.type, event));
+    this.dispatchChangeEvent(event);
   }
 
   protected updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
     if (changedProperties.has('checked')) {
       this.internals.setFormValue(this.checked ? 'on' : null);
+      this.value = this.checked ? 'on' : undefined;
       this.internals.setValidity(this.inputRef.value!.validity, this.inputRef.value!.validationMessage, this.inputRef!.value);
     }
   }

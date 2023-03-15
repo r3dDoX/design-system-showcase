@@ -4,7 +4,7 @@ import styles from './radio.css?inline';
 import BaseElement from '../../internals/baseElement/baseElement';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { InputErrorState, InputSize } from '../input/input.component';
-import '../../internals/errorMessage/errorMessage';
+import '../../internals/hint/hint';
 
 export const radioStates = [
   'unchecked',
@@ -74,7 +74,7 @@ export default class Radio extends BaseElement<RadioEventsPayloadMap> {
         <div class=${`basic-radio ${this.size}`}></div>
         ${this.label}
       </label>
-      <dss-error-message .state="${this.errorState}" .message="${this.message}"></dss-error-message>
+      <dss-hint .state="${this.errorState}" .message="${this.message}"></dss-hint>
     `;
   }
 

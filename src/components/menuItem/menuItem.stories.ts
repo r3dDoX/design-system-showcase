@@ -11,10 +11,6 @@ export default {
   component: 'dss-menu-item',
   argTypes: {},
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/file/vN8eRqwHQLrnGFkcxL7Z4W/UI-Design-System-2.1?node-id=3427%3A15650&t=X21M4RjqHu66Vy0F-0',
-    },
     docs: {
       description: {
         component: docs,

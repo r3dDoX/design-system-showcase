@@ -1,11 +1,18 @@
 :host {
-  display: inline-block;
+  display: block;
+}
+
+:host([block]) ::slotted(:is(input,textarea)) {
+  width: 100%;
 }
 
 .input-wrapper {
   display: flex;
   align-items: center;
   position: relative;
+}
+
+:host(:not([block])) .input-wrapper {
   width: max-content;
 }
 
@@ -14,3 +21,14 @@
   right: var(--size-spacing-0-5);
 }
 
+.count {
+  display: block;
+  margin-top: var(--size-spacing-0-5);
+  font-size: var(--size-font-small);
+  line-height: var(--size-line-height-small);
+  font-weight: var(--font-weight-light);
+}
+
+.count--invalid {
+  color: var(--color-action-error);
+}

@@ -16,7 +16,7 @@ describe('Icon', () => {
 
   test('should display given icon', async () => {
     const element: HTMLElementTagNameMap['dss-icon'] = await fixture(html`
-      <dss-icon icon="ambulance"></dss-icon>
+      <dss-icon icon="calendar"></dss-icon>
     `);
 
     await elementUpdated(element);
@@ -30,11 +30,11 @@ describe('Icon', () => {
       <dss-icon></dss-icon>
     `);
 
-    element.icon = 'star';
+    element.icon = 'info';
     element.size = 'large';
     await elementUpdated(element);
 
-    expect(element.getAttribute('icon')).toBe('star');
+    expect(element.getAttribute('icon')).toBe('info');
     expect(element.getAttribute('size')).toBe('large');
   });
 });

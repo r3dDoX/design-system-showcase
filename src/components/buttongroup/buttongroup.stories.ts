@@ -11,9 +11,8 @@ export default {
   title: 'Components/Button Group',
   component: 'dss-button-group',
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/file/vN8eRqwHQLrnGFkcxL7Z4W/dss-Connect-Design?node-id=531%3A2883',
+    actions: {
+      handles: ['change'],
     },
     docs: {
       description: {
@@ -23,9 +22,9 @@ export default {
   },
 } as Meta;
 
-const Template: Story<ButtonGroup> = ({ slot, selectedIndex, label, required, errorState, message }) => html`
+const Template: Story<ButtonGroup> = ({ slot, value, label, required, errorState, message }) => html`
   <dss-button-group
-    selectedIndex="${ifDefined(selectedIndex)}"
+    value="${ifDefined(value)}"
     label="${ifDefined(label)}"
     required="${ifDefined(required)}"
     errorState="${ifDefined(errorState)}"
@@ -39,7 +38,7 @@ export const WithLabel = Template.bind({});
 WithLabel.args = {
   label: 'Select this',
   slot: `
-    <dss-toggle-button>One</dss-toggle-button>
+    <dss-toggle-button value="1">One</dss-toggle-button>
   `,
 };
 
@@ -48,7 +47,7 @@ Required.args = {
   label: 'Select this',
   required: true,
   slot: `
-    <dss-toggle-button>One</dss-toggle-button>
+    <dss-toggle-button value="1">One</dss-toggle-button>
   `,
 };
 
@@ -58,7 +57,7 @@ Warning.args = {
   errorState: 'warning',
   message: 'This button group is problematic',
   slot: `
-    <dss-toggle-button>One</dss-toggle-button>
+    <dss-toggle-button value="1">One</dss-toggle-button>
   `,
 };
 
@@ -68,45 +67,45 @@ Error.args = {
   errorState: 'error',
   message: 'This button group is wrong',
   slot: `
-    <dss-toggle-button>One</dss-toggle-button>
+    <dss-toggle-button value="1">One</dss-toggle-button>
   `,
 };
 
 export const TwoButtons = Template.bind({});
 TwoButtons.args = {
   slot: `
-    <dss-toggle-button>One</dss-toggle-button>
-    <dss-toggle-button>Two</dss-toggle-button>
+    <dss-toggle-button value="1">One</dss-toggle-button>
+    <dss-toggle-button value="2">Two</dss-toggle-button>
   `,
 };
 
 export const ThreeButtons = Template.bind({});
 ThreeButtons.args = {
   slot: `
-    <dss-toggle-button>One</dss-toggle-button>
-    <dss-toggle-button>Two</dss-toggle-button>
-    <dss-toggle-button>Three</dss-toggle-button>
+    <dss-toggle-button value="1">One</dss-toggle-button>
+    <dss-toggle-button value="2">Two</dss-toggle-button>
+    <dss-toggle-button value="3">Three</dss-toggle-button>
   `,
 };
 
-export const SelectedOption = Template.bind({});
-SelectedOption.args = {
+export const InitialSelection = Template.bind({});
+InitialSelection.args = {
   slot: `
-    <dss-toggle-button>One</dss-toggle-button>
-    <dss-toggle-button>Two</dss-toggle-button>
-    <dss-toggle-button>Three</dss-toggle-button>
+    <dss-toggle-button value="1">One</dss-toggle-button>
+    <dss-toggle-button value="2">Two</dss-toggle-button>
+    <dss-toggle-button value="3">Three</dss-toggle-button>
   `,
-  selectedIndex: 2,
+  value: '2',
 };
 
 export const WithIcons = Template.bind({});
 WithIcons.args = {
   slot: `
-    <dss-toggle-button>
-      <dss-icon icon="plus"></dss-icon>
+    <dss-toggle-button value="1">
+      <dss-icon icon="plus" ></dss-icon>
       One
     </dss-toggle-button>
-    <dss-toggle-button>
+    <dss-toggle-button value="2">
       <dss-icon icon="minus"></dss-icon>
       Two
     </dss-toggle-button>

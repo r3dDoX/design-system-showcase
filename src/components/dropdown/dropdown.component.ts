@@ -1,36 +1,27 @@
 import { html, PropertyValues, unsafeCSS } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
+import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js';
 import styles from './dropdown.css?inline';
 import '../icon/icon.component';
 import '../button/button.component';
 import '../input/input.component';
 import '../tooltip/tooltip.component';
 import '../label/label.component';
-import '../../internals/errorMessage/errorMessage';
+import '../../internals/hint/hint';
 import Menu, { DssMenuSelectionEvent } from '../menu/menu.component';
 import BaseElement, { ActionKeystrokes } from '../../internals/baseElement/baseElement';
-import { when } from 'lit-html/directives/when.js';
-import { Placement } from '../../internals/floatingElement/floatingElement';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { InputErrorState } from '../input/input.component';
 import { createRef, ref, Ref } from 'lit/directives/ref.js';
-import { Icons } from '../icon/icons';
+import { Placement } from '@floating-ui/dom';
+import MenuItem from '../menuItem/menuItem.component';
 
 export interface DropdownTranslations {
   valueMissing?: string;
 }
 
-export const dropdownSizes = [
-  'comfortable',
-  'compact',
-] as const;
-export type DropdownSize = typeof dropdownSizes[number];
-
 /**
- * @property placement - Specify where the dropdown will be shown if there is enough space, relative to the trigger
- * @property size - Specify size of dropdown
- * @property keepOpenOnSelect - By default, the dropdown is closed when an item is selected. This attribute will keep it open instead.
- * @property arrow - Draws an arrow between the trigger and the options panel
+ * @property name - Specify name property for form handling
+ * @property placement - Specify where the dropdown will be shown if there is enough space, relative to the trigger. Default: 'bottom-start'. Unsetting placement defaults to auto placement.
  * @property editable - Allows typing into the dropdown input element
  * @property value - Selected value
  * @property icon - Specify icon to use for the dropdown. Defaults to the `down`/`up` caret icons
@@ -38,8 +29,11 @@ export type DropdownSize = typeof dropdownSizes[number];
  * @property required - Specify if form element is required
  * @property errorState - Specify the errorState of the underlying input
  * @property {string} message - Pass message to be shown with the underlying input
+ * @property toFormValue - Transforms the selected value when the dropdown is used in a form. Default: JSON.stringify
+ * @property updateOnAnimate - Update positioning on animation frames. Use only when necessary due to performance concerns.
+ * @event {Event} change - Fires when form state changed
+ * @event {FocusEvent} blur - Fires when component is blurred
  * @slot slot - DssMenu containing a list of DssMenuItem each containing an option the user can select from
- * @slot trigger - The dropdown's trigger. If not given falls back on a default trigger
  */
 @customElement('dss-dropdown')
 export default class Dropdown extends BaseElement {
@@ -52,16 +46,10 @@ export default class Dropdown extends BaseElement {
   ];
 
   @property()
-  public placement: Placement = 'bottom-start';
+  public name?: string;
 
-  @property({ type: String })
-  public size: DropdownSize = 'comfortable';
-
-  @property({ reflect: true, type: Boolean })
-  public keepOpenOnSelect = false;
-
-  @property({ reflect: true, type: Boolean })
-  public arrow = false;
+  @property()
+  public placement?: Placement = 'bottom-start';
 
   @property({ reflect: true, type: Boolean })
   public editable = false;
@@ -70,7 +58,7 @@ export default class Dropdown extends BaseElement {
   public value?: any;
 
   @property()
-  public icon?: Icons;
+  public icon?: string;
 
   @property({ reflect: true, type: Boolean })
   public disabled = false;
@@ -98,11 +86,17 @@ export default class Dropdown extends BaseElement {
     valueMissing: 'You have to select an option',
   };
 
+  @property({ type: Boolean })
+  public updateOnAnimate?: boolean;
+
   @query('input')
   private inputElement?: HTMLInputElement;
 
-  @query('slot:not([name])')
+  @query('slot')
   private menuSlot!: HTMLSlotElement;
+
+  @queryAssignedElements({ selector: 'dss-menu' })
+  private menuElement!: Menu[];
 
   private triggerRef: Ref<HTMLSpanElement> = createRef();
   private internals: ElementInternals;
@@ -119,49 +113,52 @@ export default class Dropdown extends BaseElement {
         <dss-floating
           placement="${this.placement}"
           ?active="${this.open}"
-          ?arrow="${this.arrow}"
+          .updateOnAnimate="${ifDefined(this.updateOnAnimate)}"
           @focusout="${this.handleFocusOut}"
         >
           <span
             slot="anchor"
             class="trigger-area"
             role="listbox"
-            aria-expanded="${this.open}"
             aria-label="${ifDefined(this.label)}"
+            ?aria-expanded=${this.open}
             @keydown="${this.handleKeyPress}"
             @click="${this.toggle}"
             tabindex="-1"
             ${ref(this.triggerRef)}
           >
-            <slot name="trigger">
-              ${when(this.isComfortable,
-                () => html`
-                  <dss-input .errorState="${this.errorState}">
-                    <input
-                      type="text"
-                      ?readonly="${!this.editable}"
-                      ?disabled="${this.disabled}"
-                      ?required="${this.required}"
-                    >
-                    <dss-button type="icon-only" ?disabled="${this.disabled}">
-                      <dss-icon icon="${this.actualIcon}" size="medium"></dss-icon>
-                    </dss-button>
-                  </dss-input>
-                `,
-                () => html`
-                  <dss-button type="icon-only" ?disabled="${this.disabled}">
-                    <dss-icon icon="${this.actualIcon}" size="medium"></dss-icon>
-                  </dss-button>
-                `,
-              )}
-            </slot>
+            <dss-input .errorState="${this.errorState}" .hideMessage="${true}">
+              <input
+                type="text"
+                ?readonly="${!this.editable}"
+                ?disabled="${this.disabled}"
+                ?required="${this.required}"
+              >
+              <dss-button type="icon-only" ?disabled="${this.disabled}" tabindex="-1">
+                <dss-icon icon="${this.actualIcon}" size="medium"></dss-icon>
+              </dss-button>
+            </dss-input>
           </span>
 
-          <slot @dss-menu-selection="${this.selectedRow}" @keydown="${this.handleKeyDownOnMenu}"></slot>
+          <slot
+            @dss-menu-selection="${this.selectedRow}"
+            @keydown="${this.handleKeyDownOnMenu}"
+            @slotchange=${this.handleSlotChange}
+          ></slot>
         </dss-floating>
       </dss-outside-click>
-      <dss-error-message .state="${this.errorState}" .message="${this.message}"></dss-error-message>
+      <dss-hint .state="${this.errorState}" .message="${this.message}"></dss-hint>
     `;
+  }
+
+  connectedCallback(): void {
+    this.addEventListener('blur', (event: FocusEvent) => {
+      if (event.relatedTarget && this.menuElement[0]?.contains(event.relatedTarget as Node)) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      }
+    }, { capture: true });
+    super.connectedCallback();
   }
 
   protected firstUpdated(changedProperties: PropertyValues): void {
@@ -169,16 +166,30 @@ export default class Dropdown extends BaseElement {
     this.setFormValueAndValidity();
   }
 
-  private get actualIcon(): Icons {
+  handleSlotChange() {
+    const menuItems = this.getMenuItems();
+    if (menuItems && menuItems.length) {
+      menuItems.forEach((menuitem) => {
+        menuitem.setAttribute('role', 'option');
+      });
+    }
+
+    this.displaySelectedValue();
+  }
+
+  requestUpdate(name?: PropertyKey, oldValue?: unknown) {
+    if (name === 'value') {
+      this.displaySelectedValue();
+    }
+    return super.requestUpdate(name, oldValue);
+  }
+
+  private get actualIcon() {
     if (this.icon) {
       return this.icon;
     }
 
     return this.open ? 'chevron-up' : 'chevron-down';
-  }
-
-  private get isComfortable() {
-    return this.size === 'comfortable';
   }
 
   private toggle() {
@@ -225,36 +236,68 @@ export default class Dropdown extends BaseElement {
         this.show();
       }
       const menu = this.getMenu();
-      const items = menu.getAllItems();
-      if (items.length > 0) {
-        const firstItem = items[0];
-        const lastItem = items[items.length - 1];
+      if (menu) {
+        const items = menu.getAllItems();
+        if (items.length > 0) {
+          const firstItem = items[0];
+          const lastItem = items[items.length - 1];
 
-        if (event.key === 'ArrowDown' || event.key === 'Home') {
-          menu.setActiveItem(firstItem);
-          firstItem.focus();
-        } else {
-          menu.setActiveItem(lastItem);
-          lastItem.focus();
+          if (event.key === 'ArrowDown' || event.key === 'Home') {
+            menu.setActiveItem(firstItem);
+            firstItem.focus();
+          } else {
+            menu.setActiveItem(lastItem);
+            lastItem.focus();
+          }
         }
       }
     }
   };
 
-  private getMenu(): Menu {
-    return this.menuSlot.assignedElements()[0] as Menu;
+  private getMenu(): Menu | undefined {
+    const assignedElement = this.menuSlot.assignedElements()[0];
+    if (assignedElement?.tagName !== 'DSS-MENU') {
+      return;
+    }
+    return assignedElement as Menu;
+  }
+
+  private getMenuItems(): MenuItem[] | undefined {
+    return this.getMenu()?.getAllItems();
   }
 
   private selectedRow(event: DssMenuSelectionEvent) {
     this.value = event.detail.value;
     this.setFormValueAndValidity();
+    this.dispatchChangeEvent();
 
     if (this.inputElement) {
       this.inputElement.value = event.detail.text;
+      this.inputElement.focus();
     }
 
-    if (!this.keepOpenOnSelect) {
-      this.hide();
+    this.hide();
+  }
+
+  private displaySelectedValue() {
+    if (!this.inputElement) {
+      return;
+    }
+
+    const menuItems = this.getMenuItems();
+    if (menuItems) {
+      if (menuItems && menuItems.length) {
+        menuItems.forEach((menuitem) => {
+          menuitem.setAttribute('aria-selected', 'false');
+        });
+      }
+      const selectedMenuItem = menuItems.find(menuItem => menuItem.value === this.value || menuItem.textContent === this.value);
+      if (selectedMenuItem?.textContent) {
+        this.inputElement.value = selectedMenuItem.textContent;
+        selectedMenuItem.setAttribute('aria-selected', 'true');
+      } else {
+        this.inputElement.value = '';
+      }
     }
   }
 

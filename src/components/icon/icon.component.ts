@@ -1,10 +1,12 @@
 import { customElement, property, state } from 'lit/decorators.js';
-import { nothing, PropertyValues, unsafeCSS } from 'lit';
+import { nothing, PropertyDeclaration, unsafeCSS } from 'lit';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import styles from './icon.css?inline';
 import BaseElement from '../../internals/baseElement/baseElement';
 import { Icons } from './icons';
 import { DirectiveResult } from 'lit-html/directive';
+
+const ICON_CACHE: { [K in Icons]?: DirectiveResult } = {};
 
 /**
  * @property icon - Icon to display as mapped by the IconMap
@@ -26,14 +28,21 @@ export default class Icon extends BaseElement {
   @state()
   private svg?: DirectiveResult;
 
-  protected updated(changedProperties: PropertyValues): void {
-    super.updated(changedProperties);
-
-    if (changedProperties.has('icon')) {
-      import(`../../assets/icons/${this.icon}.included.svg`)
-        .then(iconModule => this.svg = unsafeSVG(iconModule.default))
-        .catch(error => console.error(`Caught exception while importing icon: ${this.icon}`, error));
+  requestUpdate(name?: keyof Icon, oldValue?: unknown, options?: PropertyDeclaration): void {
+    if (name === 'icon' && this.icon !== undefined) {
+      if (ICON_CACHE[this.icon]) {
+        this.svg = ICON_CACHE[this.icon];
+      } else {
+        const iconToLoad = this.icon;
+        import(`../../assets/icons/${iconToLoad}.included.svg`)
+          .then(iconModule => {
+            ICON_CACHE[iconToLoad] = unsafeSVG(iconModule.default);
+            this.svg = ICON_CACHE[iconToLoad];
+          })
+          .catch(error => console.error(`Caught exception while importing icon: ${this.icon}`, error));
+      }
     }
+    super.requestUpdate(name, oldValue, options);
   }
 
   protected render() {
@@ -56,6 +65,7 @@ export const ICON_SIZE = [
   'small',
   'medium',
   'large',
+  'huge',
 ] as const;
 
 export type IconSize = typeof ICON_SIZE[number];

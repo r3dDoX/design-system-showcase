@@ -39,7 +39,7 @@ describe('Checkbox', () => {
     expect(screen.getByShadowTestId('label')).toHaveClass('filled');
     expect(screen.getByShadowTestId('label')).not.toHaveClass('warning');
     expect(screen.getByShadowTestId('label')).not.toHaveClass('error');
-    expect(screen.queryByShadowRole('figure')).toHaveAttribute('icon', 'navigate_check');
+    expect(screen.queryByShadowRole('figure')).toHaveAttribute('icon', 'check');
   });
 
   test('displays indeterminate state correctly', async () => {
@@ -50,7 +50,7 @@ describe('Checkbox', () => {
     expect(screen.getByShadowTestId('label')).toHaveClass('filled');
     expect(screen.getByShadowTestId('label')).not.toHaveClass('warning');
     expect(screen.getByShadowTestId('label')).not.toHaveClass('error');
-    expect(screen.queryByShadowRole('figure')).toHaveAttribute('icon', 'navigate_minus');
+    expect(screen.queryByShadowRole('figure')).toHaveAttribute('icon', 'minus');
   });
 
   test('displays error state correctly', async () => {
@@ -89,15 +89,18 @@ describe('Checkbox', () => {
     expect(screen.queryByShadowRole('figure')).toHaveAttribute('size', 'small');
   });
 
-  test('redispatches change event for outside listeners', async () => {
-    const spy = vi.fn();
+  test('when state change, redispatches change event and updates value', async () => {
+    const changeSpy = vi.fn();
     await fixture(html`
-      <dss-checkbox .size=${'comfortable'} @change=${spy as any}></dss-checkbox>
+      <dss-checkbox .size=${'comfortable'} @change=${changeSpy}></dss-checkbox>
     `);
 
     screen.queryByShadowRole('checkbox')?.click();
 
-    expect(spy).toHaveBeenCalled();
+    expect(changeSpy).toHaveBeenCalled();
+    const customElement = changeSpy.mock.calls[0][0].target;
+    expect(customElement).toHaveProperty('checked');
+    expect(customElement).toHaveProperty('value', 'on');
   });
 
 });

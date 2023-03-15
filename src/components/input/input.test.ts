@@ -1,9 +1,9 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import './input.component';
-import { fixture, html } from '@open-wc/testing-helpers';
+import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
 import { screen } from 'shadow-dom-testing-library';
 import { fireEvent, waitFor } from '@testing-library/dom';
-import { DEFAULT_DEBOUNCE } from './input.component';
+import Input, { DEFAULT_DEBOUNCE } from './input.component';
 
 describe('Input', () => {
   describe('when specifying a label', () => {
@@ -33,20 +33,51 @@ describe('Input', () => {
     });
   });
 
-  test('when slotting an non-input element, indicates input element is required', async () => {
+  test('when erroneous with message, is selectable by message', async () => {
     await fixture(html`
-      <dss-input>
-        <div>not an input element</div>
-      </dss-input>
+      <dss-input errorstate="error" message="message"></dss-input>
     `);
-    screen.getByText('Input element required');
+
+    screen.getByShadowText('message');
   });
 
-  test('when slotting no element, indicates input element is required', async () => {
-    await fixture(html`
-      <dss-input></dss-input>
+  test('when given max count, shows current count in utf-8 bytes', async () => {
+    const element = await fixture(html`
+      <dss-input .countToMax=${10}>
+        <textarea></textarea>
+      </dss-input>
     `);
-    screen.getByText('Input element required');
+
+    const input = screen.getByRole('textbox') as HTMLTextAreaElement;
+    input.value = 'i ♥ u';
+    fireEvent.input(input);
+    await elementUpdated(element);
+
+    expect(screen.queryByShadowText('7', { exact: false })).toBeInTheDocument();
+    expect(screen.queryByShadowText('10', { exact: false })).toBeInTheDocument();
+  });
+
+  test('when counting, resets on form reset', async () => {
+    const formElement = await fixture(html`
+      <form>
+        <dss-input .countToMax=${5} data-testid="inputComponent">
+          <input>
+        </dss-input>
+      </form>
+    `) as HTMLFormElement;
+
+    const input = screen.getByRole('textbox') as HTMLInputElement;
+    input.value = 'Test';
+    fireEvent.input(input);
+    await elementUpdated(screen.getByTestId('inputComponent'));
+
+    expect(screen.queryByShadowText('4', { exact: false })).toBeInTheDocument();
+    formElement.reset();
+    // element internals polyfills unfortunately does not call this method
+    (screen.getByTestId('inputComponent') as Input).formResetCallback();
+
+    await elementUpdated(screen.getByTestId('inputComponent'));
+    expect(screen.queryByShadowText('0', { exact: false })).toBeInTheDocument();
   });
 
   describe('when debouncing', () => {

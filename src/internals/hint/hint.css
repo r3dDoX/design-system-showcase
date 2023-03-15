@@ -6,6 +6,10 @@
   line-height: var(--size-line-height-small);
 }
 
+:host(:not([state])) {
+  color: var(--color-font-hint);
+}
+
 :host([state="error"]) dss-icon {
   color: var(--color-action-error);
 }

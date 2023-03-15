@@ -16,10 +16,6 @@ export default {
     spacing: { control: 'select', options: buttonSpacings },
   },
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/file/vN8eRqwHQLrnGFkcxL7Z4W/dss-Connect-Design?node-id=531%3A2883',
-    },
     docs: {
       description: {
         component: docs,
@@ -31,13 +27,13 @@ export default {
   },
 };
 
-const Template: Story<ToggleButton> = ({ slot, selected, spacing, disabled, type, tooltip }) => html`
+const Template: Story<ToggleButton> = ({ slot, pressed, spacing, disabled, type, tooltip }) => html`
   <dss-toggle-button
     spacing="${ifDefined(spacing)}"
     type="${ifDefined(type)}"
     tooltip="${ifDefined(tooltip)}"
     ?disabled=${disabled}
-    ?selected=${selected}
+    ?selected=${pressed}
   >
     ${unsafeHTML(slot)}
   </dss-toggle-button>
@@ -51,5 +47,5 @@ Default.args = {
 export const IconToggle = Template.bind({});
 IconToggle.args = {
   spacing: 'icon',
-  slot: '<dss-icon icon="home" size="large"></dss-icon>',
+  slot: '<dss-icon icon="stop-circle" size="large"></dss-icon>',
 };

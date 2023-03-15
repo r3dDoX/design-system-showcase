@@ -5,6 +5,7 @@ import Tooltip from './tooltip.component';
 import { placementOptions } from '../../internals/floatingElement/floatingElement';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import docs from './tooltip.md?raw';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 
 export default {
   title: 'Components/Tooltip',
@@ -16,10 +17,6 @@ export default {
     },
   },
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/file/vN8eRqwHQLrnGFkcxL7Z4W/dss-Connect-Design?node-id=531%3A2885&t=zVqMtRAqzxIGgh9q-0',
-    },
     docs: {
       description: {
         component: docs,
@@ -30,7 +27,7 @@ export default {
 
 const Template: Story<Tooltip> = ({ slot, placement }) => html`
   <div style="margin: 20rem; display: inline-block">
-    <dss-tooltip placement="${placement}">
+    <dss-tooltip placement="${ifDefined(placement)}">
       <dss-button type="secondary" slot="trigger">
         Test
       </dss-button>
@@ -42,7 +39,6 @@ const Template: Story<Tooltip> = ({ slot, placement }) => html`
 export const Default = Template.bind({});
 Default.args = {
   slot: 'My Tooltip',
-  placement: 'auto',
 };
 
 export const Complex = Template.bind({});
@@ -53,5 +49,4 @@ Complex.args = {
       Test 1
     </p>
   `,
-  placement: 'auto',
 };

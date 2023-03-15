@@ -4,12 +4,13 @@
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  max-width: var(--size-spacing-6);
+  gap: var(--size-spacing-2);
+  font-size: var(--size-font-large);
+  line-height: var(--size-line-height-large);
 }
 
 .visible {
   background: var(--color-background-primary);
-  width: var(--size-spacing-6);
   padding: var(--size-spacing-1) var(--size-spacing-1-5);
   margin-right: calc(var(--size-spacing-px) * -1);
   border-width: var(--size-border-width-small);
@@ -25,10 +26,6 @@
 .visible:focus {
   position: relative;
   z-index: 2;
-}
-
-.folded {
-  min-width: var(--size-spacing-5);
 }
 
 :host(:first-of-type) .basic-tab:not(.active, .folded, :hover) {

@@ -14,9 +14,8 @@ export default {
     errorState: { control: 'select', options: inputErrorStates },
   },
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/file/vN8eRqwHQLrnGFkcxL7Z4W/dss-Connect-Design?node-id=1596%3A5325&t=zVqMtRAqzxIGgh9q-0',
+    actions: {
+      handles: ['change'],
     },
     docs: {
       description: {

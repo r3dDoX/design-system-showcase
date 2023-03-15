@@ -14,10 +14,6 @@ export default {
     actions: {
       handles: ['dss-menu-selection'],
     },
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/file/vN8eRqwHQLrnGFkcxL7Z4W/dss-Connect-Design?node-id=531%3A2886',
-    },
     docs: {
       description: {
         component: docs,
@@ -50,7 +46,7 @@ export const WithSeparator = Template.bind({});
 WithSeparator.args = {
   slot: `
     <dss-menu-item>
-      <dss-icon icon="pencil" size="medium"></dss-icon>
+      <dss-icon icon="edit" size="medium"></dss-icon>
       Bearbeiten
     </dss-menu-item>
     <hr>
@@ -59,7 +55,7 @@ WithSeparator.args = {
       Kopieren
     </dss-menu-item>
     <dss-menu-item>
-      <dss-icon icon="clipboard_paste" size="medium"></dss-icon>
+      <dss-icon icon="arrow-down" size="medium"></dss-icon>
       Einfügen
     </dss-menu-item>
   `,
@@ -68,7 +64,7 @@ WithSeparator.args = {
 export const WithCheckboxes = Template.bind({});
 WithCheckboxes.args = {
   slot: `
-  <dss-menu-item value="pencil">
+  <dss-menu-item value="edit">
     <dss-checkbox size="compact" label="Bearbeiten" tabindex="-1"></dss-checkbox>
   </dss-menu-item>
   <hr>

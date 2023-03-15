@@ -8,8 +8,12 @@
 
 .floating {
   min-width: 100%;
+  width: max-content;
+  position: absolute;
+  top: 0;
+  left: 0;
   background-color: var(--color-background);
-  padding: var(--size-spacing-0-5) var(--size-spacing-3);
+  padding: var(--size-spacing-1) var(--size-spacing-3);
   border-radius: var(--size-border-radius-regular);
   z-index: 1;
   filter: drop-shadow(var(--drop-shadow));
@@ -23,56 +27,12 @@
   visibility: visible;
 }
 
-.arrow, .arrow::before {
+.arrow {
   position: absolute;
-}
-
-.arrow::before {
-  content: '';
-  width: 0;
-  height: 0;
-}
-
-.floating[data-popper-placement^='top'] .arrow {
-  bottom: 0;
-}
-
-.floating[data-popper-placement^='top'] .arrow::before {
-  left: -11px;
-  border-top: 12px solid var(--color-background);
-  border-left: 11px solid transparent;
-  border-right: 11px solid transparent;
-}
-
-.floating[data-popper-placement^='right'] .arrow {
-  left: -12px;
-}
-
-.floating[data-popper-placement^='right'] .arrow::before {
-  top: -11px;
-  border-right: 12px solid var(--color-background);
-  border-top: 11px solid transparent;
-  border-bottom: 11px solid transparent;
-}
-
-.floating[data-popper-placement^='bottom'] .arrow {
-  top: -12px;
-}
-
-.floating[data-popper-placement^='bottom'] .arrow::before {
-  left: -11px;
-  border-bottom: 12px solid var(--color-background);
-  border-left: 11px solid transparent;
-  border-right: 11px solid transparent;
-}
-
-.floating[data-popper-placement^='left'] .arrow {
-  right: 0;
-}
-
-.floating[data-popper-placement^='left'] .arrow::before {
-  top: -11px;
-  border-left: 12px solid var(--color-background);
-  border-top: 11px solid transparent;
-  border-bottom: 11px solid transparent;
+  z-index: -1;
+  pointer-events: none;
+  width: var(--size-spacing-2);
+  height: var(--size-spacing-2);
+  background-color: var(--color-background);
+  transform: rotate(45deg);
 }

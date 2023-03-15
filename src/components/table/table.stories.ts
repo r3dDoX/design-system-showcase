@@ -24,10 +24,6 @@ export default {
     actions: {
       handles: ['dss-table-selection-change'],
     },
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/file/vN8eRqwHQLrnGFkcxL7Z4W/dss-Connect-Design?node-id=1771%3A5289&t=bb4bSKr0HlASC4tZ-0',
-    },
     docs: {
       description: {
         component: docs,

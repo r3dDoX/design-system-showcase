@@ -53,7 +53,7 @@ export default class Tab extends BaseElement<TabEventsPayloadMap> {
           @click=${(event: MouseEvent) => this.onCloseButtonClick(event)}
           @keydown=${(event: KeyboardEvent) => onRelevantKeyDownEvent(event, () => this.closeTab())}
         >
-          <dss-icon icon="cross"></dss-icon>
+          <dss-icon icon="x"></dss-icon>
         </dss-button>
       </div>
     `;

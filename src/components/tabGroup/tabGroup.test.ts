@@ -2,81 +2,85 @@ import './tabGroup.component';
 import '../tab/tab.component';
 import { afterEach, beforeEach, describe, expect, SpyInstance, test, vi } from 'vitest';
 import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
-import { screen } from 'shadow-dom-testing-library';
-import { DssTabGroup } from '../../index';
+import { screen, within } from 'shadow-dom-testing-library';
 import { fireEvent } from '@testing-library/dom';
-import { TabGroupTranslations } from './tabGroup.component';
+import TabGroup, { TabGroupTranslations } from './tabGroup.component';
 
 describe('TabGroup', () => {
+  let mockGetBoundingClientRect: SpyInstance;
+
+  beforeEach(() => {
+    mockGetBoundingClientRect = vi.spyOn(Element.prototype, 'getBoundingClientRect');
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
 
   describe('when there are five tabs', () => {
-    const listenerSpy = vi.fn();
-    let mockGetBoundingClientRect: SpyInstance;
+    const activatedSpy = vi.fn();
+    const closedSpy = vi.fn();
 
-    const fixtureWithFiveTabs = async () => await fixture(html`
-      <div data-testid="tabGroupWrapper">
-        <dss-tab-group
-          data-testid="testTabGroup"
-          .activeTabTitle=${'Tab_5'}
-          .tabs=${getTabs(5)}
-          .onTabActivated=${(tabTitle: string) => listenerSpy(tabTitle)}
-        ></dss-tab-group>
-      </div>
-    `);
-
-
-    beforeEach(() => {
-      mockGetBoundingClientRect = vi.spyOn(Element.prototype, 'getBoundingClientRect');
-    });
-
-    afterEach(() => {
-      vi.restoreAllMocks();
-    });
+    async function renderFixtureWithFiveTabs(): Promise<HTMLElementTagNameMap['dss-tab-group']> {
+      return fixture(html`
+        <div data-testid="tabGroupWrapper">
+          <dss-tab-group
+            data-testid="testTabGroup"
+            .activeTabTitle=${'Tab_5'}
+            .tabs=${getTabs(5)}
+            @dss-tab-group-tab-select=${activatedSpy}
+            @dss-tab-group-tab-close=${closedSpy}
+          ></dss-tab-group>
+        </div>
+      `);
+    }
 
     test('active tab is correctly displayed', async () => {
       mockGetBoundingClientRect.mockImplementation(() => (
         { width: 1000 } as DOMRect
       ));
 
-      await fixtureWithFiveTabs();
+      await renderFixtureWithFiveTabs();
 
       const tabs = screen.getAllByShadowRole('tab');
 
       expect(tabs[4]).toHaveClass('active');
     });
 
-    test('clicked visible tab reports value to its parent', async () => {
-      await fixtureWithFiveTabs();
+    test('when tab selected, fires event with selected tab', async () => {
+      await renderFixtureWithFiveTabs();
       const firstTab = screen.getByShadowText('Tab_1');
 
       firstTab.click();
 
-      expect(listenerSpy).toHaveBeenCalledWith('Tab_1');
+      expect(activatedSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { title: 'Tab_1' } }));
+    });
+
+    test('when tab closed, fires event with closed tab', async () => {
+      await renderFixtureWithFiveTabs();
+
+      const tabs = screen.getAllByShadowRole('tab');
+      within(tabs[0]).getByShadowRole('button').click();
+
+      expect(closedSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { title: 'Tab_5' } }));
     });
   });
 
   describe('when there are folded tabs', () => {
     const listenerSpy = vi.fn();
-    let mockGetBoundingClientRect: SpyInstance;
 
-    const fixtureWithFoldedTabs = async () => await fixture(html`
-      <div data-testid="tabGroupWrapper">
-        <dss-tab-group
-          data-testid="testTabGroup"
-          .activeTabTitle=${'Tab_5'}
-          .tabs=${getTabs(10)}
-          .onTabActivated=${(tabTitle: string) => listenerSpy(tabTitle)}
-        ></dss-tab-group>
-      </div>
-    `);
-
-    beforeEach(() => {
-      mockGetBoundingClientRect = vi.spyOn(Element.prototype, 'getBoundingClientRect');
-    });
-
-    afterEach(() => {
-      vi.restoreAllMocks();
-    });
+    async function fixtureWithFoldedTabs(): Promise<HTMLElementTagNameMap['dss-tab-group']> {
+      return fixture(html`
+        <div data-testid="tabGroupWrapper">
+          <dss-tab-group
+            data-testid="testTabGroup"
+            .activeTabTitle=${'Tab_5'}
+            .tabs=${getTabs(10)}
+            @dss-tab-group-tab-select=${listenerSpy}
+          ></dss-tab-group>
+        </div>
+      `);
+    }
 
     test('element correctly calculates the number of visible tabs', async () => {
       mockGetBoundingClientRect.mockImplementation(() => (
@@ -84,7 +88,7 @@ describe('TabGroup', () => {
       ));
 
       await fixtureWithFoldedTabs();
-      const tabGroup = screen.getByTestId('testTabGroup') as DssTabGroup;
+      const tabGroup = screen.getByTestId('testTabGroup') as TabGroup;
 
       expect(tabGroup).toHaveProperty('numberOfTabsToShow', 9);
     });
@@ -111,14 +115,14 @@ describe('TabGroup', () => {
       fireEvent.keyDown(tabs[2], { key: enterKey });
       await elementUpdated(tabGroup);
 
-      expect(listenerSpy).toHaveBeenCalledWith('Tab_3');
+      expect(listenerSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { title: 'Tab_3' } }));
 
       const spaceKey = ' ';
 
       fireEvent.keyDown(tabs[5], { key: spaceKey });
       await elementUpdated(tabGroup);
 
-      expect(listenerSpy).toHaveBeenCalledWith('Tab_6');
+      expect(listenerSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { title: 'Tab_6' } }));
     });
 
     test('clicking folded tabs makes them visible ', async () => {
@@ -143,8 +147,8 @@ describe('TabGroup', () => {
       fireEvent.click(sixthTab!, { detail: 1 });
       await elementUpdated(wrappedTabGroup);
 
-      const tabPanel = screen.getByShadowRole('tabpanel');
-      const visibleTabs = Array.from(tabPanel.querySelectorAll('dss-tab'));
+      const tabList = screen.getByShadowRole('tablist');
+      const visibleTabs = Array.from(tabList.querySelectorAll('dss-tab'));
 
       expect(visibleTabs[0].shadowRoot!.textContent).toMatch(/Tab_6/);
     });
@@ -158,7 +162,7 @@ describe('TabGroup', () => {
       const targetMenuItem = screen.getByShadowText('Tab_6');
       fireEvent.click(targetMenuItem, { detail: 1 });
 
-      expect(listenerSpy).toHaveBeenCalledWith('Tab_6');
+      expect(listenerSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { title: 'Tab_6' } }));
     });
   });
 

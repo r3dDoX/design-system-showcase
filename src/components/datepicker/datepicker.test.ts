@@ -1,91 +1,100 @@
 import './datepicker.component';
 import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
-import { beforeEach, describe, expect, it, SpyInstance, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, SpyInstance, test, vi } from 'vitest';
 import DatePicker from './datepicker.component';
 import { fireEvent } from '@testing-library/dom';
 import { screen } from 'shadow-dom-testing-library';
+import userEvent from '@testing-library/user-event';
 
 describe('Datepicker', () => {
   describe('rendering', () => {
-    it('should render the datepicker inside an input of type date', async () => {
-      const element = await fixture(html`
-        <dss-datepicker></dss-datepicker>`);
-      const datePickerInput = element.shadowRoot!.querySelector('dss-input input')!;
-      expect(datePickerInput).toHaveAttribute('type', 'date');
-    });
-
-    it('should render the datepicker with the given initial date', async () => {
+    test('when initial date given, renders datepicker accordingly', async () => {
       const initialValue = '2020-06-06';
-      const element = await fixture(html`
-        <dss-datepicker value=${initialValue}></dss-datepicker>`);
+      await fixture(html`
+        <dss-datepicker label="date-input" value=${initialValue}></dss-datepicker>
+      `);
 
-      const datePickerInput = element.shadowRoot!.querySelector('dss-input input')!;
-      expect(datePickerInput).toHaveValue(initialValue);
+      expect(screen.getByShadowLabelText('date-input')).toHaveValue(initialValue);
     });
 
-    it('should re-render the datepicker on value change', async () => {
+    test('when value changed, re-renders the datepicker', async () => {
       const initialValue = '2020-06-06';
       const element: DatePicker = await fixture(html`
-        <dss-datepicker value=${initialValue}></dss-datepicker>`);
+        <dss-datepicker label="date-input" value=${initialValue}></dss-datepicker>
+      `);
 
       const newValue = '2022-11-11';
       element.value = newValue;
       await elementUpdated(element);
-      const datePickerAfterUpdate = element.shadowRoot!.querySelector('dss-input input')!;
-      expect(datePickerAfterUpdate).toHaveValue(newValue);
+
+      expect(screen.getByShadowLabelText('date-input')).toHaveValue(newValue);
+      expect(screen.getByShadowText('11')).toHaveClass('selected');
     });
 
-    it('should pass required to native input', async () => {
-      const element = await fixture(html`
-        <dss-datepicker required="${true}"></dss-datepicker>`);
-      const datePickerInput = element.shadowRoot!.querySelector('dss-input input')!;
-      expect(datePickerInput).toHaveAttribute('required');
-    });
-
-    it('when label given, is selectable by it', async () => {
-      await fixture(html`
-        <dss-datepicker label="Test"></dss-datepicker>
+    test('when value cleared, clears the datepicker', async () => {
+      const element: DatePicker = await fixture(html`
+        <dss-datepicker label="date-input" value=${'2020-06-06'}></dss-datepicker>
       `);
 
-      expect(screen.getByShadowLabelText('Test')).toBeInTheDocument();
+      const newValue = '';
+      element.value = newValue;
+      await elementUpdated(element);
+
+      expect(screen.getByShadowLabelText('date-input')).toHaveValue(newValue);
+      expect(element.shadowRoot!.querySelector('.selected')).not.toBeInTheDocument();
+    });
+
+    test('when input value cleared, clears the datepicker', async () => {
+      const element: DatePicker = await fixture(html`
+        <dss-datepicker label="date-input" value=${'2020-06-06'}></dss-datepicker>
+      `);
+
+      const newValue = '';
+      (screen.getByShadowLabelText('date-input') as HTMLInputElement).value = newValue;
+      fireEvent.change(screen.getByShadowLabelText('date-input'));
+      await elementUpdated(element);
+
+      expect(screen.getByShadowLabelText('date-input')).toHaveValue(newValue);
+      expect(element.shadowRoot!.querySelector('.selected')).not.toBeInTheDocument();
+    });
+
+    test('when required flag set, passes it to native input', async () => {
+      await fixture(html`
+        <dss-datepicker label="date-input" required="${true}"></dss-datepicker>
+      `);
+
+      expect(screen.getByShadowLabelText('date-input')).toBeRequired();
     });
   });
 
   describe('date selection', () => {
-    it('should emit an event on date selection which bubbles', async () => {
+    test('when selecting date, emits change event', async () => {
       const wrapperListenerSpy = vi.fn();
       const datepickerListenerSpy = vi.fn();
 
       const element: DatePicker = await fixture(html`
-        <div>
-          <dss-datepicker></dss-datepicker>
-        </div>`);
+        <div @change=${wrapperListenerSpy}>
+          <dss-datepicker @change=${datepickerListenerSpy}></dss-datepicker>
+        </div>
+      `);
 
-      const event = 'dss-datepicker-selection-change';
       const datePickerWrapper = element.querySelector('dss-datepicker')!;
-      element.addEventListener(event, wrapperListenerSpy);
-      datePickerWrapper.addEventListener(event, datepickerListenerSpy);
 
       const datePicker = datePickerWrapper.shadowRoot!.querySelector('dss-input .easepick-wrapper')!;
       const firstDate = datePicker.shadowRoot!.querySelector('.day.unit:not(.selected)')! as HTMLElement;
       expect(firstDate).not.toBeNull();
 
-      firstDate.click();
+      const userEvents = userEvent.setup();
+      await userEvents.click(firstDate);
 
-      const expectedDate = new Date(parseInt(firstDate.getAttribute('data-time')!));
-      const expectedEvent = {
-        detail: expectedDate,
-      };
-      expect(wrapperListenerSpy, 'event should bubble')
-        .toHaveBeenCalledWith(expect.objectContaining(expectedEvent));
-
-      expect(datepickerListenerSpy, 'event should be listenable on the element itself')
-        .toHaveBeenCalledWith(expect.objectContaining(expectedEvent));
+      expect(datepickerListenerSpy).toHaveBeenCalledOnce();
+      expect(wrapperListenerSpy).toHaveBeenCalledOnce();
     });
 
-    it('should set the value on date selection', async () => {
+    test('when selecting date, sets the value', async () => {
       const element: DatePicker = await fixture(html`
-        <dss-datepicker value="2022-11-02"></dss-datepicker>`);
+        <dss-datepicker label="date-input" value="2022-11-11"></dss-datepicker>
+      `);
 
       const datePickerWrapper = element.shadowRoot!.querySelector('dss-input .easepick-wrapper')!;
       const firstDate = datePickerWrapper.shadowRoot!.querySelector('.day.unit:not(.selected)')! as HTMLElement;
@@ -93,11 +102,21 @@ describe('Datepicker', () => {
 
       firstDate.click();
 
-      const expectedDate = new Date(parseInt(firstDate.getAttribute('data-time')!));
-      expect(element.value).toEqual(expectedDate);
+      expect(element).toHaveValue('2022-11-01');
     });
 
-    it('should emit the selected date to FormData', async () => {
+    test('when typing date via keyboard, should update value', async () => {
+      const element: DatePicker = await fixture(html`
+        <dss-datepicker label="date-input"></dss-datepicker>
+      `);
+
+      const userEvents = userEvent.setup();
+      await userEvents.type(screen.getByShadowLabelText('date-input'), '2022-11-25');
+
+      expect(element).toHaveValue('2022-11-25');
+    });
+
+    test('returns the selected date to FormData', async () => {
       const element: HTMLFormElement = await fixture(html`
         <form>
           <dss-datepicker name="date" value="2022-11-02"></dss-datepicker>
@@ -110,12 +129,15 @@ describe('Datepicker', () => {
   });
 
   describe('locale', () => {
-
     let navigatorSpy: SpyInstance;
 
     beforeEach(() => {
       navigatorSpy = vi.spyOn(window.navigator, 'language', 'get');
       navigatorSpy.mockReturnValue('en-US');
+    });
+
+    afterEach(() => {
+      navigatorSpy.mockRestore();
     });
 
     const englishDayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -125,79 +147,84 @@ describe('Datepicker', () => {
       expected.forEach((expectedDayName, index) => expect(actual[index].textContent).toBe(expectedDayName));
     }
 
-    function changeLanguage(newLanguage: string) {
-      const previousLanguage = navigator.language;
-      navigatorSpy.mockReturnValue(newLanguage);
-      window.dispatchEvent(new Event('languagechange'));
-      return [previousLanguage, newLanguage];
-    }
-
-    it('should set the default locale on the date picker to english', async () => {
+    test('sets the default locale on the date picker to german', async () => {
       const element: DatePicker = await fixture(html`
-        <dss-datepicker></dss-datepicker>`);
+        <dss-datepicker></dss-datepicker>
+      `);
 
       const datePickerWrapper = element.shadowRoot!.querySelector('.easepick-wrapper')!;
       const dayNames: NodeListOf<Element> = datePickerWrapper.shadowRoot!.querySelectorAll('.dayname');
 
-      assertDayNames(dayNames, englishDayNames);
+      assertDayNames(dayNames, germanDayNames);
     });
 
-    it('should set the locale on the date picker to german', async () => {
-      navigatorSpy.mockReturnValue('de-CH');
+    test('sets the locale on the date picker to english US', async () => {
       const element: DatePicker = await fixture(html`
-        <dss-datepicker></dss-datepicker>`);
+        <dss-datepicker locale="en-US"></dss-datepicker>
+      `);
 
       const datePickerWrapper = element.shadowRoot!.querySelector('dss-input .easepick-wrapper')!;
       const dayNames = datePickerWrapper.shadowRoot!.querySelectorAll('.dayname');
 
-      assertDayNames(dayNames, germanDayNames);
+      assertDayNames(dayNames, englishDayNames);
     });
 
-    it('should update the locale on the date picker', async () => {
+    test('updates the locale on the date picker', async () => {
       const element: DatePicker = await fixture(html`
-        <dss-datepicker></dss-datepicker>`);
+        <dss-datepicker></dss-datepicker>
+      `);
 
       const datePickerWrapper = element.shadowRoot!.querySelector('dss-input .easepick-wrapper')!;
       const dayNamesBeforeUpdate = datePickerWrapper.shadowRoot!.querySelectorAll('.dayname');
 
-      assertDayNames(dayNamesBeforeUpdate, englishDayNames);
+      assertDayNames(dayNamesBeforeUpdate, germanDayNames);
 
-      const [previousLanguage, newLanguage] = changeLanguage('de-CH');
-      expect(previousLanguage).not.toBe(newLanguage);
+      element.locale = 'en-US';
       await elementUpdated(element);
 
       const dayNamesAfterUpdate = datePickerWrapper.shadowRoot!.querySelectorAll('.dayname');
 
-      assertDayNames(dayNamesAfterUpdate, germanDayNames);
+      assertDayNames(dayNamesAfterUpdate, englishDayNames);
     });
   });
 
   describe('opening and closing', async () => {
-    it('should open the datepicker on click on the calendar icon', async () => {
+    test('opens the datepicker on click on the input', async () => {
       const element: DatePicker = await fixture(html`
-        <dss-datepicker></dss-datepicker>`);
+        <dss-datepicker label="date-input"></dss-datepicker>
+      `);
 
       const datePickerWrapper = element.shadowRoot!.querySelector('.easepick-wrapper')!;
       const datepickerContainer = datePickerWrapper.shadowRoot!.querySelector('.container')! as HTMLElement;
-      const datepickerButton = element.shadowRoot!.querySelector('dss-button')!;
 
       expect(datepickerContainer).not.toHaveClass('show');
-      datepickerButton.click();
+      screen.getByShadowLabelText('date-input').click();
       expect(datepickerContainer).toHaveClass('show');
     });
 
-    it('should close the datepicker on escape keypress', async () => {
+    test('when pressing Space/Escape, opens and closes datepicker', async () => {
       const element: DatePicker = await fixture(html`
-        <dss-datepicker></dss-datepicker>`);
-
+        <dss-datepicker label="date-input"></dss-datepicker>
+      `);
       const datePickerWrapper = element.shadowRoot!.querySelector('.easepick-wrapper')!;
       const datepickerContainer = datePickerWrapper.shadowRoot!.querySelector('.container')! as HTMLElement;
-      const datepickerButton = element.shadowRoot!.querySelector('dss-button')!;
 
-      datepickerButton.click();
+      fireEvent.keyDown(screen.getByShadowLabelText('date-input'), { code: 'Space' });
       expect(datepickerContainer).toHaveClass('show');
-      fireEvent.keyDown(window, { key: 'Escape' });
+
+      fireEvent.keyDown(window, { code: 'Escape' });
       expect(datepickerContainer).not.toHaveClass('show');
+    });
+
+    test('when closed, prevents focus', async () => {
+      const element: DatePicker = await fixture(html`
+        <dss-datepicker label="date-input"></dss-datepicker>
+      `);
+
+      expect(element.shadowRoot!.querySelector('.easepick-wrapper')).toHaveAttribute('tabindex', '-1');
+      screen.getByShadowLabelText('date-input').click();
+
+      expect(element.shadowRoot!.querySelector('.easepick-wrapper')).not.toHaveAttribute('tabindex');
     });
   });
 });

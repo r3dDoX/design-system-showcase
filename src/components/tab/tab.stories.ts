@@ -15,10 +15,6 @@ export default {
     isVisible: { control: 'boolean' },
   },
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/file/vN8eRqwHQLrnGFkcxL7Z4W/UI-Design-System-2.1?node-id=2753%3A12522&t=9qZ5ofueWps0hFbC-0',
-    },
     docs: {
       description: {
         component: docs,

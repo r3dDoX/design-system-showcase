@@ -19,10 +19,6 @@ import { when } from 'lit-html/directives/when.js';
 export default {
   title: 'Pages/Forms',
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/file/vN8eRqwHQLrnGFkcxL7Z4W/UI-Design-System-2.1?node-id=1793%3A10899&t=1nGYeu3l214iXSEh-0',
-    },
     docs: {
       description: {
         component: docs,
@@ -66,18 +62,15 @@ const BrowserFormValidationTemplate: Story = () => {
             </dss-menu-item>
           </dss-menu>
         </dss-dropdown>
-        <br>
         <dss-input label="First Name">
           <input name="firstName" required>
         </dss-input>
         <dss-input label="Last Name">
           <input name="lastName" required>
         </dss-input>
-        <br>
         <dss-input label="Age">
           <input name="age" type="number" min="16">
         </dss-input>
-        <br><br>
         <dss-button-group name="length" label="Length" required="true">
           <dss-toggle-button value="<15">&lt; 15min</dss-toggle-button>
           <dss-toggle-button value="15">15min</dss-toggle-button>
@@ -85,7 +78,6 @@ const BrowserFormValidationTemplate: Story = () => {
           <dss-toggle-button value="45">45min</dss-toggle-button>
           <dss-toggle-button value=">45">&gt; 45min</dss-toggle-button>
         </dss-button-group>
-        <br><br>
         <dss-checkbox label="Check this box" .required="${true}" name="accepted"></dss-checkbox>
       </div>
 
@@ -179,19 +171,14 @@ const LibraryFormValidationTemplate: Story = () => {
             </dss-menu-item>
           </dss-menu>
         </dss-dropdown>
-        <br>
         <dss-input label="Name" .errorState="${errors['name'] && 'error'}" .message="${ifDefined(errors['name'])}">
           <input name="name" required>
         </dss-input>
-        <br>
         <dss-input label="Age" .errorState="${errors['age'] && 'error'}" .message="${ifDefined(errors['age'])}">
           <input name="age" type="number" required>
         </dss-input>
-        <br>
         <dss-datepicker label="Created At" name="createdAt" value=""></dss-datepicker>
-        <br><br>
         <dss-checkbox label="Email" name="addEmail" @change="${() => setAddEmail(!addEmail)}"></dss-checkbox>
-        <br>
         ${when(addEmail, () => html`
           <dss-input
             label="Email"

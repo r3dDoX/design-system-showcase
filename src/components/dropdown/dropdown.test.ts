@@ -3,70 +3,76 @@ import '../icon/icon.component';
 import '../input/input.component';
 import '../menu/menu.component';
 import '../menuItem/menuItem.component';
-import { describe, expect, test, vi } from 'vitest';
+import { describe, expect, SpyInstance, test, vi } from 'vitest';
 import { elementUpdated, fixture, html } from '@open-wc/testing-helpers';
 import { screen } from 'shadow-dom-testing-library';
 import Dropdown from './dropdown.component';
 import { fireEvent } from '@testing-library/dom';
 import { ActionKeystrokes } from '../../internals/baseElement/baseElement';
+import userEvent from '@testing-library/user-event';
 
 describe('Dropdown', () => {
   describe('with a menu item', () => {
     const text = 'MenuItem';
-    const fixtureWithOneMenuItem = async () => {
+    let changeSpy: SpyInstance;
+
+    async function fixtureWithOneMenuItem() {
+      changeSpy = vi.fn();
       return await fixture(html`
-        <dss-dropdown>
+        <dss-dropdown @change="${changeSpy}">
           <dss-menu>
-            <dss-menu-item>${text}</dss-menu-item>
+            <dss-menu-item value=${text}>${text}</dss-menu-item>
           </dss-menu>
         </dss-dropdown>
       `) as HTMLElementTagNameMap['dss-dropdown'];
-    };
+    }
 
     test('renders menu item', async () => {
       const element = await fixtureWithOneMenuItem() as Dropdown;
       await elementUpdated(element);
 
-      expect(screen.getByShadowText(text, { exact: false }));
+      expect(screen.getByShadowText(text, { exact: false })).toBeInTheDocument();
+    });
+
+    test('has no option selected', async () => {
+      const element = await fixtureWithOneMenuItem() as Dropdown;
+      await elementUpdated(element);
+
+      expect(screen.queryByRole('option', { selected: false })).toBeInTheDocument();
+      expect(screen.queryByRole('option', { selected: true })).not.toBeInTheDocument();
     });
 
     test('"aria-expanded" tracks floating element "active"', async () => {
       const element = await fixtureWithOneMenuItem();
-
-      const trigger = screen.getByShadowRole('listbox');
       const floatingElement = element.shadowRoot!.querySelector('dss-floating')!;
 
-      expect(trigger.getAttribute('aria-expanded')).toBe('false');
+      expect(screen.queryByShadowRole('listbox', { expanded: true })).not.toBeInTheDocument();
       expect(floatingElement.active).toBe(false);
 
-      trigger.click();
+      screen.getByShadowRole('listbox').click();
       await elementUpdated(element);
 
-      expect(trigger.getAttribute('aria-expanded')).toBe('true');
+      expect(screen.getByShadowRole('listbox', { expanded: true })).toBeInTheDocument();
       expect(floatingElement.active).toBe(true);
 
-      fireEvent.focusOut(trigger);
+      fireEvent.focusOut(screen.getByShadowRole('listbox'));
       await elementUpdated(element);
 
-      expect(trigger.getAttribute('aria-expanded')).toBe('false');
+      expect(screen.getByShadowRole('listbox', { expanded: false })).toBeInTheDocument();
       expect(floatingElement.active).toBe(false);
     });
 
     test('when user clicks on dropdown trigger, toggles dropdown', async () => {
       const element = await fixtureWithOneMenuItem();
+      expect(screen.queryByShadowRole('listbox', { expanded: true })).not.toBeInTheDocument();
 
-      const trigger = screen.getByShadowRole('listbox');
-      expect(trigger.getAttribute('aria-expanded')).toBe('false');
-
-      trigger.click();
+      screen.getByShadowRole('listbox').click();
       await elementUpdated(element);
+      expect(screen.getByShadowRole('listbox', { expanded: true })).toBeInTheDocument();
 
-      expect(trigger.getAttribute('aria-expanded')).toBe('true');
-
-      trigger.click();
+      screen.getByShadowRole('listbox').click();
       await elementUpdated(element);
-
-      expect(trigger.getAttribute('aria-expanded')).toBe('false');
+      expect(screen.getByShadowRole('listbox', { expanded: false })).toBeInTheDocument();
     });
 
     test('when user clicks on disabled dropdown trigger, does not toggle dropdown', async () => {
@@ -74,123 +80,109 @@ describe('Dropdown', () => {
       element.disabled = true;
       await elementUpdated(element);
 
-      const trigger = screen.getByShadowRole('listbox');
-      expect(trigger.getAttribute('aria-expanded')).toBe('false');
+      expect(screen.queryByShadowRole('listbox', { expanded: true })).not.toBeInTheDocument();
 
-      trigger.click();
+      screen.getByShadowRole('listbox').click();
       await elementUpdated(element);
 
-      expect(trigger.getAttribute('aria-expanded')).toBe('false');
+      expect(screen.queryByShadowRole('listbox', { expanded: true })).not.toBeInTheDocument();
     });
 
     test.each(ActionKeystrokes)('when user presses key "%s" on dropdown trigger, toggles dropdown', async (key) => {
       const element = await fixtureWithOneMenuItem();
 
-      const trigger = screen.getByShadowRole('listbox');
-      expect(trigger.getAttribute('aria-expanded')).toBe('false');
+      expect(screen.queryByRole('listbox', { expanded: true })).not.toBeInTheDocument();
 
-      fireEvent.keyDown(trigger, { key });
+      fireEvent.keyDown(screen.getByShadowRole('listbox'), { key });
       await elementUpdated(element);
 
-      expect(trigger.getAttribute('aria-expanded')).toBe('true');
+      expect(screen.getByShadowRole('listbox', { expanded: true })).toBeInTheDocument();
 
-      fireEvent.keyDown(trigger, { key });
+      fireEvent.keyDown(screen.getByShadowRole('listbox'), { key });
       await elementUpdated(element);
 
-      expect(trigger.getAttribute('aria-expanded')).toBe('false');
+      expect(screen.getByShadowRole('listbox', { expanded: false })).toBeInTheDocument();
     });
 
     test('when options lose focus, close menu', async () => {
       const element = await fixtureWithOneMenuItem();
 
-      const trigger = screen.getByShadowRole('listbox');
-      const options = screen.getAllByShadowRole('menuitem');
+      const options = screen.getAllByRole('option');
 
-      trigger.click();
+      screen.getByShadowRole('listbox').click();
       await elementUpdated(element);
-      expect(trigger.getAttribute('aria-expanded')).toBe('true');
+      expect(screen.getByShadowRole('listbox', { expanded: true })).toBeInTheDocument();
 
       options[0].focus();
       await elementUpdated(element);
-      expect(trigger.getAttribute('aria-expanded')).toBe('true');
+      expect(screen.getByShadowRole('listbox', { expanded: true })).toBeInTheDocument();
       expect(options[0]).toHaveFocus();
 
       fireEvent.focusOut(options[0]);
       await elementUpdated(element);
-      expect(trigger.getAttribute('aria-expanded')).toBe('false');
+      expect(screen.getByShadowRole('listbox', { expanded: false })).toBeInTheDocument();
     });
 
     test('when user presses "Escape" with the trigger in focus, closes dropdown', async () => {
       const element = await fixtureWithOneMenuItem();
 
-      const trigger = screen.getByShadowRole('listbox');
-
-      trigger.click();
+      screen.getByShadowRole('listbox').click();
       await elementUpdated(element);
 
-      expect(trigger.getAttribute('aria-expanded')).toBe('true');
+      expect(screen.getByShadowRole('listbox', { expanded: true })).toBeInTheDocument();
 
-      fireEvent.keyDown(trigger, { key: 'Escape' });
+      fireEvent.keyDown(screen.getByShadowRole('listbox'), { key: 'Escape' });
       await elementUpdated(element);
 
-      expect(trigger.getAttribute('aria-expanded')).toBe('false');
+      expect(screen.getByShadowRole('listbox', { expanded: false })).toBeInTheDocument();
     });
 
     test('when user presses "Escape" with the menu in focus, closes dropdown', async () => {
       const element = await fixtureWithOneMenuItem();
 
-      const trigger = screen.getByShadowRole('listbox');
-      trigger.click();
+      screen.getByShadowRole('listbox').click();
       await elementUpdated(element);
 
-      expect(trigger.getAttribute('aria-expanded')).toBe('true');
+      expect(screen.getByShadowRole('listbox', { expanded: true })).toBeInTheDocument();
 
       const menu = screen.getByRole('menu');
       fireEvent.keyDown(menu, { key: 'Escape' });
       await elementUpdated(element);
 
-      expect(trigger.getAttribute('aria-expanded')).toBe('false');
+      expect(screen.getByShadowRole('listbox', { expanded: false })).toBeInTheDocument();
     });
 
     test('when user selects option, displays option in input element, closes dropdown', async () => {
       const element = await fixtureWithOneMenuItem();
 
-      const trigger = screen.getByShadowRole('listbox');
-      trigger.click();
+      screen.getByShadowRole('listbox').click();
       await elementUpdated(element);
 
-      expect(trigger.getAttribute('aria-expanded')).toBe('true');
+      expect(screen.getByShadowRole('listbox', { expanded: true })).toBeInTheDocument();
 
-      const optionSelected = screen.getByShadowRole('menuitem');
-      fireEvent.click(optionSelected, { detail: 1 });
+      const optionSelected = screen.getByShadowRole('option');
+      await userEvent.setup().click(optionSelected);
       await elementUpdated(element);
 
       const inputElement = screen.getByShadowRole('textbox') as HTMLElementTagNameMap['dss-dropdown'];
 
       expect(inputElement.value).toBe(text);
-      expect(trigger.getAttribute('aria-expanded')).toBe('false');
+      expect(screen.getByShadowRole('listbox', { expanded: false })).toBeInTheDocument();
+      expect(changeSpy).toHaveBeenCalledOnce();
+      expect(changeSpy.mock.calls[0][0].target).toHaveProperty('value', 'MenuItem');
     });
-  });
 
-  test('with keepOpenOnSelect, when user selects option, does not close', async () => {
-    const element = await fixture(html`
-      <dss-dropdown keepOpenOnSelect>
-        <dss-menu>
-          <dss-menu-item></dss-menu-item>
-        </dss-menu>
-      </dss-dropdown>
-    `) as HTMLElementTagNameMap['dss-dropdown'];
+    test('when value changes, shows selected menu item text and returns selected menu item text', async () => {
+      const element = await fixtureWithOneMenuItem();
+      await elementUpdated(element);
 
-    const trigger = screen.getByShadowRole('listbox');
-    trigger.click();
-    await elementUpdated(element);
+      element.value = text;
+      await elementUpdated(element);
 
-    expect(trigger.getAttribute('aria-expanded')).toBe('true');
-
-    const optionSelected = screen.getByShadowRole('menuitem');
-    optionSelected.click();
-    await elementUpdated(element);
-    expect(trigger.getAttribute('aria-expanded')).toBe('true');
+      const inputElement = screen.getByShadowRole('textbox') as HTMLInputElement;
+      expect(inputElement.value).toBe(text);
+      expect(element.value).toBe(text);
+    });
   });
 
   describe('when there are multiple menu items', () => {
@@ -210,7 +202,7 @@ describe('Dropdown', () => {
       const element = await fixtureWithThreeMenuItems();
 
       const trigger = screen.getByShadowRole('listbox');
-      const options = screen.getAllByShadowRole('menuitem');
+      const options = screen.getAllByRole('option');
 
       expect(options[0]).not.toHaveFocus();
 
@@ -223,7 +215,7 @@ describe('Dropdown', () => {
       await fixtureWithThreeMenuItems();
 
       const trigger = screen.getByShadowRole('listbox');
-      const options = screen.getAllByShadowRole('menuitem');
+      const options = screen.getAllByRole('option');
 
       expect(options[0]).not.toHaveFocus();
 
@@ -236,7 +228,7 @@ describe('Dropdown', () => {
       await fixtureWithThreeMenuItems();
 
       const trigger = screen.getByShadowRole('listbox');
-      const options = screen.getAllByShadowRole('menuitem');
+      const options = screen.getAllByRole('option');
 
       expect(options[2]).not.toHaveFocus();
 
@@ -249,37 +241,13 @@ describe('Dropdown', () => {
       await fixtureWithThreeMenuItems();
 
       const trigger = screen.getByShadowRole('listbox');
-      const options = screen.getAllByShadowRole('menuitem');
+      const options = screen.getAllByRole('option');
 
       expect(options[2]).not.toHaveFocus();
 
       fireEvent.keyDown(trigger, { key: 'End' });
 
       expect(options[2]).toHaveFocus();
-    });
-  });
-
-  describe('when there is an icon-only button trigger', async () => {
-    test('when the user clicks on the icon, it opens the dropdown', async () => {
-      const iconTestId = 'icon';
-      const element: HTMLElementTagNameMap['dss-dropdown'] = await fixture(html`
-        <dss-dropdown>
-          <dss-button type="icon-only" slot="trigger">
-            <dss-icon icon="navigate_beginning" size="large" data-testid="${iconTestId}"></dss-icon>
-          </dss-button>
-          <dss-menu>
-            <dss-menu-item></dss-menu-item>
-          </dss-menu>
-        </dss-dropdown>
-      `);
-
-      expect(element).not.toHaveAttribute('open');
-
-      const icon = screen.getByShadowTestId(iconTestId);
-      icon.click();
-      await elementUpdated(element);
-
-      expect(element).toHaveAttribute('open');
     });
   });
 
@@ -321,6 +289,32 @@ describe('Dropdown', () => {
 
       expect(screen.getByShadowLabelText('test')).toBeInTheDocument();
     });
+
+    test('when interacting with dropdown selecting a value, does dispatch blur event after actual leaving of the component', async () => {
+      const focusSpy = vi.fn();
+      const blurSpy = vi.fn();
+      await fixture(html`
+        <dss-dropdown @blur="${blurSpy}" @focus="${focusSpy}" label="dropdown">
+          <dss-menu>
+            <dss-menu-item value="test">Test</dss-menu-item>
+          </dss-menu>
+        </dss-dropdown>
+      `);
+
+      const user = userEvent.setup();
+      await user.click(screen.getByShadowLabelText('dropdown'));
+      expect(focusSpy).toHaveBeenCalledOnce();
+      expect(blurSpy).not.toHaveBeenCalled();
+
+      await user.click(screen.getByShadowRole('option'));
+
+      expect(focusSpy).toHaveBeenCalledTimes(2);
+      expect(blurSpy).not.toHaveBeenCalled();
+
+      await user.tab();
+      expect(focusSpy).toHaveBeenCalledTimes(2);
+      expect(blurSpy).toHaveBeenCalledOnce();
+    });
   });
 
   test('when setting required, passes required flag to native input', async () => {
@@ -330,20 +324,115 @@ describe('Dropdown', () => {
     expect(screen.getByShadowRole('textbox')).toHaveAttribute('required');
   });
 
-  test('with a selected menu item, selects menu item', async () => {
-    const listenerSpy = vi.fn();
-    await fixture(html`
-      <dss-dropdown @dss-menu-selection=${listenerSpy}>
-        <dss-menu>
-          <dss-menu-item selected>Selected</dss-menu-item>
-          <dss-menu-item>Not selected</dss-menu-item>
-        </dss-menu>
-      </dss-dropdown>
-    `);
+  describe('with a two menu items with value and one selected', () => {
+    async function fixtureWithTwoMenuItemsWithValueAndOneSelected() {
+      return await fixture(html`
+        <dss-dropdown value="0">
+          <dss-menu>
+            <dss-menu-item value="0">Selected</dss-menu-item>
+            <dss-menu-item value="1">Not selected</dss-menu-item>
+          </dss-menu>
+        </dss-dropdown>`) as HTMLElementTagNameMap['dss-dropdown'];
+    }
 
-    expect((screen.getByShadowRole('textbox') as HTMLInputElement).value).toBe('Selected');
-    expect(listenerSpy).toHaveBeenCalledOnce();
+    test('shows selected menu item text and returns selected menu item value', async () => {
+      const element = await fixtureWithTwoMenuItemsWithValueAndOneSelected();
+
+      const inputElement = screen.getByShadowRole('textbox') as HTMLInputElement;
+      expect(inputElement.value).toBe('Selected');
+      expect(element.value).toBe('0');
+      expect(screen.getByRole('option', { selected: true })).toBeInTheDocument();
+    });
+
+    test('when changing the value, shows new menu item text and returns new menu item value', async () => {
+      const element = await fixtureWithTwoMenuItemsWithValueAndOneSelected();
+
+      element.value = '1';
+      await elementUpdated(element);
+
+      const inputElement = screen.getByShadowRole('textbox') as HTMLInputElement;
+      expect(inputElement.value).toBe('Not selected');
+      expect(element.value).toBe('1');
+      expect(screen.getByRole('option', { selected: true })).toHaveValue('1');
+    });
+
+    test('when changing the value twice, has only one selected option', async () => {
+      const element = await fixtureWithTwoMenuItemsWithValueAndOneSelected();
+
+      element.value = '1';
+      await elementUpdated(element);
+      expect(screen.queryAllByRole('option', { selected: true })).toHaveLength(1);
+
+      element.value = '0';
+      await elementUpdated(element);
+      expect(screen.queryAllByRole('option', { selected: true })).toHaveLength(1);
+    });
+
+    test('when changing to unknown value, shows no text and returns unknown string', async () => {
+      const element = await fixtureWithTwoMenuItemsWithValueAndOneSelected();
+
+      element.value = 'unknown';
+      await elementUpdated(element);
+
+      const inputElement = screen.getByShadowRole('textbox') as HTMLInputElement;
+      expect(inputElement.value).toBe('');
+      expect(element.value).toBe('unknown'); // Note: the observed behavior of the HTML select element is, that in this case it returns empty string
+      expect(screen.queryByRole('option', { selected: true })).not.toBeInTheDocument();
+    });
+
+    test('when resetting the value with undefined, shows no menu item text and returns undefined value', async () => {
+      const element = await fixtureWithTwoMenuItemsWithValueAndOneSelected();
+
+      element.value = undefined;
+      await elementUpdated(element);
+
+      const inputElement = screen.getByShadowRole('textbox') as HTMLInputElement;
+      expect(inputElement.value).toBe('');
+      expect(element.value).toBe(undefined); // Note: the observed behavior of the HTML select element is, that in this case it returns empty string
+      expect(screen.queryByRole('option', { selected: true })).not.toBeInTheDocument();
+    });
+
+    test('when resetting the value with empty string, shows no menu item text and returns undefined value', async () => {
+      const element = await fixtureWithTwoMenuItemsWithValueAndOneSelected();
+
+      element.value = '';
+      await elementUpdated(element);
+
+      const inputElement = screen.getByShadowRole('textbox') as HTMLInputElement;
+      expect(inputElement.value).toBe('');
+      expect(element.value).toBe('');
+      expect(screen.queryByRole('option', { selected: true })).not.toBeInTheDocument();
+    });
+  });
+
+  describe('with a two menu items without value and one selected', () => {
+    async function fixtureWithTwoMenuItemsWithoutValueAndOneSelected() {
+      return await fixture(html`
+        <dss-dropdown value="Selected">
+          <dss-menu>
+            <dss-menu-item>Selected</dss-menu-item>
+            <dss-menu-item>Not selected</dss-menu-item>
+          </dss-menu>
+        </dss-dropdown>`) as HTMLElementTagNameMap['dss-dropdown'];
+    }
+
+    test('shows selected menu item text and returns selected menu item text', async () => {
+      const element = await fixtureWithTwoMenuItemsWithoutValueAndOneSelected();
+
+      const inputElement = screen.getByShadowRole('textbox') as HTMLInputElement;
+      expect(inputElement.value).toBe('Selected');
+      expect(element.value).toBe('Selected');
+    });
+
+    test('when changing the value, shows new menu item text and returns new menu item text', async () => {
+      const element = await fixtureWithTwoMenuItemsWithoutValueAndOneSelected();
+
+      element.value = 'Not selected';
+      await elementUpdated(element);
+
+      const inputElement = screen.getByShadowRole('textbox') as HTMLInputElement;
+      expect(inputElement.value).toBe('Not selected');
+      expect(element.value).toBe('Not selected');
+    });
   });
 });
-
-

@@ -11,10 +11,6 @@ export default {
     actions: {
       handles: ['dss-pagination-page-index-selected'],
     },
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/file/vN8eRqwHQLrnGFkcxL7Z4W/dss-Connect-Design?node-id=531%3A2886&t=pCiTHJvGpYAJtQ9H-0',
-    },
     docs: {
       description: {
         component: docs,

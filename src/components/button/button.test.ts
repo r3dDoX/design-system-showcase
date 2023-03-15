@@ -19,7 +19,7 @@ describe('Button', () => {
   test('renders complex slotted nodes', async () => {
     await fixture(html`
       <dss-button type="primary">
-        <dss-icon icon="navigate_plus"></dss-icon>
+        <dss-icon icon="plus"></dss-icon>
       </dss-button>`);
 
     const button = screen.getByShadowRole('button');
@@ -27,13 +27,13 @@ describe('Button', () => {
 
     const slottedNodes = button.querySelector('slot')!.assignedElements();
     expect(slottedNodes).toHaveLength(1);
-    expect(slottedNodes[0].tagName).toBe('dss-ICON');
+    expect(slottedNodes[0].tagName).toBe('DSS-ICON');
   });
 
   test('when icon-only and user hovers, renders tooltip', async () => {
     const element = await fixture(html`
       <dss-button type="icon-only" tooltip="Go to start">
-        <dss-icon icon="navigate_beginning"></dss-icon>
+        <dss-icon icon="chevrons-left"></dss-icon>
       </dss-button>`);
 
     const button = screen.getByShadowRole('button');
@@ -52,7 +52,7 @@ describe('Button', () => {
     await fixture(
       html`
         <dss-button type="icon-only">
-          <dss-icon icon="navigate_plus"></dss-icon>
+          <dss-icon icon="plus"></dss-icon>
         </dss-button>`,
     );
     expect(screen.getByShadowRole('button')).toHaveClass('spacing-icon-only');
@@ -62,7 +62,7 @@ describe('Button', () => {
     const spy = vi.fn();
     await fixture(html`
       <dss-button type="icon-only" tooltip="Go to start" @click="${spy}" disabled>
-        <dss-icon icon="navigate_beginning" data-testid="icon"></dss-icon>
+        <dss-icon icon="chevrons-left" data-testid="icon"></dss-icon>
       </dss-button>`);
 
     const icon = screen.getByTestId('icon');
