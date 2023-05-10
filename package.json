@@ -1,12 +1,12 @@
 {
   "name": "design-system-showcase",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "type": "module",
   "main": "dist/index.js",
   "customElements": "dist/custom-elements.json",
   "exports": {
     ".": "./dist/index.js",
-    "./*": "./*"
+    "./*": "./dist/*"
   },
   "types": "dist/index.d.ts",
   "files": [
