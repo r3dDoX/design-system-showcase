@@ -1,9 +1,7 @@
 import 'element-internals-polyfill';
-import {html} from 'lit';
 import {setCustomElementsManifest} from '@storybook/web-components';
 import customElements from '../dist/custom-elements.json';
-import '../src/components/style/style.component';
-import './storybook.css';
+import '../src/rootStyles/style.css';
 
 customElements?.modules?.forEach((module) => {
   module?.declarations?.forEach(declaration => {
@@ -28,8 +26,3 @@ export const parameters = {
     },
   },
 };
-
-export const decorators = [
-  (story) => html`
-    <dss-style>${story()}</dss-style>`,
-];

@@ -1,3 +1,4 @@
+import './rootStyles/style.css';
 export { default as DssButton } from './components/button/button.component';
 export { default as DssButtonGroup } from './components/buttongroup/buttongroup.component';
 export { default as DssCheckbox } from './components/checkbox/checkbox.component';
@@ -13,7 +14,6 @@ export { default as DssOutsideClick } from './components/outsideClick/outsideCli
 export { default as DssOverlay } from './components/overlay/overlay.component';
 export { default as DssPagination } from './components/pagination/pagination.component';
 export { default as DssRadio } from './components/radio/radio.component';
-export { default as DssStyle } from './components/style/style.component';
 export { default as DssSwitch } from './components/switch/switch.component';
 export { default as DssTab } from './components/tab/tab.component';
 export { default as DssTabGroup } from './components/tabGroup/tabGroup.component';

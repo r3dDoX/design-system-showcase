@@ -1,1 +1,1 @@
-Link/anchor is styled by using the `dss-style` component.
+Link/anchor is styled by importing the root styles in your web app.

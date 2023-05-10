@@ -1,4 +1,5 @@
 @import "./design-tokens.css";
+@import "../internals/baseElement/global.css";
 
 @font-face {
   font-family: "Inter";
