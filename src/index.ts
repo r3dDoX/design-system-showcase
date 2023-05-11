@@ -10,7 +10,6 @@ export { default as DssInput } from './components/input/input.component';
 export { default as DssLabel } from './components/label/label.component';
 export { default as DssMenu } from './components/menu/menu.component';
 export { default as DssMenuItem } from './components/menuItem/menuItem.component';
-export { default as DssOutsideClick } from './components/outsideClick/outsideClick.component';
 export { default as DssOverlay } from './components/overlay/overlay.component';
 export { default as DssPagination } from './components/pagination/pagination.component';
 export { default as DssRadio } from './components/radio/radio.component';
