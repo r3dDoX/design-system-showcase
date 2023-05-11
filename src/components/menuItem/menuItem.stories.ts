@@ -49,7 +49,7 @@ Default.args = {
 export const Icon = Template.bind({});
 Icon.args = {
   itemSlot: html`
-    <dss-icon icon="pencil" size="medium"></dss-icon>Edit`,
+    <dss-icon icon="pen-tool" size="medium"></dss-icon>Edit`,
 };
 
 export const Checkbox = Template.bind({});

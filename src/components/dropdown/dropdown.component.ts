@@ -14,6 +14,7 @@ import { InputErrorState } from '../input/input.component';
 import { createRef, ref, Ref } from 'lit/directives/ref.js';
 import { Placement } from '@floating-ui/dom';
 import MenuItem from '../menuItem/menuItem.component';
+import { outsideClick } from '../../directives/outsideClick/outsideClick.directive';
 
 export interface DropdownTranslations {
   valueMissing?: string;
@@ -109,13 +110,13 @@ export default class Dropdown extends BaseElement {
   override render() {
     return html`
       <dss-label label="${ifDefined(this.label)}" ?required="${this.required}"></dss-label>
-      <dss-outside-click .onOutsideClick="${() => this.hide()}">
-        <dss-floating
-          placement="${this.placement}"
-          ?active="${this.open}"
-          .updateOnAnimate="${ifDefined(this.updateOnAnimate)}"
-          @focusout="${this.handleFocusOut}"
-        >
+      <dss-floating
+        ${outsideClick(() => this.hide())}
+        placement="${this.placement}"
+        ?active="${this.open}"
+        .updateOnAnimate="${ifDefined(this.updateOnAnimate)}"
+        @focusout="${this.handleFocusOut}"
+      >
           <span
             slot="anchor"
             class="trigger-area"
@@ -140,13 +141,12 @@ export default class Dropdown extends BaseElement {
             </dss-input>
           </span>
 
-          <slot
-            @dss-menu-selection="${this.selectedRow}"
-            @keydown="${this.handleKeyDownOnMenu}"
-            @slotchange=${this.handleSlotChange}
-          ></slot>
-        </dss-floating>
-      </dss-outside-click>
+        <slot
+          @dss-menu-selection="${this.selectedRow}"
+          @keydown="${this.handleKeyDownOnMenu}"
+          @slotchange=${this.handleSlotChange}
+        ></slot>
+      </dss-floating>
       <dss-hint .state="${this.errorState}" .message="${this.message}"></dss-hint>
     `;
   }

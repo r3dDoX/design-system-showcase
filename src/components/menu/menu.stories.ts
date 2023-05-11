@@ -71,7 +71,7 @@ WithCheckboxes.args = {
   <dss-menu-item value="copy">
     <dss-checkbox size="compact" label="Kopieren" tabindex="-1"></dss-checkbox>
   </dss-menu-item>
-  <dss-menu-item value="clipboard_paste">
+  <dss-menu-item value="clipboard">
     <dss-checkbox size="compact" label="Einfügen" tabindex="-1"></dss-checkbox>
   </dss-menu-item>
   `,

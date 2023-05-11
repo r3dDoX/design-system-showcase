@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from 'vitest';
 import { fixture, html } from '@open-wc/testing-helpers';
-import '../components/button/button.component';
+import '../../components/button/button.component';
 import { outsideClick } from './outsideClick.directive';
 import { screen } from 'shadow-dom-testing-library';
 

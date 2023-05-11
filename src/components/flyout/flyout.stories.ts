@@ -66,7 +66,7 @@ ButtonWithMenu.args = {
   contentSlot: html`
     <dss-menu>
       <dss-menu-item>
-        <dss-icon icon="pencil" size="medium"></dss-icon>
+        <dss-icon icon="pen-tool" size="medium"></dss-icon>
         Edit
       </dss-menu-item>
       <hr>
@@ -75,7 +75,7 @@ ButtonWithMenu.args = {
         Copy
       </dss-menu-item>
       <dss-menu-item>
-        <dss-icon icon="clipboard_paste" size="medium"></dss-icon>
+        <dss-icon icon="clipboard" size="medium"></dss-icon>
         Paste
       </dss-menu-item>
     </dss-menu>
@@ -103,7 +103,7 @@ ButtonWithForm.args = {
   `,
   triggerSlot: html`
     <dss-button type="primary" spacing="icon-only">
-      <dss-icon icon="gearwheel"></dss-icon>
+      <dss-icon icon="settings"></dss-icon>
     </dss-button>
   `,
   placement: 'bottom-start',

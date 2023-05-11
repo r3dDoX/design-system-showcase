@@ -45,7 +45,7 @@ export const Complex = Template.bind({});
 Complex.args = {
   slot: `
     <p style="display: flex; gap: 1rem;">
-      <dss-icon icon="pencil"></dss-icon>
+      <dss-icon icon="pen-tool"></dss-icon>
       Test 1
     </p>
   `,
