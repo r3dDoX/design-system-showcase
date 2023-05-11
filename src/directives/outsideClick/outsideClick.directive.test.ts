@@ -14,7 +14,7 @@ describe('outsideClick.directive', () => {
       </div>
     `);
 
-    await screen.getByTestId('outside').click();
+    screen.getByTestId('outside').click();
 
     expect(spy).toHaveBeenCalledOnce();
   });
@@ -28,7 +28,7 @@ describe('outsideClick.directive', () => {
       </div>
     `);
 
-    await screen.getByShadowRole('button').click();
+    screen.getByShadowRole('button').click();
 
     expect(spy).not.toHaveBeenCalled();
   });
