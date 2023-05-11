@@ -2,11 +2,11 @@ import './spinner.component';
 import '../icon/icon.component';
 import Spinner, { spinnerTypes } from './spinner.component';
 import { html } from 'lit-html';
-import { Story } from '@storybook/web-components';
+import { Meta, Story } from '@storybook/web-components';
 import docs from './spinner.md?raw';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 
-export default {
+const meta: Meta<Spinner> = {
   title: 'Components/Spinner',
   component: 'dss-spinner',
   argTypes: {
@@ -20,6 +20,8 @@ export default {
     },
   },
 };
+// noinspection JSUnusedGlobalSymbols
+export default meta;
 
 const Template: Story<Spinner> = ({ type }) => html`
   <dss-spinner

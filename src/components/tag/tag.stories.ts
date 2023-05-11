@@ -4,7 +4,7 @@ import './tag.component';
 import Tag from './tag.component';
 import docs from './tag.md?raw';
 
-export default {
+const meta: Meta<Tag> = {
   title: 'Components/Tag',
   component: 'dss-tag',
   parameters: {
@@ -14,7 +14,9 @@ export default {
       },
     },
   },
-} as Meta;
+};
+// noinspection JSUnusedGlobalSymbols
+export default meta;
 
 const Template: Story<Tag> = ({ slot }) => html`
   <dss-tag>${slot}</dss-tag>

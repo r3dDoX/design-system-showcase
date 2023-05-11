@@ -7,7 +7,7 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import docs from './buttongroup.md?raw';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 
-export default {
+const meta: Meta<ButtonGroup> = {
   title: 'Components/Button Group',
   component: 'dss-button-group',
   parameters: {
@@ -20,7 +20,9 @@ export default {
       },
     },
   },
-} as Meta;
+};
+// noinspection JSUnusedGlobalSymbols
+export default meta;
 
 const Template: Story<ButtonGroup> = ({ slot, value, label, required, errorState, message }) => html`
   <dss-button-group

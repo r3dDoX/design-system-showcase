@@ -17,7 +17,7 @@ const numberTypes: Intl.NumberFormatPartTypes[] = [
   'fraction',
 ];
 
-export default {
+const meta: Meta<Table> = {
   title: 'Components/Table',
   component: 'dss-table',
   parameters: {
@@ -30,7 +30,9 @@ export default {
       },
     },
   },
-} as Meta;
+};
+// noinspection JSUnusedGlobalSymbols
+export default meta;
 
 const Template: Story<Table> = ({
   data,

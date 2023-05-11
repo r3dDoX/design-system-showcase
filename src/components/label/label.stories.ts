@@ -1,11 +1,11 @@
 import docs from './label.md?raw';
-import { Story } from '@storybook/web-components';
+import { Meta, Story } from '@storybook/web-components';
 import Label from './label.component';
 import { html } from 'lit';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import './label.component';
 
-export default {
+const meta: Meta<Label> ={
   title: 'Components/Label',
   component: 'dss-label',
   parameters: {
@@ -16,6 +16,8 @@ export default {
     },
   },
 };
+// noinspection JSUnusedGlobalSymbols
+export default meta;
 
 const Template: Story<Label> = ({ label, required }) => html`
   <dss-label label="${ifDefined(label)}" required="${ifDefined(required)}"></dss-label>

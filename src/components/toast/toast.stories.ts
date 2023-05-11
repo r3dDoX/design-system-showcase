@@ -5,7 +5,7 @@ import { html } from 'lit';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import './toast.component';
 
-export default {
+const meta: Meta<Toast> = {
   title: 'Components/Toast',
   component: 'dss-toast',
   argTypes: {
@@ -21,7 +21,9 @@ export default {
       },
     },
   },
-} as Meta;
+};
+// noinspection JSUnusedGlobalSymbols
+export default meta;
 
 const Template: Story<Toast> = ({ type, heading, message, closable }) => html`
   <dss-toast

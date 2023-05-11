@@ -12,7 +12,7 @@ import '../input/input.component';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { placementOptions } from '../../internals/floatingElement/floatingElement';
 
-export default {
+const meta: Meta<Flyout> = {
   title: 'Components/Flyout',
   component: 'dss-flyout',
   argTypes: {
@@ -28,8 +28,9 @@ export default {
       },
     },
   },
-} as Meta;
-
+};
+// noinspection JSUnusedGlobalSymbols
+export default meta;
 
 const Template: Story<Flyout & { contentSlot: TemplateResult, triggerSlot: TemplateResult }> = ({
   triggerSlot,

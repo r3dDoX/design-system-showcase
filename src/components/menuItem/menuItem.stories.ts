@@ -6,7 +6,7 @@ import docs from './menuItem.md?raw';
 import MenuItem from './menuItem.component';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 
-export default {
+const meta: Meta<MenuItem> = {
   title: 'Components/MenuItem',
   component: 'dss-menu-item',
   argTypes: {},
@@ -17,7 +17,9 @@ export default {
       },
     },
   },
-} as Meta<MenuItem>;
+};
+// noinspection JSUnusedGlobalSymbols
+export default meta;
 
 const Template: Story<MenuItem & { itemSlot: TemplateResult }> = (
   {

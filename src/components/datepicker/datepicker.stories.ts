@@ -5,7 +5,7 @@ import Datepicker from './datepicker.component';
 import docs from './datepicker.md?raw';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 
-export default {
+const meta: Meta<Datepicker> = {
   title: 'Components/Datepicker',
   component: 'dss-datepicker',
   argTypes: {
@@ -22,7 +22,9 @@ export default {
       },
     },
   },
-} as Meta;
+};
+// noinspection JSUnusedGlobalSymbols
+export default meta;
 
 const DatePickerTemplate: Story<Datepicker> = ({ required, label, value, errorState, message, locale }) => html`
   <dss-datepicker

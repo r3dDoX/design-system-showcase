@@ -6,7 +6,7 @@ import Menu from './menu.component';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import docs from './menu.md?raw';
 
-export default {
+const meta: Meta<Menu> = {
   title: 'Components/Menu',
   component: 'dss-menu',
   argTypes: {},
@@ -20,7 +20,9 @@ export default {
       },
     },
   },
-} as Meta<Menu>;
+};
+// noinspection JSUnusedGlobalSymbols
+export default meta;
 
 const Template: Story<Menu> = ({ slot }) => html`
   <dss-menu style="max-width: 20rem; border-radius: 0.5rem; box-shadow: 0 0 1rem 0 rgb(0 0 0 / 20%);">

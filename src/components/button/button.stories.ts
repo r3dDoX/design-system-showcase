@@ -2,12 +2,12 @@ import './button.component';
 import '../icon/icon.component';
 import Button, { buttonSides, buttonSpacings, buttonTypes } from './button.component';
 import { html } from 'lit-html';
-import { Story } from '@storybook/web-components';
+import { Meta, Story } from '@storybook/web-components';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import docs from './button.md?raw';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 
-export default {
+const meta: Meta<Button> = {
   title: 'Components/Button',
   component: 'dss-button',
   argTypes: {
@@ -27,6 +27,8 @@ export default {
     },
   },
 };
+// noinspection JSUnusedGlobalSymbols
+export default meta;
 
 const Template: Story<Button> = ({ type, spacing, removeRadius, removeBorder, slot, disabled, tooltip }) => html`
   <dss-button

@@ -6,7 +6,7 @@ import docs from './radio.md?raw';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputErrorStates, inputSizes } from '../input/input.component';
 
-export default {
+const meta: Meta<Radio> = {
   title: 'Components/Radio',
   component: 'dss-radio',
   argTypes: {
@@ -23,7 +23,9 @@ export default {
       },
     },
   },
-} as Meta;
+};
+// noinspection JSUnusedGlobalSymbols
+export default meta;
 
 const Template: Story<Radio> = ({ label, size, errorState, message }) => {
   return html`

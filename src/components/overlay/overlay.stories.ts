@@ -8,7 +8,7 @@ import './overlay.component';
 import '../button/button.component';
 import { useArgs } from '@storybook/addons';
 
-export default {
+const meta: Meta<Overlay> = {
   title: 'Components/Overlay',
   component: 'dss-overlay',
   parameters: {
@@ -21,7 +21,9 @@ export default {
       },
     },
   },
-} as Meta;
+};
+// noinspection JSUnusedGlobalSymbols
+export default meta;
 
 const Template: Story<Overlay & { slots?: TemplateResult }> = ({
   header,

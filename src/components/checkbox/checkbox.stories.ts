@@ -1,12 +1,12 @@
 import './checkbox.component';
-import { Story } from '@storybook/web-components';
+import { Meta, Story } from '@storybook/web-components';
 import { html } from 'lit-html';
 import Checkbox from './checkbox.component';
 import docs from './checkbox.md?raw';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputErrorStates, inputSizes } from '../input/input.component';
 
-export default {
+const meta: Meta<Checkbox> = {
   title: 'Components/Checkbox',
   component: 'dss-checkbox',
   argTypes: {
@@ -24,6 +24,8 @@ export default {
     },
   },
 };
+// noinspection JSUnusedGlobalSymbols
+export default meta;
 
 const Template: Story<Checkbox> = ({
   label,

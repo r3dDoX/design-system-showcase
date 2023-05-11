@@ -7,7 +7,7 @@ import { grid } from '@lit-labs/virtualizer/layouts/grid.js';
 import docs from './icon.md?raw';
 import { ICONS } from './icons';
 
-export default {
+const meta: Meta<Icon> = {
   title: 'Components/Icons',
   component: 'dss-icon',
   argTypes: {
@@ -21,7 +21,9 @@ export default {
       },
     },
   },
-} as Meta;
+};
+// noinspection JSUnusedGlobalSymbols
+export default meta;
 
 const Template: Story<Icon & { color: string }> = ({ color }) => html`
   <style>

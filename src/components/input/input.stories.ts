@@ -8,7 +8,7 @@ import docsReadonly from './input.readonly.md?raw';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { when } from 'lit-html/directives/when.js';
 
-export default {
+const meta: Meta<Input> = {
   title: 'Components/Input',
   component: 'dss-input',
   parameters: {
@@ -31,7 +31,9 @@ export default {
       control: { type: 'select' },
     },
   },
-} as Meta;
+};
+// noinspection JSUnusedGlobalSymbols
+export default meta;
 
 const Template: Story<Input & {
   placeholder?: string,

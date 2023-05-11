@@ -1,12 +1,12 @@
 import './tab.component';
 import Tab from './tab.component';
 import { html } from 'lit-html';
-import { Story } from '@storybook/web-components';
+import { Meta, Story } from '@storybook/web-components';
 import docs from './tab.md?raw';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { useArgs } from '@storybook/addons';
 
-export default {
+const meta: Meta<Tab> = {
   title: 'Components/Tab',
   component: 'dss-tab',
   argTypes: {
@@ -25,7 +25,8 @@ export default {
     },
   },
 };
-
+// noinspection JSUnusedGlobalSymbols
+export default meta;
 
 const Template: Story<Tab> = ({ title, isVisible }) => {
   const [{ isActive }, updateArgs] = useArgs();

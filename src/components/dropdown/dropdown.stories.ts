@@ -7,7 +7,7 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { placementOptions } from '../../internals/floatingElement/floatingElement';
 import { newPerson, range } from '../table/makeData.story-utils';
 
-export default {
+const meta: Meta<Dropdown> = {
   title: 'Components/Dropdown',
   component: 'dss-dropdown',
   argTypes: {
@@ -26,8 +26,9 @@ export default {
       },
     },
   },
-} as Meta;
-
+};
+// noinspection JSUnusedGlobalSymbols
+export default meta;
 
 const Template: Story<Dropdown & { optionsSlot: TemplateResult | TemplateResult[] }> = (
   {

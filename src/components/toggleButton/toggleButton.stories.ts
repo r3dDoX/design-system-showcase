@@ -2,13 +2,13 @@ import './toggleButton.component';
 import '../icon/icon.component';
 import ToggleButton, { toggleButtonTypes } from './toggleButton.component';
 import { html } from 'lit-html';
-import { Story } from '@storybook/web-components';
+import { Meta, Story } from '@storybook/web-components';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import docs from './toggleButton.md?raw';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { buttonSpacings } from '../button/button.component';
 
-export default {
+const meta: Meta<ToggleButton> = {
   title: 'Components/Toggle button',
   component: 'dss-toggle-button',
   argTypes: {
@@ -26,6 +26,8 @@ export default {
     },
   },
 };
+// noinspection JSUnusedGlobalSymbols
+export default meta;
 
 const Template: Story<ToggleButton> = ({ slot, pressed, spacing, disabled, type, tooltip }) => html`
   <dss-toggle-button

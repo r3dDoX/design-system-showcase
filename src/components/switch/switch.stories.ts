@@ -4,7 +4,7 @@ import Switch from './switch.component';
 import docs from './switch.md?raw';
 import './switch.component';
 
-export default {
+const meta: Meta<Switch> = {
   title: 'Components/Switch',
   component: 'dss-switch',
   parameters: {
@@ -17,7 +17,9 @@ export default {
       handles: ['change'],
     },
   },
-} as Meta;
+};
+// noinspection JSUnusedGlobalSymbols
+export default meta;
 
 const Template: Story<Switch> = ({ checked, disabled }) => html`
   <dss-switch ?checked="${checked}" ?disabled="${disabled}"></dss-switch>
