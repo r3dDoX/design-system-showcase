@@ -14,7 +14,7 @@ const StyleDictionary = require('style-dictionary')
     platforms: {
       css: {
         transforms,
-        buildPath: 'src/components/style/',
+        buildPath: 'src/rootStyles/',
         files: [
           {
             destination: 'design-tokens.css',
@@ -27,7 +27,7 @@ const StyleDictionary = require('style-dictionary')
       },
       json: {
         transforms,
-        buildPath: 'src/components/style/',
+        buildPath: 'src/rootStyles/',
         files: [
           {
             destination: 'design-tokens.json',
