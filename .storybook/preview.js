@@ -1,6 +1,7 @@
 import 'element-internals-polyfill';
 import {setCustomElementsManifest} from '@storybook/web-components';
 import customElements from '../dist/custom-elements.json';
+import './storybook.css';
 import '../src/rootStyles/style.css';
 
 customElements?.modules?.forEach((module) => {

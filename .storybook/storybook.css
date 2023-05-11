@@ -1,0 +1,10 @@
+@font-face {
+  font-family: "Inter";
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("inter-ui/Inter (web)/Inter.var.woff2?v=3.19") format("woff2-variations");
+}
+
+html {
+  font-family: Inter, sans-serif !important;
+}
