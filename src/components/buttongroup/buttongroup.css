@@ -7,11 +7,11 @@
 }
 
 label {
-  color: var(--color-action-secondary);
-  font-size: var(--size-font-small);
-  line-height: var(--size-line-height-small);
-  font-weight: var(--font-weight-light);
+  color: var(--color-brand-interaction-100);
+  font-size: var(--typography-small-font-size);
+  line-height: var(--typography-small-line-height);
+  font-weight: var(--typography-small-font-weight);
   display: block;
-  padding-left: var(--size-spacing-1);
-  margin-bottom: var(--size-spacing-0-5);
+  padding-left: var(--size-1);
+  margin-bottom: var(--size-0-5);
 }

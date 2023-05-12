@@ -30,7 +30,7 @@ const Template: Story<TabGroup> = ({ tabs, activeTabTitle, translations }) => {
   return html`
     <style>
       .wrapper {
-        padding-left: var(--size-spacing-4);
+        padding-left: var(--size-4);
       }
     </style>
 

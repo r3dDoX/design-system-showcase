@@ -32,7 +32,7 @@ const Template: Story<Icon & { color: string }> = ({ color }) => html`
       flex-direction: column;
       justify-content: center;
       border-radius: 4rem;
-      box-shadow: var(--shadow-close);
+      box-shadow: var(--effect-shadow-close);
       color: ${color};
       word-break: break-all;
       overflow: hidden;
@@ -51,7 +51,7 @@ const Template: Story<Icon & { color: string }> = ({ color }) => html`
     }
 
     .icon-wrapper p {
-      background-color: var(--color-action-secondary-25);
+      background-color: var(--color-brand-interaction-25);
       flex-grow: 1;
       display: flex;
       align-items: center;

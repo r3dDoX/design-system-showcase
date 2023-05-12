@@ -18,17 +18,17 @@
 
 ::slotted(dss-button) {
   position: absolute;
-  right: var(--size-spacing-0-5);
+  right: var(--size-0-5);
 }
 
 .count {
   display: block;
-  margin-top: var(--size-spacing-0-5);
-  font-size: var(--size-font-small);
-  line-height: var(--size-line-height-small);
-  font-weight: var(--font-weight-light);
+  margin-top: var(--size-0-5);
+  font-size: var(--typography-small-font-size);
+  line-height: var(--typography-small-line-height);
+  font-weight: var(--typography-small-font-weight);
 }
 
 .count--invalid {
-  color: var(--color-action-error);
+  color: var(--color-universal-red-100);
 }

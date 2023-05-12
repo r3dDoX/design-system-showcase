@@ -1,14 +1,14 @@
 :host {
   display: flex;
-  padding: var(--size-spacing-1) var(--size-spacing-2);
-  gap: var(--size-spacing-1);
+  padding: var(--size-1) var(--size-2);
+  gap: var(--size-1);
 
   align-items: center;
   cursor: pointer;
 }
 
 :host(:is(:hover,:focus-visible)) {
-  background: var(--color-background-shade);
+  background: var(--color-brand-interaction-10);
 }
 
 :host(:focus-visible) {

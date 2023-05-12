@@ -1,32 +1,32 @@
 @import '@easepick/core/dist/index.css';
 
 :host {
-  --color-fg-primary: var(--color-font-primary);
-  --color-fg-muted: var(--color-action-disabled);
-  --color-fg-selected: var(--color-font-primary);
-  --color-bg-secondary: var(--color-action-secondary-25);
-  --color-btn-secondary-fg: var(--color-action-secondary);
-  --color-fg-accent: var(--color-action-primary);
+  --color-fg-primary: var(--color-brand-text-100);
+  --color-fg-muted: var(--color-universal-grey-10);
+  --color-fg-selected: var(--color-brand-text-100);
+  --color-bg-secondary: var(--color-brand-interaction-25);
+  --color-btn-secondary-fg: var(--color-brand-interaction-100);
+  --color-fg-accent: var(--color-brand-brand-100);
 }
 
 .container {
-  margin-top: var(--size-spacing-0-5);
+  margin-top: var(--size-0-5);
 }
 
 .container.show {
-  box-shadow: var(--shadow-far);
+  box-shadow: var(--effect-shadow-far);
 }
 
 .calendar .days-grid .day:is(.selected,.selected:hover) {
-  border-color: var(--color-action-secondary);
-  background-color: var(--color-action-secondary-10);
+  border-color: var(--color-brand-interaction-100);
+  background-color: var(--color-brand-interaction-10);
 }
 
 .calendar .days-grid .day:hover {
   border-color: transparent;
-  background-color: var(--color-action-secondary-10);
+  background-color: var(--color-brand-interaction-10);
 }
 
 .calendar .header button:active {
-  background-color: var(--color-action-secondary-50);
+  background-color: var(--color-brand-interaction-50);
 }

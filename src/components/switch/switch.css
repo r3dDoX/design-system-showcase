@@ -1,8 +1,8 @@
 :host {
-  --toggle-button-size: calc(var(--size-spacing-3) - var(--size-spacing-0-25));
+  --toggle-button-size: calc(var(--size-3) - var(--size-0-25));
   --border-radius: 10rem;
   --transition-duration: .15s;
-  --animation-width: var(--size-spacing-1);
+  --animation-width: var(--size-1);
   --transition-timing-function: ease-in;
 
   display: inline-flex;
@@ -10,12 +10,12 @@
 
 input {
   appearance: none;
-  border: var(--size-spacing-px) solid transparent;
+  border: var(--size-px) solid transparent;
   margin: 0;
   padding: 0;
   position: relative;
-  height: var(--size-spacing-3);
-  width: calc(var(--size-spacing-5) + var(--size-spacing-0-5));
+  height: var(--size-3);
+  width: calc(var(--size-5) + var(--size-0-5));
   border-radius: var(--border-radius);
   cursor: pointer;
   transition: background-color var(--transition-duration) var(--transition-timing-function);
@@ -23,8 +23,8 @@ input {
 
 input:not(:disabled):focus-visible {
   outline: none;
-  border: var(--size-spacing-px) solid var(--color-action-focus);
-  box-shadow: var(--shadow-glow-focus);
+  border: var(--size-px) solid var(--color-brand-interaction-100);
+  box-shadow: var(--effect-glow-focus);
 }
 
 input:disabled {
@@ -32,11 +32,11 @@ input:disabled {
 }
 
 input:checked {
-  background-color: var(--color-background-on);
+  background-color: var(--color-universal-green-100);
 }
 
 input:checked:disabled {
-  background-color: var(--color-background-on-disabled);
+  background-color: var(--color-universal-green-50);
 }
 
 input:checked::before {
@@ -44,11 +44,11 @@ input:checked::before {
 }
 
 input:not(:checked) {
-  background-color: var(--color-background-off);
+  background-color: var(--color-universal-yellow-10);
 }
 
 input:not(:checked):disabled {
-  background-color: var(--color-background-disabled-10);
+  background-color: var(--color-universal-grey-10);
 }
 
 input:not(:checked)::before {
@@ -60,11 +60,11 @@ input::before {
   content: '';
   top: 0;
   bottom: 0;
-  background-color: var(--color-background-primary);
+  background-color: var(--color-brand-white-100);
   border-radius: var(--border-radius);
   height: var(--toggle-button-size);
   width: var(--toggle-button-size);
-  box-shadow: var(--shadow-close);
+  box-shadow: var(--effect-shadow-close);
   transition-property: left, width;
   transition-duration: var(--transition-duration);
   transition-timing-function: var(--transition-timing-function);

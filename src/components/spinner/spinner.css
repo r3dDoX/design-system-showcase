@@ -1,6 +1,6 @@
 div {
-  padding-left: var(--size-spacing-0-5);
-  padding-right: var(--size-spacing-0-5);
+  padding-left: var(--size-0-5);
+  padding-right: var(--size-0-5);
 
   display: inline-block;
 }
@@ -20,25 +20,25 @@ svg {
 }
 
 circle.primary {
-  stroke: var(--color-action-primary-50);
+  stroke: var(--color-brand-brand-50);
 }
 
 path.primary {
-  stroke: var(--color-action-primary);
+  stroke: var(--color-brand-brand-100);
 }
 
 circle.secondary {
-  stroke: var(--color-action-secondary-25);
+  stroke: var(--color-brand-interaction-25);
 }
 
 path.secondary {
-  stroke: var(--color-action-secondary);
+  stroke: var(--color-brand-interaction-100);
 }
 
 circle.ghost {
-  stroke: var(--color-background-primary);
+  stroke: var(--color-brand-white-100);
 }
 
 path.ghost {
-  stroke: var(--color-font-disabled);
+  stroke: var(--color-universal-grey-75);
 }

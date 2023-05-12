@@ -51,7 +51,7 @@ const BrowserFormValidationTemplate: Story = () => {
         }
       }}
     >
-      <div style="margin-bottom: var(--size-spacing-1)">
+      <div style="margin-bottom: var(--size-1)">
         <dss-dropdown label="Currency" name="currency" required="true">
           <dss-menu>
             <dss-menu-item value="chf">
@@ -88,7 +88,7 @@ const BrowserFormValidationTemplate: Story = () => {
         Submit
       </dss-button>
     </form>
-    <div style="margin-top: var(--size-spacing-1)">
+    <div style="margin-top: var(--size-1)">
       <pre>${JSON.stringify(formData, null, 2)}</pre>
     </div>
   `;
@@ -190,11 +190,11 @@ const LibraryFormValidationTemplate: Story = () => {
           </dss-input>
         `)}
       </div>
-      <dss-button style="margin-top: var(--size-spacing-2)" type="secondary" submit="true">
+      <dss-button style="margin-top: var(--size-2)" type="secondary" submit="true">
         Submit
       </dss-button>
     </form>
-    <div style="margin-top: var(--size-spacing-1)">
+    <div style="margin-top: var(--size-1)">
       <pre>${JSON.stringify(formData, null, 2)}</pre>
     </div>
   `;

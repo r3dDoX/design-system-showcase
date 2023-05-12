@@ -3,23 +3,23 @@
 }
 
 :host([size="xsmall"]) {
-  height: var(--size-font-small);
-  width: var(--size-font-small);
+  height: var(--typography-small-font-size);
+  width: var(--typography-small-font-size);
 }
 
 :host([size="small"]) {
-  height: var(--size-font-medium);
-  width: var(--size-font-medium);
+  height: var(--typography-main-font-size);
+  width: var(--typography-main-font-size);
 }
 
 :host([size="medium"]), :host {
-  width: var(--size-font-large);
-  height: var(--size-font-large);
+  width: var(--typography-h3-font-size);
+  height: var(--typography-h3-font-size);
 }
 
 :host([size="large"]) {
-  height: var(--size-font-xlarge);
-  width: var(--size-font-xlarge);
+  height: var(--typography-h2-font-size);
+  width: var(--typography-h2-font-size);
 }
 
 :host([size="huge"]) {

@@ -1,13 +1,18 @@
 @import "./design-tokens.css";
 @import "../internals/baseElement/global.css";
 
+:root {
+  --drop-shadow-close: 0 .1rem .4rem #0000001c;
+  --drop-shadow-far: 0 .3rem 2rem #00000049;
+}
+
 html {
   font-size: 62.5% !important;
-  color: var(--color-font-primary) !important;
+  color: var(--color-brand-text-100) !important;
 }
 
 body {
-  font-size: var(--size-font-medium) !important;
-  font-weight: var(--font-weight-regular) !important;
-  line-height: var(--size-line-height-medium) !important;
+  font-size: var(--typography-main-font-size) !important;
+  font-weight: var(--typography-main-font-weight) !important;
+  line-height: var(--typography-main-line-height) !important;
 }

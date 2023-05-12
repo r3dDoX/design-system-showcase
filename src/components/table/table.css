@@ -5,29 +5,29 @@
 table {
   width: fit-content;
   border-collapse: collapse;
-  margin: var(--size-border-width-small);
-  font-size: var(--size-font-small);
-  line-height: var(--size-line-height-small);
+  margin: var(--size-px);
+  font-size: var(--typography-small-font-size);
+  line-height: var(--typography-small-line-height);
   text-align: left;
 }
 
 thead th {
-  padding: var(--size-spacing-1) var(--size-spacing-0-5) var(--size-spacing-0-5);
-  font-weight: var(--font-weight-regular);
+  padding: var(--size-1) var(--size-0-5) var(--size-0-5);
+  font-weight: var(--typography-main-font-weight);
   cursor: grab;
   position: relative;
 }
 
 thead tr:last-of-type th {
-  padding: var(--size-spacing-1) var(--size-spacing-0-5);
+  padding: var(--size-1) var(--size-0-5);
 }
 
 thead td {
-  padding: 0 var(--size-spacing-0-5) var(--size-spacing-1);
+  padding: 0 var(--size-0-5) var(--size-1);
 }
 
 thead tr:last-of-type :is(td, th) {
-  border-bottom: var(--size-border-width-small) solid var(--color-action-secondary);
+  border-bottom: var(--size-px) solid var(--color-brand-interaction-100);
 }
 
 th:has(dss-checkbox) {
@@ -40,31 +40,31 @@ th dss-input {
 }
 
 tbody tr.odd > td {
-  background-color: var(--color-background-shade);
+  background-color: var(--color-brand-interaction-10);
 }
 
 tbody td {
-  padding: var(--size-spacing-0-25) var(--size-spacing-0-5);
-  font-weight: var(--font-weight-light);
+  padding: var(--size-0-25) var(--size-0-5);
+  font-weight: var(--typography-small-font-weight);
 }
 
 tbody tr:hover {
-  outline: var(--size-border-width-small) solid var(--color-action-secondary);
+  outline: var(--size-px) solid var(--color-brand-interaction-100);
 }
 
 .sortable-header {
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: var(--size-spacing-0-5)
+  gap: var(--size-0-5)
 }
 
 .sortable-header:has(dss-icon) {
-  font-weight: var(--font-weight-semi-bold);
+  font-weight: var(--typography-h4-font-weight);
 }
 
 .sort-icon {
-  color: var(--color-action-secondary);
+  color: var(--color-brand-interaction-100);
   transition: transform .15s ease-in-out;
   flex: none;
 }
@@ -81,15 +81,15 @@ tbody tr:hover {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-top: var(--size-spacing-1);
-  padding-top: var(--size-spacing-0-5);
-  font-size: var(--size-font-small);
-  line-height: var(--size-line-height-small);
-  border-top: var(--size-border-width-small) solid var(--color-action-secondary);
+  margin-top: var(--size-1);
+  padding-top: var(--size-0-5);
+  font-size: var(--typography-small-font-size);
+  line-height: var(--typography-small-line-height);
+  border-top: var(--size-px) solid var(--color-brand-interaction-100);
 }
 
 .footer-information {
-  color: var(--color-action-secondary-75);
+  color: var(--color-brand-interaction-75);
 }
 
 .footer-information span:has(+ span)::after {
@@ -101,11 +101,11 @@ tbody tr:hover {
   z-index: 1;
   top: 0;
   bottom: 0;
-  right: calc(var(--size-spacing-0-5) * -1);
-  width: var(--size-spacing-px);
+  right: calc(var(--size-0-5) * -1);
+  width: var(--size-px);
   background-color: transparent;
-  border-left: var(--size-spacing-0-5) solid transparent;
-  border-right: var(--size-spacing-0-5) solid transparent;
+  border-left: var(--size-0-5) solid transparent;
+  border-right: var(--size-0-5) solid transparent;
   cursor: col-resize;
   user-select: none;
   touch-action: none;
@@ -113,7 +113,7 @@ tbody tr:hover {
 
 .resizer:focus-visible {
   outline: none;
-  box-shadow: var(--shadow-glow-focus);
+  box-shadow: var(--effect-glow-focus);
 }
 
 .resizer::after {
@@ -122,11 +122,11 @@ tbody tr:hover {
   bottom: 20%;
   left: 0;
   right: 0;
-  width: var(--size-spacing-px);
+  width: var(--size-px);
   content: '';
   transition: background-color .25s ease;
 }
 
 .resizer:is(:hover,:active,:focus)::after {
-  background-color: var(--color-action-primary);
+  background-color: var(--color-brand-brand-100);
 }

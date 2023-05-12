@@ -1,5 +1,5 @@
 dss-floating::part(container) {
-  --color-background: var(--color-background-quinary);
+  --color-background: var(--color-brand-complementary-25);
 }
 
 dss-floating[active]::part(container) {

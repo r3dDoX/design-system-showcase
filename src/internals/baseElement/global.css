@@ -2,45 +2,45 @@
 @import "../../components/input/input.lightDOM.css";
 
 h1 {
-  font-size: var(--size-font-huge);
-  line-height: var(--size-line-height-huge);
-  font-weight: var(--font-weight-regular);
+  font-size: var(--typography-h1-font-size);
+  line-height: var(--typography-h1-line-height);
+  font-weight: var(--typography-main-font-weight);
 }
 
 h2 {
   font-size: var(--size-font-xlarge);
   line-height: var(--size-line-height-xlarge);
-  font-weight: var(--font-weight-regular);
+  font-weight: var(--typography-main-font-weight);
 }
 
 h3 {
-  font-size: var(--size-font-large);
-  line-height: var(--size-line-height-large);
-  font-weight: var(--font-weight-regular);
+  font-size: var(--typography-h3-font-size);
+  line-height: var(--typography-h3-line-height);
+  font-weight: var(--typography-main-font-weight);
 }
 
 h4 {
-  font-size: var(--size-font-medium);
-  line-height: var(--size-line-height-medium);
-  font-weight: var(--font-weight-semi-bold);
+  font-size: var(--typography-main-font-size);
+  line-height: var(--typography-main-line-height);
+  font-weight: var(--typography-h4-font-weight);
 }
 
 small {
-  font-size: var(--size-font-small);
-  line-height: var(--size-line-height-small);
-  font-weight: var(--font-weight-light);
+  font-size: var(--typography-small-font-size);
+  line-height: var(--typography-small-line-height);
+  font-weight: var(--typography-small-font-weight);
 }
 
 a {
   text-decoration: none;
-  color: var(--color-action-secondary);
-  font-weight: var(--font-weight-semi-bold);
-  font-size: var(--size-font-medium);
+  color: var(--color-brand-interaction-100);
+  font-weight: var(--typography-h4-font-weight);
+  font-size: var(--typography-main-font-size);
   display: inline-flex;
-  gap: var(--size-spacing-1);
+  gap: var(--size-1);
 }
 
 a:hover {
-  background-color: var(--color-action-secondary-25);
-  border-radius: var(--size-border-radius-regular);
+  background-color: var(--color-brand-interaction-25);
+  border-radius: var(--radius-4);
 }

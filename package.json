@@ -24,7 +24,7 @@
     "test": "vitest run --reporter=verbose --reporter=junit --coverage",
     "test:watch": "vitest",
     "prepublishOnly": "npm run build",
-    "design-tokens:generate": "node ./style-dictionary.cjs",
+    "design-tokens:generate": "node ./tokens/style-dictionary.cjs",
     "icons:generate": "node icons.js"
   },
   "dependencies": {
@@ -35,6 +35,7 @@
     "lit-html": "2.4.0"
   },
   "devDependencies": {
+    "@ctrl/tinycolor": "3.6.0",
     "@easepick/core": "1.2.1",
     "@easepick/kbd-plugin": "1.2.1",
     "@faker-js/faker": "7.6.0",

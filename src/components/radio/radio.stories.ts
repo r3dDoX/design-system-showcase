@@ -81,14 +81,14 @@ const MultipleRadios: Story<Radio> = () => {
   return html`
     <style>
       .add-spacing {
-        padding-left: var(--size-spacing-0-5);
+        padding-left: var(--size-0-5);
         display: flex;
         flex-direction: column;
       }
     </style>
 
     <div class="add-spacing">
-      <p style="margin-bottom: var(--size-spacing-1)">Group 1</p>
+      <p style="margin-bottom: var(--size-1)">Group 1</p>
       <dss-radio label='Radio 1'>
         <input id="choice1" type="radio" name="sameGroup" checked>
       </dss-radio>
@@ -101,7 +101,7 @@ const MultipleRadios: Story<Radio> = () => {
     <br>
 
     <div class="add-spacing">
-      <p style="margin-bottom: var(--size-spacing-1)">Group 2</p>
+      <p style="margin-bottom: var(--size-1)">Group 2</p>
       <dss-radio label='Radio 1'>
         <input id="choice1" type="radio" name="otherGroup">
       </dss-radio>

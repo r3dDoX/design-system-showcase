@@ -42,7 +42,7 @@ const Template: Story<Flyout & { contentSlot: TemplateResult, triggerSlot: Templ
 }) => {
   return html`
     <dss-flyout
-      style="margin-left: var(--size-spacing-1); margin-top: var(--size-spacing-1);"
+      style="margin-left: var(--size-1); margin-top: var(--size-1);"
       .arrow="${ifDefined(arrow)}"
       .open="${ifDefined(open)}"
       .placement="${ifDefined(placement)}"
@@ -92,7 +92,7 @@ ButtonWithMenu.args = {
 export const ButtonWithForm = Template.bind({});
 ButtonWithForm.args = {
   contentSlot: html`
-    <form style="padding: var(--size-spacing-1);">
+    <form style="padding: var(--size-1);">
       <dss-input>
         <input placeholder="Search...">
       </dss-input>

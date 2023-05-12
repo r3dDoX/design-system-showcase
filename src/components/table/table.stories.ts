@@ -91,8 +91,8 @@ CustomRender.args = {
       align-items: center;
       height: 100%;
       background-color: #A4D1A2;
-      margin: calc(var(--size-spacing-0-25) * -1) calc(var(--size-spacing-0-5) * -1);
-      padding: var(--size-spacing-0-25) var(--size-spacing-0-5);
+      margin: calc(var(--size-0-25) * -1) calc(var(--size-0-5) * -1);
+      padding: var(--size-0-25) var(--size-0-5);
     }
 
     .wealth-negative {

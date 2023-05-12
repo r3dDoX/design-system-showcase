@@ -1,5 +1,5 @@
 :host {
-  --color-background: var(--color-background-primary);
+  --color-background: var(--color-brand-white-100);
   --drop-shadow: var(--drop-shadow-close);
 
   position: relative;
@@ -13,8 +13,8 @@
   top: 0;
   left: 0;
   background-color: var(--color-background);
-  padding: var(--size-spacing-1) var(--size-spacing-3);
-  border-radius: var(--size-border-radius-regular);
+  padding: var(--size-1) var(--size-3);
+  border-radius: var(--radius-4);
   z-index: 1;
   filter: drop-shadow(var(--drop-shadow));
   visibility: hidden;
@@ -31,8 +31,8 @@
   position: absolute;
   z-index: -1;
   pointer-events: none;
-  width: var(--size-spacing-2);
-  height: var(--size-spacing-2);
+  width: var(--size-2);
+  height: var(--size-2);
   background-color: var(--color-background);
   transform: rotate(45deg);
 }

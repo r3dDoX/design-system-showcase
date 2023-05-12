@@ -1,9 +1,9 @@
 :host {
-  --vertical-padding: calc(var(--size-spacing-0-25) + var(--size-spacing-0-5));
+  --vertical-padding: calc(var(--size-0-25) + var(--size-0-5));
 
-  background-color: var(--color-background-quaternary);
-  border-radius: calc((var(--size-line-height-medium) + (2 * var(--vertical-padding))) / 2);
-  padding: var(--vertical-padding) var(--size-spacing-2);
+  background-color: var(--color-universal-yellow-10);
+  border-radius: calc((var(--typography-main-line-height) + (2 * var(--vertical-padding))) / 2);
+  padding: var(--vertical-padding) var(--size-2);
 
   display: block;
   min-width: 0;
