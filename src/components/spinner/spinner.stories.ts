@@ -2,7 +2,7 @@ import './spinner.component';
 import '../icon/icon.component';
 import Spinner, { spinnerTypes } from './spinner.component';
 import { html } from 'lit-html';
-import { Meta, Story } from '@storybook/web-components';
+import { Meta, StoryFn } from '@storybook/web-components';
 import docs from './spinner.md?raw';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 
@@ -23,7 +23,7 @@ const meta: Meta<Spinner> = {
 // noinspection JSUnusedGlobalSymbols
 export default meta;
 
-const Template: Story<Spinner> = ({ type }) => html`
+const Template: StoryFn<Spinner> = ({ type }) => html`
   <dss-spinner
     type=${ifDefined(type)}
   >
@@ -43,7 +43,7 @@ Secondary.args = {
   type: 'secondary',
 };
 
-const GhostTemplate: Story<Spinner> = () => html`
+const GhostTemplate: StoryFn<Spinner> = () => html`
   <dss-button disabled>Ghost
     <dss-spinner
       type='ghost'
@@ -53,7 +53,7 @@ const GhostTemplate: Story<Spinner> = () => html`
 `;
 export const Ghost = GhostTemplate.bind({});
 
-const TextTemplate: Story<Spinner> = () => html`
+const TextTemplate: StoryFn<Spinner> = () => html`
   <p>Legen... wait for it!
     <dss-spinner>
     </dss-spinner>

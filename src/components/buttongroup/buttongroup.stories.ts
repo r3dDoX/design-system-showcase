@@ -2,7 +2,7 @@ import '../toggleButton/toggleButton.component';
 import './buttongroup.component';
 import ButtonGroup from './buttongroup.component';
 import { html } from 'lit-html';
-import { Meta, Story } from '@storybook/web-components';
+import { Meta, StoryFn } from '@storybook/web-components';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import docs from './buttongroup.md?raw';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -24,7 +24,7 @@ const meta: Meta<ButtonGroup> = {
 // noinspection JSUnusedGlobalSymbols
 export default meta;
 
-const Template: Story<ButtonGroup> = ({ slot, value, label, required, errorState, message }) => html`
+const Template: StoryFn<ButtonGroup> = ({ slot, value, label, required, errorState, message }) => html`
   <dss-button-group
     value="${ifDefined(value)}"
     label="${ifDefined(label)}"

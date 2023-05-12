@@ -1,6 +1,6 @@
 import './datepicker.component';
 import { html } from 'lit-html';
-import { Meta, Story } from '@storybook/web-components';
+import { Meta, StoryFn } from '@storybook/web-components';
 import Datepicker from './datepicker.component';
 import docs from './datepicker.md?raw';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -26,7 +26,7 @@ const meta: Meta<Datepicker> = {
 // noinspection JSUnusedGlobalSymbols
 export default meta;
 
-const DatePickerTemplate: Story<Datepicker> = ({ required, label, value, errorState, message, locale }) => html`
+const DatePickerTemplate: StoryFn<Datepicker> = ({ required, label, value, errorState, message, locale }) => html`
   <dss-datepicker
     value="${value}"
     label="${ifDefined(label)}"

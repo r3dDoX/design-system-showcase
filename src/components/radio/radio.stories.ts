@@ -1,6 +1,6 @@
 import './radio.component';
 import { html } from 'lit-html';
-import { Meta, Story } from '@storybook/web-components';
+import { Meta, StoryFn } from '@storybook/web-components';
 import Radio from './radio.component';
 import docs from './radio.md?raw';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -27,7 +27,7 @@ const meta: Meta<Radio> = {
 // noinspection JSUnusedGlobalSymbols
 export default meta;
 
-const Template: Story<Radio> = ({ label, size, errorState, message }) => {
+const Template: StoryFn<Radio> = ({ label, size, errorState, message }) => {
   return html`
     <dss-radio
       .size=${ifDefined(size)}
@@ -60,7 +60,7 @@ Error.args = {
   message: 'This radio is wrong',
 };
 
-const DisabledTemplate: Story<Radio> = ({ label }) => {
+const DisabledTemplate: StoryFn<Radio> = ({ label }) => {
   return html`
     <dss-radio .label=${`${label} unchecked`} style="padding: .3rem .3rem .3rem .8rem;">
       <input type="radio" disabled>
@@ -77,7 +77,7 @@ Disabled.args = {
   label: 'Disabled Radio',
 };
 
-const MultipleRadios: Story<Radio> = () => {
+const MultipleRadios: StoryFn<Radio> = () => {
   return html`
     <style>
       .add-spacing {

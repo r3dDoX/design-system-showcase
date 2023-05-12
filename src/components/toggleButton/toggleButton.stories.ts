@@ -2,7 +2,7 @@ import './toggleButton.component';
 import '../icon/icon.component';
 import ToggleButton, { toggleButtonTypes } from './toggleButton.component';
 import { html } from 'lit-html';
-import { Meta, Story } from '@storybook/web-components';
+import { Meta, StoryFn } from '@storybook/web-components';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import docs from './toggleButton.md?raw';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -29,7 +29,7 @@ const meta: Meta<ToggleButton> = {
 // noinspection JSUnusedGlobalSymbols
 export default meta;
 
-const Template: Story<ToggleButton> = ({ slot, pressed, spacing, disabled, type, tooltip }) => html`
+const Template: StoryFn<ToggleButton> = ({ slot, pressed, spacing, disabled, type, tooltip }) => html`
   <dss-toggle-button
     spacing="${ifDefined(spacing)}"
     type="${ifDefined(type)}"

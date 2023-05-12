@@ -1,5 +1,5 @@
 import './checkbox.component';
-import { Meta, Story } from '@storybook/web-components';
+import { Meta, StoryFn } from '@storybook/web-components';
 import { html } from 'lit-html';
 import Checkbox from './checkbox.component';
 import docs from './checkbox.md?raw';
@@ -27,7 +27,7 @@ const meta: Meta<Checkbox> = {
 // noinspection JSUnusedGlobalSymbols
 export default meta;
 
-const Template: Story<Checkbox> = ({
+const Template: StoryFn<Checkbox> = ({
   label,
   size,
   checked,
@@ -76,7 +76,7 @@ Error.args = {
   message: 'This checkbox is wrong',
 };
 
-const DisabledTemplate: Story<Checkbox> = ({ label, size }) => {
+const DisabledTemplate: StoryFn<Checkbox> = ({ label, size }) => {
   return html`
     <div style="display: flex; flex-direction: column; gap: var(--size-0-5)">
       <dss-checkbox .label=${label} .size=${size} .disabled=${true}></dss-checkbox>
@@ -97,7 +97,7 @@ Disabled.args = {
   size: 'comfortable',
 };
 
-const IndeterminateTemplate: Story<Checkbox> = ({ label, size }) => {
+const IndeterminateTemplate: StoryFn<Checkbox> = ({ label, size }) => {
   return html`
     <dss-checkbox .label=${label} .size=${size} .indeterminate=${true}></dss-checkbox>
   `;

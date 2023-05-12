@@ -5,7 +5,7 @@ import { makeData, Person } from './makeData.story-utils';
 import { classMap } from 'lit-html/directives/class-map.js';
 import DssTable from './table.component';
 import Table, { ColumnDef } from './table.component';
-import { Meta, Story } from '@storybook/web-components';
+import { Meta, StoryFn } from '@storybook/web-components';
 import docs from './table.md?raw';
 import docsFilterable from './table.filterable.md?raw';
 
@@ -34,7 +34,7 @@ const meta: Meta<Table> = {
 // noinspection JSUnusedGlobalSymbols
 export default meta;
 
-const Template: Story<Table> = ({
+const Template: StoryFn<Table> = ({
   data,
   columns,
   customStyles,

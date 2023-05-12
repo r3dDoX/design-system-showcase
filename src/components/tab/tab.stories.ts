@@ -1,7 +1,7 @@
 import './tab.component';
 import Tab from './tab.component';
 import { html } from 'lit-html';
-import { Meta, Story } from '@storybook/web-components';
+import { Meta, StoryFn } from '@storybook/web-components';
 import docs from './tab.md?raw';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { useArgs } from '@storybook/addons';
@@ -28,7 +28,7 @@ const meta: Meta<Tab> = {
 // noinspection JSUnusedGlobalSymbols
 export default meta;
 
-const Template: Story<Tab> = ({ title, isVisible }) => {
+const Template: StoryFn<Tab> = ({ title, isVisible }) => {
   const [{ isActive }, updateArgs] = useArgs();
 
   const handleTabClick = () => {

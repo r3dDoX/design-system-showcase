@@ -1,6 +1,6 @@
 import './tabGroup.component';
 import { html } from 'lit-html';
-import { Meta, Story } from '@storybook/web-components';
+import { Meta, StoryFn } from '@storybook/web-components';
 import docs from './tabGroup.md?raw';
 import TabGroup, { DssTabGroupTabCloseEvent, DssTabGroupTabSelectEvent } from './tabGroup.component';
 import { useState } from '@storybook/addons';
@@ -23,7 +23,7 @@ const meta: Meta<TabGroup> = {
 // noinspection JSUnusedGlobalSymbols
 export default meta;
 
-const Template: Story<TabGroup> = ({ tabs, activeTabTitle, translations }) => {
+const Template: StoryFn<TabGroup> = ({ tabs, activeTabTitle, translations }) => {
   const [tabsState, setTabsState] = useState(tabs);
   const [activeTab, setActiveTab] = useState(activeTabTitle);
 

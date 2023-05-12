@@ -1,7 +1,7 @@
 import './menuItem.component';
 import '../menuItem/menuItem.component';
 import { html, TemplateResult } from 'lit-html';
-import { Meta, Story } from '@storybook/web-components';
+import { Meta, StoryFn } from '@storybook/web-components';
 import docs from './menuItem.md?raw';
 import MenuItem from './menuItem.component';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -21,7 +21,7 @@ const meta: Meta<MenuItem> = {
 // noinspection JSUnusedGlobalSymbols
 export default meta;
 
-const Template: Story<MenuItem & { itemSlot: TemplateResult }> = (
+const Template: StoryFn<MenuItem & { itemSlot: TemplateResult }> = (
   {
     value,
     itemSlot,

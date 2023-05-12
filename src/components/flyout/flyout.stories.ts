@@ -1,6 +1,6 @@
 import { html, TemplateResult } from 'lit-html';
 import Flyout from './flyout.component';
-import { Meta, Story } from '@storybook/web-components';
+import { Meta, StoryFn } from '@storybook/web-components';
 import docs from './flyout.md?raw';
 import { when } from 'lit-html/directives/when.js';
 import './flyout.component';
@@ -32,7 +32,7 @@ const meta: Meta<Flyout> = {
 // noinspection JSUnusedGlobalSymbols
 export default meta;
 
-const Template: Story<Flyout & { contentSlot: TemplateResult, triggerSlot: TemplateResult }> = ({
+const Template: StoryFn<Flyout & { contentSlot: TemplateResult, triggerSlot: TemplateResult }> = ({
   triggerSlot,
   contentSlot,
   arrow,

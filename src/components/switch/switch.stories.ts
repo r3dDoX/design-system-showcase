@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/web-components';
+import { Meta, StoryFn } from '@storybook/web-components';
 import { html } from 'lit-html';
 import Switch from './switch.component';
 import docs from './switch.md?raw';
@@ -21,7 +21,7 @@ const meta: Meta<Switch> = {
 // noinspection JSUnusedGlobalSymbols
 export default meta;
 
-const Template: Story<Switch> = ({ checked, disabled }) => html`
+const Template: StoryFn<Switch> = ({ checked, disabled }) => html`
   <dss-switch ?checked="${checked}" ?disabled="${disabled}"></dss-switch>
 `;
 

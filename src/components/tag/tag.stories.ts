@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/web-components';
+import { Meta, StoryFn } from '@storybook/web-components';
 import { html } from 'lit-html';
 import './tag.component';
 import Tag from './tag.component';
@@ -18,7 +18,7 @@ const meta: Meta<Tag> = {
 // noinspection JSUnusedGlobalSymbols
 export default meta;
 
-const Template: Story<Tag> = ({ slot }) => html`
+const Template: StoryFn<Tag> = ({ slot }) => html`
   <dss-tag>${slot}</dss-tag>
 `;
 

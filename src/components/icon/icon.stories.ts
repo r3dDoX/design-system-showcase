@@ -1,7 +1,7 @@
 import './icon.component';
 import Icon, { ICON_SIZE } from './icon.component';
 import { html } from 'lit-html';
-import { Meta, Story } from '@storybook/web-components';
+import { Meta, StoryFn } from '@storybook/web-components';
 import '@lit-labs/virtualizer';
 import { grid } from '@lit-labs/virtualizer/layouts/grid.js';
 import docs from './icon.md?raw';
@@ -25,7 +25,7 @@ const meta: Meta<Icon> = {
 // noinspection JSUnusedGlobalSymbols
 export default meta;
 
-const Template: Story<Icon & { color: string }> = ({ color }) => html`
+const Template: StoryFn<Icon & { color: string }> = ({ color }) => html`
   <style>
     .icon-wrapper {
       display: flex;
@@ -86,7 +86,7 @@ IconGallery.args = {
   color: '#000',
 };
 
-const UsageTemplate: Story<Icon> = ({ size, icon }) => html`
+const UsageTemplate: StoryFn<Icon> = ({ size, icon }) => html`
   <dss-icon .icon=${icon} .size=${size}></dss-icon>
 `;
 export const Usage = UsageTemplate.bind({});

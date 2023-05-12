@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/web-components';
+import { Meta, StoryFn } from '@storybook/web-components';
 import { html } from 'lit-html';
 import './tooltip.component';
 import Tooltip from './tooltip.component';
@@ -27,7 +27,7 @@ const meta: Meta<Tooltip> = {
 // noinspection JSUnusedGlobalSymbols
 export default meta;
 
-const Template: Story<Tooltip> = ({ slot, placement }) => html`
+const Template: StoryFn<Tooltip> = ({ slot, placement }) => html`
   <div style="margin: 20rem; display: inline-block">
     <dss-tooltip placement="${ifDefined(placement)}">
       <dss-button type="secondary" slot="trigger">

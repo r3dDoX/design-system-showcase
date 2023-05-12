@@ -1,6 +1,6 @@
 import './pagination.component';
 import { html } from 'lit-html';
-import { Meta, Story } from '@storybook/web-components';
+import { Meta, StoryFn } from '@storybook/web-components';
 import docs from './pagination.md?raw';
 import Pagination from './pagination.component';
 
@@ -21,7 +21,7 @@ const meta: Meta<Pagination> = {
 // noinspection JSUnusedGlobalSymbols
 export default meta;
 
-const Template: Story<Pagination> = ({ pageCount, activePageIndex }) => html`
+const Template: StoryFn<Pagination> = ({ pageCount, activePageIndex }) => html`
   <dss-pagination .pageCount=${pageCount} .activePageIndex=${activePageIndex}></dss-pagination>
 `;
 

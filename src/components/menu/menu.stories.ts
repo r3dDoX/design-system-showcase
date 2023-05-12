@@ -1,7 +1,7 @@
 import './menu.component';
 import '../menuItem/menuItem.component';
 import { html } from 'lit-html';
-import { Meta, Story } from '@storybook/web-components';
+import { Meta, StoryFn } from '@storybook/web-components';
 import Menu from './menu.component';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import docs from './menu.md?raw';
@@ -24,7 +24,7 @@ const meta: Meta<Menu> = {
 // noinspection JSUnusedGlobalSymbols
 export default meta;
 
-const Template: Story<Menu> = ({ slot }) => html`
+const Template: StoryFn<Menu> = ({ slot }) => html`
   <dss-menu style="max-width: 20rem; border-radius: 0.5rem; box-shadow: 0 0 1rem 0 rgb(0 0 0 / 20%);">
     ${unsafeHTML(slot)}
   </dss-menu>

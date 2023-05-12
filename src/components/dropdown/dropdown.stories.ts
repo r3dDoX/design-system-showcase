@@ -1,7 +1,7 @@
 import './dropdown.component';
 import { html, TemplateResult } from 'lit-html';
 import Dropdown from './dropdown.component';
-import { Meta, Story } from '@storybook/web-components';
+import { Meta, StoryFn } from '@storybook/web-components';
 import docs from './dropdown.md?raw';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { placementOptions } from '../../internals/floatingElement/floatingElement';
@@ -30,7 +30,7 @@ const meta: Meta<Dropdown> = {
 // noinspection JSUnusedGlobalSymbols
 export default meta;
 
-const Template: Story<Dropdown & { optionsSlot: TemplateResult | TemplateResult[] }> = (
+const Template: StoryFn<Dropdown & { optionsSlot: TemplateResult | TemplateResult[] }> = (
   {
     optionsSlot,
     editable,
@@ -74,7 +74,7 @@ Default.args = {
           <dss-menu-item .value=${person}>${person.lastName}, ${person.firstName}</dss-menu-item>`)}`,
 };
 
-const InitialSelectionTemplate: Story<Dropdown> = () => html`
+const InitialSelectionTemplate: StoryFn<Dropdown> = () => html`
   <dss-dropdown value="1">
     <dss-menu>
       <dss-menu-item value="0">Not selected</dss-menu-item>

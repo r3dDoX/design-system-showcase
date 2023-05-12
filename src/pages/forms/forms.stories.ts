@@ -1,4 +1,4 @@
-import { Story } from '@storybook/web-components';
+import { StoryFn } from '@storybook/web-components';
 import { html } from 'lit-html';
 import docs from './forms.md?raw';
 import browserValidationDocs from './browserValidation.md?raw';
@@ -36,7 +36,7 @@ function formDataToJson(data: FormData): Record<string, FormDataEntryValue | For
   ]));
 }
 
-const BrowserFormValidationTemplate: Story = () => {
+const BrowserFormValidationTemplate: StoryFn = () => {
   const [formData, setFormData] = useState<any>(undefined);
 
   return html`
@@ -129,7 +129,7 @@ const schema = yup.object().shape({
   }),
 });
 
-const LibraryFormValidationTemplate: Story = () => {
+const LibraryFormValidationTemplate: StoryFn = () => {
   const [formData, setFormData] = useState<any>(undefined);
   const [errors, setErrors] = useState<any>({});
   const [addEmail, setAddEmail] = useState<boolean>(false);

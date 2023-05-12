@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/web-components';
+import { Meta, StoryFn } from '@storybook/web-components';
 import docs from './toast.md?raw';
 import Toast, { toastTypes } from './toast.component';
 import { html } from 'lit';
@@ -25,7 +25,7 @@ const meta: Meta<Toast> = {
 // noinspection JSUnusedGlobalSymbols
 export default meta;
 
-const Template: Story<Toast> = ({ type, heading, message, closable }) => html`
+const Template: StoryFn<Toast> = ({ type, heading, message, closable }) => html`
   <dss-toast
     type="${ifDefined(type)}"
     heading="${ifDefined(heading)}"

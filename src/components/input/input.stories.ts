@@ -1,5 +1,5 @@
 import './input.component';
-import { Meta, Story } from '@storybook/web-components';
+import { Meta, StoryFn } from '@storybook/web-components';
 import { html, TemplateResult } from 'lit-html';
 import Input, { inputErrorStates, inputSizes } from './input.component';
 import docs from './input.md?raw';
@@ -35,7 +35,7 @@ const meta: Meta<Input> = {
 // noinspection JSUnusedGlobalSymbols
 export default meta;
 
-const Template: Story<Input & {
+const Template: StoryFn<Input & {
   placeholder?: string,
   required?: boolean,
   disabled?: boolean,

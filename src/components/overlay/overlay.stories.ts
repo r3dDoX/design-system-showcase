@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/web-components';
+import { Meta, StoryFn } from '@storybook/web-components';
 import docs from './overlay.md?raw';
 import { html, TemplateResult } from 'lit-html';
 import Overlay from './overlay.component';
@@ -25,7 +25,7 @@ const meta: Meta<Overlay> = {
 // noinspection JSUnusedGlobalSymbols
 export default meta;
 
-const Template: Story<Overlay & { slots?: TemplateResult }> = ({
+const Template: StoryFn<Overlay & { slots?: TemplateResult }> = ({
   header,
   slots,
 }) => {
