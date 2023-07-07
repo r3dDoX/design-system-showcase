@@ -75,7 +75,7 @@ properties.
           style={{
             width: token.value,
             height: token.value,
-            backgroundColor: "var(--color-universal-grey-50)"
+            backgroundColor: "var(--color-brand-brand-100)",
           }}
         />
         <span>{token.value}</span>
@@ -91,7 +91,7 @@ properties.
     display: "grid",
     gridTemplateColumns: "min-content auto",
     gap: "var(--size-4)",
-    alignItems: "center"
+    alignItems: "center",
   }}
 >
   {Object.entries(tokens.effect).map(([name, token], index) => (
@@ -102,6 +102,7 @@ properties.
           height: 'var(--size-6)',
           width: 'var(--size-6)',
           borderRadius: 'var(--radius-4)',
+          backgroundColor: "var(--color-brand-brand-100)",
         }}
       />
       <strong>{token.name}</strong>
@@ -123,7 +124,7 @@ properties.
     <React.Fragment key={index}>
       <div
         style={{
-          border: `var(--size-0-25) solid var(--color-universal-grey-50)`,
+          border: `var(--size-0-25) solid var(--color-brand-brand-100)`,
           height: 'var(--size-6)',
           width: 'var(--size-6)',
           borderRadius: token.value,
