@@ -8,9 +8,9 @@ h1 {
 }
 
 h2 {
-  font-size: var(--size-font-xlarge);
-  line-height: var(--size-line-height-xlarge);
-  font-weight: var(--typography-main-font-weight);
+  font-size: var(--typography-h2-font-size);
+  line-height: var(--typography-h2-line-height);
+  font-weight: var(--typography-h2-font-weight);
 }
 
 h3 {
